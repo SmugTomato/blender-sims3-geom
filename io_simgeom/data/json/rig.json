@@ -1,0 +1,5916 @@
+{
+    "name": "auRig",
+    "bones": [
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__ROOT__",
+            "mirror_index": 0,
+            "parent_index": -1,
+            "namehash": "0xfeae6981",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                1.0121999979019165,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__ROOT_bind__",
+            "mirror_index": 1,
+            "parent_index": 0,
+            "namehash": "0x57884bb9",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                0.11100000143051147,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__Pelvis__",
+            "mirror_index": 2,
+            "parent_index": 1,
+            "namehash": "0x556b181a",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                -0.06599999964237213,
+                -0.11100000143051147,
+                0.0
+            ],
+            "rotation": [
+                0.013193282298743725,
+                0.9997512102127075,
+                -0.017889201641082764,
+                -0.0018409581389278173
+            ],
+            "scale": [
+                0.9999998211860657,
+                1.0000001192092896,
+                0.9999998807907104
+            ],
+            "name": "b__R_Thigh__",
+            "mirror_index": 26,
+            "parent_index": 2,
+            "namehash": "0x83b1355c",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.48399999737739563,
+                0.0
+            ],
+            "rotation": [
+                0.9991858005523682,
+                0.04034484177827835,
+                -2.0016293547087116e-06,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0000003576278687,
+                1.0000003576278687
+            ],
+            "name": "b__R_Calf__",
+            "mirror_index": 27,
+            "parent_index": 3,
+            "namehash": "0x81b330de",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.4189999997615814,
+                0.0
+            ],
+            "rotation": [
+                0.027152154594659805,
+                0.9994694590568542,
+                -0.017949024215340614,
+                -0.0011195939732715487
+            ],
+            "scale": [
+                0.9999998211860657,
+                0.9999998211860657,
+                0.9999999403953552
+            ],
+            "name": "b__R_Foot__",
+            "mirror_index": 28,
+            "parent_index": 4,
+            "namehash": "0x37bb051c",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                -0.0021869998890906572,
+                -0.11013799905776978,
+                0.1156499981880188
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Toe__",
+            "mirror_index": 29,
+            "parent_index": 5,
+            "namehash": "0xa6f3b078",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Toe_slot",
+            "mirror_index": 30,
+            "parent_index": 6,
+            "namehash": "0xb8587539",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_PantsLeg_slot",
+            "mirror_index": 31,
+            "parent_index": 4,
+            "namehash": "0x9aafedc7",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Ankle_slot",
+            "mirror_index": 32,
+            "parent_index": 4,
+            "namehash": "0x6a3a218a",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_backCalfTarget_slot",
+            "mirror_index": 33,
+            "parent_index": 4,
+            "namehash": "0x87f4f3cd",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_outCalfTarget_slot",
+            "mirror_index": 36,
+            "parent_index": 4,
+            "namehash": "0x9618393a",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_frontCalfTarget_slot",
+            "mirror_index": 35,
+            "parent_index": 4,
+            "namehash": "0xe73d6c39",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_inCalfTarget_slot",
+            "mirror_index": 34,
+            "parent_index": 4,
+            "namehash": "0xff1bdd1",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_KneeTarget_slot",
+            "mirror_index": 37,
+            "parent_index": 4,
+            "namehash": "0xdab8292b",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.30000001192092896,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Calf__Compress__",
+            "mirror_index": 38,
+            "parent_index": 4,
+            "namehash": "0xdd534a80",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_ThighFrontTarget_slot",
+            "mirror_index": 40,
+            "parent_index": 3,
+            "namehash": "0x3444d3bf",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_backThighTarget_slot",
+            "mirror_index": 39,
+            "parent_index": 3,
+            "namehash": "0x33bdd8a1",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_outThighTarget_slot",
+            "mirror_index": 41,
+            "parent_index": 3,
+            "namehash": "0x7507a630",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_upThighTarget_slot",
+            "mirror_index": 42,
+            "parent_index": 3,
+            "namehash": "0xf56412f3",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_upBackThighTarget_slot",
+            "mirror_index": 43,
+            "parent_index": 3,
+            "namehash": "0x5bb64526",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.4000000059604645,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Thigh__Compress__",
+            "mirror_index": 44,
+            "parent_index": 3,
+            "namehash": "0x4cde546a",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                1.9999999949504854e-06,
+                0.5224969983100891,
+                -0.618615984916687
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "R_legExportPole",
+            "mirror_index": 45,
+            "parent_index": 3,
+            "namehash": "0xc183ef50",
+            "flags": "0x3d"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.999995768070221,
+                0.0,
+                0.0029160126578062773,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_ThighTwist__",
+            "mirror_index": 46,
+            "parent_index": 3,
+            "namehash": "0xe723d915",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.999983012676239,
+                0.0,
+                0.0058320993557572365,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_ThighUntwist__",
+            "mirror_index": 47,
+            "parent_index": 3,
+            "namehash": "0x13a6779a",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.019999999552965164,
+                0.0
+            ],
+            "rotation": [
+                0.9999947547912598,
+                0.0,
+                -0.0032175166998058558,
+                0.0
+            ],
+            "scale": [
+                0.9999997019767761,
+                1.0,
+                0.9999997019767761
+            ],
+            "name": "b__R_ThighTwisted__",
+            "mirror_index": 48,
+            "parent_index": 24,
+            "namehash": "0x5ff7b14a",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.06599999964237213,
+                -0.11100000143051147,
+                0.0
+            ],
+            "rotation": [
+                0.012996538542211056,
+                0.9997469782829285,
+                0.01834864169359207,
+                0.0006191566353663802
+            ],
+            "scale": [
+                1.0000001192092896,
+                1.0000001192092896,
+                0.9999995827674866
+            ],
+            "name": "b__L_Thigh__",
+            "mirror_index": 3,
+            "parent_index": 2,
+            "namehash": "0xc6035e5e",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.48399999737739563,
+                0.0
+            ],
+            "rotation": [
+                0.9992164373397827,
+                0.03957851231098175,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                0.9999999403953552,
+                0.9999999403953552
+            ],
+            "name": "b__L_Calf__",
+            "mirror_index": 4,
+            "parent_index": 26,
+            "namehash": "0x85e195d0",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.4189999997615814,
+                0.0
+            ],
+            "rotation": [
+                0.02658211998641491,
+                0.9994780421257019,
+                0.018358828499913216,
+                -0.00010730599024100229
+            ],
+            "scale": [
+                1.0000001192092896,
+                1.000000238418579,
+                1.000000238418579
+            ],
+            "name": "b__L_Foot__",
+            "mirror_index": 5,
+            "parent_index": 27,
+            "namehash": "0x23b79422",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0025740000419318676,
+                -0.1101360023021698,
+                0.11543100327253342
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Toe__",
+            "mirror_index": 6,
+            "parent_index": 28,
+            "namehash": "0xfbcf5c32",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Toe_slot",
+            "mirror_index": 7,
+            "parent_index": 29,
+            "namehash": "0x9d61d403",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_PantsLeg_slot",
+            "mirror_index": 8,
+            "parent_index": 27,
+            "namehash": "0x422d4175",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Ankle_slot",
+            "mirror_index": 9,
+            "parent_index": 27,
+            "namehash": "0x70f31118",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_backCalfTarget_slot",
+            "mirror_index": 10,
+            "parent_index": 27,
+            "namehash": "0x94a6a77b",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_inCalfTarget_slot",
+            "mirror_index": 13,
+            "parent_index": 27,
+            "namehash": "0xefb28827",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_frontCalfTarget_slot",
+            "mirror_index": 12,
+            "parent_index": 27,
+            "namehash": "0x18cb5a9f",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_outCalfTarget_slot",
+            "mirror_index": 11,
+            "parent_index": 27,
+            "namehash": "0xb78aeaa4",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_KneeTarget_slot",
+            "mirror_index": 14,
+            "parent_index": 27,
+            "namehash": "0xe7dfa65",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.30000001192092896,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Calf__Compress__",
+            "mirror_index": 15,
+            "parent_index": 27,
+            "namehash": "0x631006b6",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_backThighTarget_slot",
+            "mirror_index": 17,
+            "parent_index": 26,
+            "namehash": "0xefa497f",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_ThighFrontTarget_slot",
+            "mirror_index": 16,
+            "parent_index": 26,
+            "namehash": "0xdae21d5d",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_outThighTarget_slot",
+            "mirror_index": 18,
+            "parent_index": 26,
+            "namehash": "0x54135682",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_upThighTarget_slot",
+            "mirror_index": 19,
+            "parent_index": 26,
+            "namehash": "0xc4b39acd",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_upBackThighTarget_slot",
+            "mirror_index": 20,
+            "parent_index": 26,
+            "namehash": "0x64cff6b4",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.4000000059604645,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Thigh__Compress__",
+            "mirror_index": 21,
+            "parent_index": 26,
+            "namehash": "0xec80a400",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.5222989916801453,
+                -0.6188380122184753
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "L_legExportPole",
+            "mirror_index": 22,
+            "parent_index": 26,
+            "namehash": "0xc2d0302a",
+            "flags": "0x21"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.9999974370002747,
+                0.0,
+                -0.002276005456224084,
+                0.0
+            ],
+            "scale": [
+                1.0000003576278687,
+                1.0,
+                1.0000003576278687
+            ],
+            "name": "b__L_ThighTwist__",
+            "mirror_index": 23,
+            "parent_index": 26,
+            "namehash": "0xd0c4d27b",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.9999192953109741,
+                -0.011861707083880901,
+                -0.0045516169629991055,
+                -5.3754331020172685e-05
+            ],
+            "scale": [
+                1.0000003576278687,
+                1.0000003576278687,
+                0.9999998211860657
+            ],
+            "name": "b__L_ThighUntwist__",
+            "mirror_index": 24,
+            "parent_index": 26,
+            "namehash": "0xeca95d4c",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.019999999552965164,
+                0.00047400000039488077
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_ThighTwisted__",
+            "mirror_index": 25,
+            "parent_index": 47,
+            "namehash": "0x4dbaf2a8",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_HipTarget_slot",
+            "mirror_index": 50,
+            "parent_index": 2,
+            "namehash": "0xe4500cc3",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                0.9999979734420776,
+                0.9999979734420776,
+                0.9999979734420776
+            ],
+            "name": "b__R_HipTarget_slot",
+            "mirror_index": 49,
+            "parent_index": 2,
+            "namehash": "0x526aa3d",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                -0.11100000143051147,
+                0.0
+            ],
+            "rotation": [
+                0.9999138116836548,
+                -0.01312414649873972,
+                0.0,
+                0.00023752075503580272
+            ],
+            "scale": [
+                0.9999980926513672,
+                0.9999985694885254,
+                0.9999984502792358
+            ],
+            "name": "b__upper_skirt__",
+            "mirror_index": 51,
+            "parent_index": 2,
+            "namehash": "0x6804dedb",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                -0.4000000059604645,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__skirt_upper_Compress__",
+            "mirror_index": 52,
+            "parent_index": 51,
+            "namehash": "0x7c647b6e",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                -0.08399999886751175,
+                0.0
+            ],
+            "rotation": [
+                0.9991989135742188,
+                0.04001905396580696,
+                0.0,
+                -4.903927765553817e-05
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__lower_skirt__",
+            "mirror_index": 53,
+            "parent_index": 52,
+            "namehash": "0xd5e15c10",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                -0.30000001192092896,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__skirt_lower_Compress__",
+            "mirror_index": 54,
+            "parent_index": 53,
+            "namehash": "0x4ecffcc3",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                0.11699999868869781,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__Spine0__",
+            "mirror_index": 55,
+            "parent_index": 1,
+            "namehash": "0x6fa96266",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                0.16200000047683716,
+                0.0
+            ],
+            "rotation": [
+                0.9961947202682495,
+                -0.08715563267469406,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.000000238418579,
+                1.000000238418579
+            ],
+            "name": "b__Spine1__",
+            "mirror_index": 56,
+            "parent_index": 55,
+            "namehash": "0xafac05cf",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                0.15711499750614166,
+                0.02770400047302246
+            ],
+            "rotation": [
+                0.979924738407135,
+                0.19936788082122803,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__Spine2__",
+            "mirror_index": 57,
+            "parent_index": 56,
+            "namehash": "0x6faf7238",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                0.14377400279045105,
+                -0.0702819973230362
+            ],
+            "rotation": [
+                0.9935718178749084,
+                0.11320318281650543,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                0.9999999403953552,
+                0.9999999403953552
+            ],
+            "name": "b__Neck__",
+            "mirror_index": 58,
+            "parent_index": 57,
+            "namehash": "0xbc81d5b8",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                0.07500000298023224,
+                0.0
+            ],
+            "rotation": [
+                0.9743700623512268,
+                -0.22495098412036896,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                0.9999998807907104,
+                0.9999998807907104
+            ],
+            "name": "b__Head__",
+            "mirror_index": 59,
+            "parent_index": 58,
+            "namehash": "0xf97b21b",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                0.017000000923871994,
+                -0.003000000026077032
+            ],
+            "rotation": [
+                1.0,
+                6.0999998822808266e-05,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__HeadNew__",
+            "mirror_index": 60,
+            "parent_index": 59,
+            "namehash": "0x6e191acb",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.038516998291015625,
+                -0.0007029999978840351,
+                0.09803500026464462
+            ],
+            "rotation": [
+                1.0,
+                -6.0999998822808266e-05,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__LeftCheek__",
+            "mirror_index": 63,
+            "parent_index": 60,
+            "namehash": "0xf2ee99a0",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0410350002348423,
+                0.023624999448657036,
+                0.09848500043153763
+            ],
+            "rotation": [
+                1.0,
+                -6.0999998822808266e-05,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__LeftSquint__",
+            "mirror_index": 64,
+            "parent_index": 60,
+            "namehash": "0x4c4a702a",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                -0.03851399943232536,
+                -0.0007029999978840351,
+                0.09803500026464462
+            ],
+            "rotation": [
+                1.0,
+                -6.0999998822808266e-05,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__RightCheek__",
+            "mirror_index": 61,
+            "parent_index": 60,
+            "namehash": "0xc7ad1731",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                -0.04103200137615204,
+                0.023624999448657036,
+                0.09848500043153763
+            ],
+            "rotation": [
+                1.0,
+                -6.0999998822808266e-05,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__RightSquint__",
+            "mirror_index": 62,
+            "parent_index": 60,
+            "namehash": "0x812806d9",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.05000000074505806,
+                0.050999999046325684
+            ],
+            "rotation": [
+                0.9976426959037781,
+                -0.06862226128578186,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__EyeArea__",
+            "mirror_index": 65,
+            "parent_index": 60,
+            "namehash": "0x2506208f",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.03200000151991844,
+                0.0,
+                0.02500000037252903
+            ],
+            "rotation": [
+                0.9976412057876587,
+                0.06864391267299652,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__LeftEyeArea__",
+            "mirror_index": 74,
+            "parent_index": 65,
+            "namehash": "0x37e413ce",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                -0.020997999235987663,
+                0.01701599918305874,
+                0.030706999823451042
+            ],
+            "rotation": [
+                1.0,
+                -7.850000110920519e-05,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__LeftInBrow__",
+            "mirror_index": 75,
+            "parent_index": 66,
+            "namehash": "0xbdf5c2c1",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0016159999649971724,
+                0.023711999878287315,
+                0.025707999244332314
+            ],
+            "rotation": [
+                1.0,
+                -7.850000110920519e-05,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__LeftMidBrow__",
+            "mirror_index": 76,
+            "parent_index": 66,
+            "namehash": "0x312e6f96",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.022616999223828316,
+                0.01852799952030182,
+                0.012787999585270882
+            ],
+            "rotation": [
+                1.0,
+                -7.850000110920519e-05,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__LeftOutBrow__",
+            "mirror_index": 77,
+            "parent_index": 66,
+            "namehash": "0x8e5e1cc",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.004000000189989805,
+                0.0006559999892488122,
+                0.0014750000555068254
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__LeftEye_mod__",
+            "mirror_index": 78,
+            "parent_index": 66,
+            "namehash": "0x9b2ed3b8",
+            "flags": "0x20"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__LeftEye__",
+            "mirror_index": 79,
+            "parent_index": 70,
+            "namehash": "0x58b9eb01",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0003440000000409782,
+                -0.00047500000800937414
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__LeftUpLid__",
+            "mirror_index": 80,
+            "parent_index": 70,
+            "namehash": "0x5bdc542c",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0003440000000409782,
+                -0.00047500000800937414
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__LeftLoLid__",
+            "mirror_index": 81,
+            "parent_index": 70,
+            "namehash": "0xe5331c30",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                -0.03200000151991844,
+                0.0,
+                0.02500000037252903
+            ],
+            "rotation": [
+                0.9976412057876587,
+                0.06864391267299652,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__RightEyeArea__",
+            "mirror_index": 66,
+            "parent_index": 65,
+            "namehash": "0x8ec5268f",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.021000999957323074,
+                0.01701599918305874,
+                0.030706999823451042
+            ],
+            "rotation": [
+                1.0,
+                -7.850000110920519e-05,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__RightInBrow__",
+            "mirror_index": 67,
+            "parent_index": 74,
+            "namehash": "0xa9f33bb2",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                -0.0016139999497681856,
+                0.023711999878287315,
+                0.025707999244332314
+            ],
+            "rotation": [
+                1.0,
+                -7.850000110920519e-05,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__RightMidBrow__",
+            "mirror_index": 68,
+            "parent_index": 74,
+            "namehash": "0xce442223",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                -0.022614000365138054,
+                0.01852799952030182,
+                0.012787999585270882
+            ],
+            "rotation": [
+                1.0,
+                -7.850000110920519e-05,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__RightOutBrow__",
+            "mirror_index": 69,
+            "parent_index": 74,
+            "namehash": "0x32e75ad1",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                -0.003587000072002411,
+                0.0006559999892488122,
+                0.0014750000555068254
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__RightEye_mod__",
+            "mirror_index": 70,
+            "parent_index": 74,
+            "namehash": "0xe7551519",
+            "flags": "0x20"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__RightEye__",
+            "mirror_index": 71,
+            "parent_index": 78,
+            "namehash": "0x9bd5e550",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                -0.0004130000015720725,
+                0.0003440000000409782,
+                -0.00047500000800937414
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__RightUpLid__",
+            "mirror_index": 72,
+            "parent_index": 78,
+            "namehash": "0x64d8444d",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                -0.0004130000015720725,
+                0.0003440000000409782,
+                -0.00047500000800937414
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__RightLoLid__",
+            "mirror_index": 73,
+            "parent_index": 78,
+            "namehash": "0xf585bc9",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                -0.01899999938905239,
+                0.05000000074505806
+            ],
+            "rotation": [
+                0.9976426959037781,
+                -0.06862226128578186,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__MouthArea__",
+            "mirror_index": 82,
+            "parent_index": 60,
+            "namehash": "0x78894999",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.014293000102043152,
+                -4.999999873689376e-05,
+                0.0564970001578331
+            ],
+            "rotation": [
+                0.9976467490196228,
+                0.06856384873390198,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__LeftUpLip__",
+            "mirror_index": 97,
+            "parent_index": 82,
+            "namehash": "0x5c0df160",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.04131999984383583,
+                -0.025460999459028244
+            ],
+            "rotation": [
+                0.997641384601593,
+                0.06864189356565475,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0000003576278687,
+                1.0000003576278687
+            ],
+            "name": "b__Jaw__",
+            "mirror_index": 84,
+            "parent_index": 82,
+            "namehash": "0x405ec0bd",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                -0.04500000178813934,
+                0.010999999940395355
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__JawComp__",
+            "mirror_index": 85,
+            "parent_index": 84,
+            "namehash": "0xbf7d091c",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.010986999608576298,
+                0.004280999768525362,
+                0.0736590027809143
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__LeftLoLip__",
+            "mirror_index": 89,
+            "parent_index": 85,
+            "namehash": "0xa550cc9c",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                -0.027000000700354576,
+                0.06400000303983688
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__Chin__",
+            "mirror_index": 87,
+            "parent_index": 85,
+            "namehash": "0xdb898525",
+            "flags": "0x20"
+        },
+        {
+            "position": [
+                0.0,
+                0.0020000000949949026,
+                0.08100000023841858
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__LoLip__",
+            "mirror_index": 88,
+            "parent_index": 85,
+            "namehash": "0xa0fca895",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                -0.010986999608576298,
+                0.004280999768525362,
+                0.0736590027809143
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__RightLoLip__",
+            "mirror_index": 86,
+            "parent_index": 85,
+            "namehash": "0xf26be95",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.008999000303447247,
+                0.0339989997446537
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__Tongue1__",
+            "mirror_index": 90,
+            "parent_index": 85,
+            "namehash": "0xdc4c77ae",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                0.0010000000474974513,
+                0.01600000075995922
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__Tongue2__",
+            "mirror_index": 91,
+            "parent_index": 90,
+            "namehash": "0xdc5333e9",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                0.012498999945819378,
+                -0.010079000145196915
+            ],
+            "rotation": [
+                0.997562825679779,
+                -0.06861671805381775,
+                0.012622762471437454,
+                0.000868115690536797
+            ],
+            "scale": [
+                1.0000001192092896,
+                0.9999999403953552,
+                1.000000238418579
+            ],
+            "name": "b__Jawline__",
+            "mirror_index": 92,
+            "parent_index": 85,
+            "namehash": "0xf9629bbb",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                -0.002795000094920397,
+                0.053339000791311264
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__LowerTeeth__",
+            "mirror_index": 93,
+            "parent_index": 85,
+            "namehash": "0xc896dd5e",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                0.00029200001154094934,
+                0.06580699980258942
+            ],
+            "rotation": [
+                0.9976467490196228,
+                0.06856384873390198,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__UpLip__",
+            "mirror_index": 94,
+            "parent_index": 82,
+            "namehash": "0xf6dfca81",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                -0.02754800021648407,
+                -0.0029140000697225332,
+                0.045173998922109604
+            ],
+            "rotation": [
+                0.9976467490196228,
+                0.06856384873390198,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__RightMouth__",
+            "mirror_index": 96,
+            "parent_index": 82,
+            "namehash": "0xba821cd6",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.02754800021648407,
+                -0.0029140000697225332,
+                0.045173998922109604
+            ],
+            "rotation": [
+                0.9976467490196228,
+                0.06856384873390198,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__LeftMouth__",
+            "mirror_index": 95,
+            "parent_index": 82,
+            "namehash": "0xec2ddebb",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                -0.014293000102043152,
+                -4.999999873689376e-05,
+                0.0564970001578331
+            ],
+            "rotation": [
+                0.9976467490196228,
+                0.06856384873390198,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__RightUpLip__",
+            "mirror_index": 83,
+            "parent_index": 82,
+            "namehash": "0x6509e081",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.009380999952554703,
+                0.03681299835443497
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__UpperTeeth__",
+            "mirror_index": 98,
+            "parent_index": 82,
+            "namehash": "0x549cb097",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                -0.0010000000474974513,
+                0.026000000536441803,
+                0.07000000029802322
+            ],
+            "rotation": [
+                0.9976426959037781,
+                -0.06862226128578186,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__NoseArea__",
+            "mirror_index": 99,
+            "parent_index": 60,
+            "namehash": "0x27ded11f",
+            "flags": "0x20"
+        },
+        {
+            "position": [
+                0.013150000013411045,
+                -0.011672000400722027,
+                0.03661400079727173
+            ],
+            "rotation": [
+                0.9976467490196228,
+                0.06856384873390198,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__LeftNostril__",
+            "mirror_index": 101,
+            "parent_index": 99,
+            "namehash": "0x7f6c538b",
+            "flags": "0x20"
+        },
+        {
+            "position": [
+                -0.013000000268220901,
+                -0.011672000400722027,
+                0.03661299869418144
+            ],
+            "rotation": [
+                0.9976467490196228,
+                0.06856384873390198,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__RightNostril__",
+            "mirror_index": 100,
+            "parent_index": 99,
+            "namehash": "0x84794242",
+            "flags": "0x20"
+        },
+        {
+            "position": [
+                0.0,
+                -0.014000000432133675,
+                0.035999998450279236
+            ],
+            "rotation": [
+                0.9976426959037781,
+                -0.06862226128578186,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__NoseTip__",
+            "mirror_index": 102,
+            "parent_index": 99,
+            "namehash": "0x344af043",
+            "flags": "0x20"
+        },
+        {
+            "position": [
+                0.0,
+                0.006000000052154064,
+                0.032999999821186066
+            ],
+            "rotation": [
+                0.997562825679779,
+                -0.06861671805381775,
+                0.012622762471437454,
+                0.000868115690536797
+            ],
+            "scale": [
+                1.0000001192092896,
+                0.9999999403953552,
+                1.000000238418579
+            ],
+            "name": "b__NoseBridge__",
+            "mirror_index": 103,
+            "parent_index": 99,
+            "namehash": "0xbfee3853",
+            "flags": "0x20"
+        },
+        {
+            "position": [
+                0.0,
+                0.07500000298023224,
+                0.027000000700354576
+            ],
+            "rotation": [
+                0.997562825679779,
+                -0.06861671805381775,
+                0.012622762471437454,
+                0.000868115690536797
+            ],
+            "scale": [
+                1.0000001192092896,
+                0.9999999403953552,
+                1.000000238418579
+            ],
+            "name": "b__HeadDome__",
+            "mirror_index": 104,
+            "parent_index": 60,
+            "namehash": "0x9d5460ce",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.07679499685764313,
+                0.03504300117492676,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__LeftEar__",
+            "mirror_index": 106,
+            "parent_index": 60,
+            "namehash": "0x4f5e1cda",
+            "flags": "0x20"
+        },
+        {
+            "position": [
+                -0.07679499685764313,
+                0.03504300117492676,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__RightEar__",
+            "mirror_index": 105,
+            "parent_index": 60,
+            "namehash": "0x4289076b",
+            "flags": "0x20"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__Glasses_slot",
+            "mirror_index": 107,
+            "parent_index": 60,
+            "namehash": "0xe4fb4ff0",
+            "flags": "0x43"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__mouth_slot",
+            "mirror_index": 108,
+            "parent_index": 60,
+            "namehash": "0x1716d67f",
+            "flags": "0x43"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                -6.0999998822808266e-05,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Earring_slot",
+            "mirror_index": 110,
+            "parent_index": 60,
+            "namehash": "0xe21c1965",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Earring_slot",
+            "mirror_index": 109,
+            "parent_index": 60,
+            "namehash": "0xd4dae48f",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.053397998213768005,
+                0.116007000207901
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__Glasses__",
+            "mirror_index": 111,
+            "parent_index": 60,
+            "namehash": "0x12edc5c3",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                0.21306000649929047,
+                0.0032599999103695154
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__Hat_grip__",
+            "mirror_index": 112,
+            "parent_index": 59,
+            "namehash": "0x4952e727",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__Neck_slot",
+            "mirror_index": 113,
+            "parent_index": 58,
+            "namehash": "0xe34cb479",
+            "flags": "0x43"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__backNeck_slot",
+            "mirror_index": 114,
+            "parent_index": 58,
+            "namehash": "0xc0ff7eda",
+            "flags": "0x43"
+        },
+        {
+            "position": [
+                -0.019999999552965164,
+                0.06577400118112564,
+                -0.036281999200582504
+            ],
+            "rotation": [
+                0.701836109161377,
+                -0.08617465943098068,
+                0.08617465943098068,
+                0.701836109161377
+            ],
+            "scale": [
+                1.000000238418579,
+                1.0,
+                1.000000238418579
+            ],
+            "name": "b__R_Clavicle__",
+            "mirror_index": 149,
+            "parent_index": 57,
+            "namehash": "0x646ea315",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.14000000059604645,
+                0.0
+            ],
+            "rotation": [
+                0.9238703846931458,
+                -0.02677350677549839,
+                -0.017183687537908554,
+                0.3813808858394623
+            ],
+            "scale": [
+                1.0000001192092896,
+                0.9999997019767761,
+                1.0000001192092896
+            ],
+            "name": "b__R_UpperArm__",
+            "mirror_index": 150,
+            "parent_index": 115,
+            "namehash": "0xa92b596e",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.18700000643730164,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Bicep__",
+            "mirror_index": 151,
+            "parent_index": 116,
+            "namehash": "0xea51aa75",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_UpperArmTarget_slot",
+            "mirror_index": 152,
+            "parent_index": 116,
+            "namehash": "0xe7183236",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.32100000977516174,
+                0.0
+            ],
+            "rotation": [
+                0.998565673828125,
+                0.05354028940200806,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0000001192092896,
+                1.0000001192092896
+            ],
+            "name": "b__R_Forearm__",
+            "mirror_index": 153,
+            "parent_index": 116,
+            "namehash": "0xf0143b40",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.14100000262260437,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                -0.00022699999681208283,
+                0.0
+            ],
+            "scale": [
+                1.0000001192092896,
+                1.0,
+                1.0000001192092896
+            ],
+            "name": "b__R_Wrist__",
+            "mirror_index": 154,
+            "parent_index": 119,
+            "namehash": "0x1e8edca5",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Bracelet_slot",
+            "mirror_index": 155,
+            "parent_index": 120,
+            "namehash": "0xa4f523ad",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_ForearmTarget_slot",
+            "mirror_index": 156,
+            "parent_index": 119,
+            "namehash": "0x5b099700",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.28700000047683716,
+                0.0
+            ],
+            "rotation": [
+                0.999978244304657,
+                0.006493643391877413,
+                -0.00045075995149090886,
+                0.0010850238613784313
+            ],
+            "scale": [
+                0.9999997615814209,
+                0.9999996423721313,
+                0.9999997019767761
+            ],
+            "name": "b__R_Hand__",
+            "mirror_index": 157,
+            "parent_index": 119,
+            "namehash": "0xceb0355b",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0010000000474974513,
+                0.07000000029802322,
+                0.03799999877810478
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Index0__",
+            "mirror_index": 158,
+            "parent_index": 123,
+            "namehash": "0xeb208104",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.04399999976158142,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Index1__",
+            "mirror_index": 159,
+            "parent_index": 124,
+            "namehash": "0xeb22bfad",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.02500000037252903,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Index2__",
+            "mirror_index": 160,
+            "parent_index": 125,
+            "namehash": "0x2b1c68b2",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0020000000949949026,
+                0.0729999989271164,
+                0.014999999664723873
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Mid0__",
+            "mirror_index": 161,
+            "parent_index": 123,
+            "namehash": "0xbd2ce17e",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.04600000008940697,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Mid1__",
+            "mirror_index": 162,
+            "parent_index": 127,
+            "namehash": "0xbd2f1fe7",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.028999999165534973,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Mid2__",
+            "mirror_index": 163,
+            "parent_index": 128,
+            "namehash": "0x7d30f9d0",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0020000000949949026,
+                0.06700000166893005,
+                -0.028999999165534973
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Pinky0__",
+            "mirror_index": 164,
+            "parent_index": 123,
+            "namehash": "0xa8b5e7d3",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.03999999910593033,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Pinky1__",
+            "mirror_index": 165,
+            "parent_index": 130,
+            "namehash": "0xa8b3a8aa",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.02199999988079071,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Pinky2__",
+            "mirror_index": 166,
+            "parent_index": 131,
+            "namehash": "0xa8ba64e5",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0020000000949949026,
+                0.0729999989271164,
+                -0.00800000037997961
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Ring0__",
+            "mirror_index": 167,
+            "parent_index": 123,
+            "namehash": "0x1ca23c66",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.04399999976158142,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Ring1__",
+            "mirror_index": 168,
+            "parent_index": 133,
+            "namehash": "0x5ca4dfcf",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.027000000700354576,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Ring2__",
+            "mirror_index": 169,
+            "parent_index": 134,
+            "namehash": "0x1ca84c38",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Ring_slot",
+            "mirror_index": 170,
+            "parent_index": 133,
+            "namehash": "0xce76a127",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Hand_slot",
+            "mirror_index": 171,
+            "parent_index": 123,
+            "namehash": "0x8ea6a2c8",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                -0.00800000037997961,
+                0.019999999552965164,
+                0.026000000536441803
+            ],
+            "rotation": [
+                0.8095965385437012,
+                0.4095916748046875,
+                -0.420459121465683,
+                -0.0014924139250069857
+            ],
+            "scale": [
+                1.000000238418579,
+                1.000000238418579,
+                0.9999997615814209
+            ],
+            "name": "b__R_Thumb0__",
+            "mirror_index": 172,
+            "parent_index": 123,
+            "namehash": "0xd2a9e720",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.03099999949336052,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Thumb1__",
+            "mirror_index": 173,
+            "parent_index": 138,
+            "namehash": "0x92abc109",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.039000000804662704,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_Thumb2__",
+            "mirror_index": 174,
+            "parent_index": 139,
+            "namehash": "0x92a505ce",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_inForearmTarget_slot",
+            "mirror_index": 175,
+            "parent_index": 119,
+            "namehash": "0xcfb47c1d",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_outShortSleeve_slot",
+            "mirror_index": 177,
+            "parent_index": 116,
+            "namehash": "0x2993e16f",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_inShortSleeve_slot",
+            "mirror_index": 176,
+            "parent_index": 116,
+            "namehash": "0xd7707182",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.9999960064888,
+                0.0,
+                0.0028320113196969032,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_ShoulderTwist__",
+            "mirror_index": 178,
+            "parent_index": 116,
+            "namehash": "0xc619c029",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_ShoulderTarget_slot",
+            "mirror_index": 179,
+            "parent_index": 115,
+            "namehash": "0x6d158fb0",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                -0.21710899472236633,
+                0.36706700921058655,
+                -0.5647540092468262
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "R_armExportPole",
+            "mirror_index": 180,
+            "parent_index": 115,
+            "namehash": "0x5ab4f06",
+            "flags": "0x3d"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_BackShoulderTarget_slot",
+            "mirror_index": 181,
+            "parent_index": 115,
+            "namehash": "0x4a1c1c4b",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_FrontShoulderTarget_slot",
+            "mirror_index": 182,
+            "parent_index": 115,
+            "namehash": "0x1237c6bf",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.019999999552965164,
+                0.06577400118112564,
+                -0.036281999200582504
+            ],
+            "rotation": [
+                0.701836109161377,
+                -0.08617465943098068,
+                -0.08617465943098068,
+                -0.701836109161377
+            ],
+            "scale": [
+                1.000000238418579,
+                1.0,
+                1.000000238418579
+            ],
+            "name": "b__L_Clavicle__",
+            "mirror_index": 115,
+            "parent_index": 57,
+            "namehash": "0xa303ce83",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.14000000059604645,
+                0.0
+            ],
+            "rotation": [
+                0.9238046407699585,
+                -0.027422187849879265,
+                0.015625864267349243,
+                -0.3815611004829407
+            ],
+            "scale": [
+                1.000000238418579,
+                1.0000005960464478,
+                1.000000238418579
+            ],
+            "name": "b__L_UpperArm__",
+            "mirror_index": 116,
+            "parent_index": 149,
+            "namehash": "0xc9e57d0",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.1860000044107437,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Bicep__",
+            "mirror_index": 117,
+            "parent_index": 150,
+            "namehash": "0x7ede491b",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_UpperArmTarget_slot",
+            "mirror_index": 118,
+            "parent_index": 150,
+            "namehash": "0x6498a8f0",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.32100000977516174,
+                0.0
+            ],
+            "rotation": [
+                0.9985573887825012,
+                0.05354873463511467,
+                -0.003925912082195282,
+                -0.0005184978945180774
+            ],
+            "scale": [
+                1.0000003576278687,
+                1.0000004768371582,
+                0.9999997615814209
+            ],
+            "name": "b__L_Forearm__",
+            "mirror_index": 119,
+            "parent_index": 150,
+            "namehash": "0x15af037e",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.14100000262260437,
+                0.0
+            ],
+            "rotation": [
+                0.9999953508377075,
+                0.0,
+                0.0030505149625241756,
+                0.0
+            ],
+            "scale": [
+                0.9999995827674866,
+                1.0,
+                0.9999995827674866
+            ],
+            "name": "b__L_Wrist__",
+            "mirror_index": 120,
+            "parent_index": 153,
+            "namehash": "0x3bd15657",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Bracelet_slot",
+            "mirror_index": 121,
+            "parent_index": 154,
+            "namehash": "0x2ab0350b",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_ForearmTarget_slot",
+            "mirror_index": 122,
+            "parent_index": 153,
+            "namehash": "0x772abba6",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.28700000047683716,
+                0.0
+            ],
+            "rotation": [
+                0.9999601244926453,
+                0.006481759250164032,
+                0.006098493468016386,
+                -0.0007510299910791218
+            ],
+            "scale": [
+                0.9999995231628418,
+                1.0000001192092896,
+                1.0000003576278687
+            ],
+            "name": "b__L_Hand__",
+            "mirror_index": 123,
+            "parent_index": 153,
+            "namehash": "0x7ccd6d29",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                -0.0010000000474974513,
+                0.07000000029802322,
+                0.03799999877810478
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Index0__",
+            "mirror_index": 124,
+            "parent_index": 157,
+            "namehash": "0xb1f508aa",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.04399999976158142,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Index1__",
+            "mirror_index": 125,
+            "parent_index": 158,
+            "namehash": "0xb1f747d3",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.02500000037252903,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Index2__",
+            "mirror_index": 126,
+            "parent_index": 159,
+            "namehash": "0xf1f9eabc",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                -0.0020000000949949026,
+                0.0729999989271164,
+                0.014999999664723873
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Mid0__",
+            "mirror_index": 127,
+            "parent_index": 157,
+            "namehash": "0x27bfbad0",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.04600000008940697,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Mid1__",
+            "mirror_index": 128,
+            "parent_index": 161,
+            "namehash": "0x27c1f979",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.028999999165534973,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Mid2__",
+            "mirror_index": 129,
+            "parent_index": 162,
+            "namehash": "0x67bba27e",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                -0.0020000000949949026,
+                0.06700000166893005,
+                -0.028999999165534973
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Pinky0__",
+            "mirror_index": 130,
+            "parent_index": 157,
+            "namehash": "0xb3881055",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.03999999910593033,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Pinky1__",
+            "mirror_index": 131,
+            "parent_index": 164,
+            "namehash": "0xf386366c",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.02199999988079071,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Pinky2__",
+            "mirror_index": 132,
+            "parent_index": 165,
+            "namehash": "0xf383f7c3",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                -0.0020000000949949026,
+                0.0729999989271164,
+                -0.00800000037997961
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Ring0__",
+            "mirror_index": 133,
+            "parent_index": 157,
+            "namehash": "0x17472b18",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.04399999976158142,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Ring1__",
+            "mirror_index": 134,
+            "parent_index": 167,
+            "namehash": "0x17496981",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.027000000700354576,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Ring2__",
+            "mirror_index": 135,
+            "parent_index": 168,
+            "namehash": "0x17411b46",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Ring_slot",
+            "mirror_index": 136,
+            "parent_index": 167,
+            "namehash": "0xbabb3a7d",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Hand_slot",
+            "mirror_index": 137,
+            "parent_index": 157,
+            "namehash": "0xb07a2e26",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.007000000216066837,
+                0.01899999938905239,
+                0.026000000536441803
+            ],
+            "rotation": [
+                0.809594988822937,
+                0.4095914959907532,
+                0.42046210169792175,
+                0.0014939629472792149
+            ],
+            "scale": [
+                1.0000001192092896,
+                1.000000238418579,
+                0.9999996423721313
+            ],
+            "name": "b__L_Thumb0__",
+            "mirror_index": 138,
+            "parent_index": 157,
+            "namehash": "0xeff5bb2e",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.03099999949336052,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Thumb1__",
+            "mirror_index": 139,
+            "parent_index": 172,
+            "namehash": "0xaff79517",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.039000000804662704,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_Thumb2__",
+            "mirror_index": 140,
+            "parent_index": 173,
+            "namehash": "0xaff9d380",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_inForearmTarget_slot",
+            "mirror_index": 141,
+            "parent_index": 153,
+            "namehash": "0xd81e3abf",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_inShortSleeve_slot",
+            "mirror_index": 143,
+            "parent_index": 150,
+            "namehash": "0x2f7feb00",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_outShortSleeve_slot",
+            "mirror_index": 142,
+            "parent_index": 150,
+            "namehash": "0xaca798d9",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.9999979734420776,
+                0.0,
+                -0.0019860039465129375,
+                0.0
+            ],
+            "scale": [
+                0.9999998807907104,
+                1.0,
+                0.9999998807907104
+            ],
+            "name": "b__L_ShoulderTwist__",
+            "mirror_index": 144,
+            "parent_index": 150,
+            "namehash": "0xaf9e9a53",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_ShoulderTarget_slot",
+            "mirror_index": 145,
+            "parent_index": 149,
+            "namehash": "0x4f8a24be",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.21736599504947662,
+                0.36680498719215393,
+                -0.5649960041046143
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "L_armExportPole",
+            "mirror_index": 146,
+            "parent_index": 149,
+            "namehash": "0x750af470",
+            "flags": "0x21"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_BackShoulderTarget_slot",
+            "mirror_index": 147,
+            "parent_index": 149,
+            "namehash": "0xb106820d",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_FrontShoulderTarget_slot",
+            "mirror_index": 148,
+            "parent_index": 149,
+            "namehash": "0x8e3c4b89",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_shoulderbladeTarget_slot",
+            "mirror_index": 184,
+            "parent_index": 57,
+            "namehash": "0x25805e96",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_shoulderbladeTarget_slot",
+            "mirror_index": 183,
+            "parent_index": 57,
+            "namehash": "0x53e2d95c",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_armpitTarget_slot",
+            "mirror_index": 188,
+            "parent_index": 57,
+            "namehash": "0x3731eeb3",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_chestTarget_slot",
+            "mirror_index": 187,
+            "parent_index": 57,
+            "namehash": "0x1986ad99",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_chestTarget_slot",
+            "mirror_index": 186,
+            "parent_index": 57,
+            "namehash": "0xca6d6d7f",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_armpitTarget_slot",
+            "mirror_index": 185,
+            "parent_index": 57,
+            "namehash": "0x490a5b29",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_BackTarget_slot",
+            "mirror_index": 193,
+            "parent_index": 56,
+            "namehash": "0xbd4cc753",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_sideBackTorsoTarget_slot",
+            "mirror_index": 194,
+            "parent_index": 56,
+            "namehash": "0xe8507e6f",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_sideFrontTorsoTarget_slot",
+            "mirror_index": 195,
+            "parent_index": 56,
+            "namehash": "0xebdde945",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_frontTorsoTarget_slot",
+            "mirror_index": 196,
+            "parent_index": 56,
+            "namehash": "0x425d636a",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_BackTarget_slot",
+            "mirror_index": 189,
+            "parent_index": 56,
+            "namehash": "0x5a5e1651",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_sideBackTorsoTarget_slot",
+            "mirror_index": 190,
+            "parent_index": 56,
+            "namehash": "0xe06c74d5",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_sideFrontTorsoTarget_slot",
+            "mirror_index": 191,
+            "parent_index": 56,
+            "namehash": "0xf14f68e3",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_frontTorsoTarget_slot",
+            "mirror_index": 192,
+            "parent_index": 56,
+            "namehash": "0x46327b8c",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.9961947202682495,
+                0.08715563267469406,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.000000238418579,
+                1.000000238418579
+            ],
+            "name": "b__carryGroupOffset_noBind__",
+            "mirror_index": 197,
+            "parent_index": 56,
+            "namehash": "0x37664e95",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__carryGroup_noBind__",
+            "mirror_index": 198,
+            "parent_index": 197,
+            "namehash": "0x9f266ca6",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_carry_slot",
+            "mirror_index": 200,
+            "parent_index": 198,
+            "namehash": "0xd97d2e80",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_carry_slot",
+            "mirror_index": 199,
+            "parent_index": 198,
+            "namehash": "0x8eeabf86",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.07400000095367432,
+                0.1099110022187233,
+                0.11273699998855591
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_breast__",
+            "mirror_index": 203,
+            "parent_index": 56,
+            "namehash": "0x1eb57a41",
+            "flags": "0x3a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_breastTarget_slot",
+            "mirror_index": 204,
+            "parent_index": 201,
+            "namehash": "0x28696c2b",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                -0.07400000095367432,
+                0.11030200123786926,
+                0.11181700229644775
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_breast__",
+            "mirror_index": 201,
+            "parent_index": 56,
+            "namehash": "0x12864073",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_breastTarget_slot",
+            "mirror_index": 202,
+            "parent_index": 203,
+            "namehash": "0xc94c0c65",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_frontBellyTarget_slot",
+            "mirror_index": 212,
+            "parent_index": 55,
+            "namehash": "0x5bc6aaf1",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_backBellyTarget_slot",
+            "mirror_index": 209,
+            "parent_index": 55,
+            "namehash": "0x98e8ff25",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__R_lowBackTarget_slot",
+            "mirror_index": 208,
+            "parent_index": 55,
+            "namehash": "0xac57c1d9",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_lowBackTarget_slot",
+            "mirror_index": 207,
+            "parent_index": 55,
+            "namehash": "0x80e537c3",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__L_backBellyTarget_slot",
+            "mirror_index": 206,
+            "parent_index": 55,
+            "namehash": "0x91b1b2db",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                0.9999979734420776,
+                0.9999979734420776,
+                0.9999979734420776
+            ],
+            "name": "b__R_BellyTarget_slot",
+            "mirror_index": 211,
+            "parent_index": 55,
+            "namehash": "0xe75f9bd4",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                0.9999979734420776,
+                0.9999979734420776,
+                0.9999979734420776
+            ],
+            "name": "b__L_BellyTarget_slot",
+            "mirror_index": 210,
+            "parent_index": 55,
+            "namehash": "0xcf10d3e",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                0.9999979734420776,
+                0.9999979734420776,
+                0.9999979734420776
+            ],
+            "name": "b__L_frontBellyTarget_slot",
+            "mirror_index": 205,
+            "parent_index": 55,
+            "namehash": "0x5c614b0f",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.01899999938905239,
+                0.08500000089406967
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                0.9999979734420776,
+                0.9999979734420776,
+                0.9999979734420776
+            ],
+            "name": "b__belly__",
+            "mirror_index": 213,
+            "parent_index": 55,
+            "namehash": "0x48fc3b0b",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                0.9999979734420776,
+                0.9999979734420776,
+                0.9999979734420776
+            ],
+            "name": "b__L_ThighTarget_slot",
+            "mirror_index": 215,
+            "parent_index": 55,
+            "namehash": "0xda12aa46",
+            "flags": "0x5a"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                0.9999979734420776,
+                0.9999979734420776,
+                0.9999979734420776
+            ],
+            "name": "b__R_ThighTarget_slot",
+            "mirror_index": 214,
+            "parent_index": 55,
+            "namehash": "0x4a3fca04",
+            "flags": "0x42"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "b__ROOT_export__",
+            "mirror_index": 216,
+            "parent_index": 0,
+            "namehash": "0x27689d9e",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.7071067690849304,
+                0.0,
+                0.0,
+                -0.7071067690849304
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "L_slotOffset",
+            "mirror_index": 218,
+            "parent_index": 216,
+            "namehash": "0x2b0cfbfb",
+            "flags": "0x3f"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                0.7071067690849304,
+                0.0,
+                0.0,
+                0.7071067690849304
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "R_slotOffset",
+            "mirror_index": 217,
+            "parent_index": 216,
+            "namehash": "0xb1de1ae5",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                -8.399999933317304e-05,
+                0.0022909999825060368,
+                9.7999996796716e-05
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "L_footOffset",
+            "mirror_index": 220,
+            "parent_index": 216,
+            "namehash": "0x2010ca87",
+            "flags": "0x3f"
+        },
+        {
+            "position": [
+                8.199999865610152e-05,
+                0.0022929999977350235,
+                9.999999747378752e-05
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "R_footOffset",
+            "mirror_index": 219,
+            "parent_index": 216,
+            "namehash": "0x6e7c259d",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "world_offset",
+            "mirror_index": 221,
+            "parent_index": 216,
+            "namehash": "0xeb4037b",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                1.0121999979019165,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "rootWorld",
+            "mirror_index": 222,
+            "parent_index": 221,
+            "namehash": "0x8fe06873",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.10100000351667404,
+                0.10827299952507019,
+                -0.00977499969303608
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "L_footWorld",
+            "mirror_index": 224,
+            "parent_index": 221,
+            "namehash": "0xa4870f4a",
+            "flags": "0x3f"
+        },
+        {
+            "position": [
+                -0.09843999892473221,
+                0.10827499628067017,
+                -0.01002500019967556
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "R_footWorld",
+            "mirror_index": 223,
+            "parent_index": 221,
+            "namehash": "0xb1aad278",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "L_slotInfo",
+            "mirror_index": 236,
+            "parent_index": 216,
+            "namehash": "0x62a942b2",
+            "flags": "0x3e"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "L_Info1",
+            "mirror_index": 237,
+            "parent_index": 225,
+            "namehash": "0x88b9696b",
+            "flags": "0x3e"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "L_Info2",
+            "mirror_index": 238,
+            "parent_index": 225,
+            "namehash": "0x88b96968",
+            "flags": "0x3e"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "L_Info3",
+            "mirror_index": 239,
+            "parent_index": 225,
+            "namehash": "0x88b96969",
+            "flags": "0x3e"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "L_Info4",
+            "mirror_index": 240,
+            "parent_index": 225,
+            "namehash": "0x88b9696e",
+            "flags": "0x3e"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "L_Info5",
+            "mirror_index": 241,
+            "parent_index": 225,
+            "namehash": "0x88b9696f",
+            "flags": "0x3e"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "L_Info6",
+            "mirror_index": 242,
+            "parent_index": 225,
+            "namehash": "0x88b9696c",
+            "flags": "0x3e"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "L_Info7",
+            "mirror_index": 243,
+            "parent_index": 225,
+            "namehash": "0x88b9696d",
+            "flags": "0x3e"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "L_Info8",
+            "mirror_index": 244,
+            "parent_index": 225,
+            "namehash": "0x88b96962",
+            "flags": "0x3e"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "L_Info9",
+            "mirror_index": 245,
+            "parent_index": 225,
+            "namehash": "0x88b96963",
+            "flags": "0x3e"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "L_Info10",
+            "mirror_index": 246,
+            "parent_index": 225,
+            "namehash": "0xa6e0f341",
+            "flags": "0x3e"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "R_slotInfo",
+            "mirror_index": 225,
+            "parent_index": 216,
+            "namehash": "0x81e1ccc8",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "R_Info1",
+            "mirror_index": 226,
+            "parent_index": 236,
+            "namehash": "0xebda935",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "R_Info2",
+            "mirror_index": 227,
+            "parent_index": 236,
+            "namehash": "0xebda936",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "R_Info3",
+            "mirror_index": 228,
+            "parent_index": 236,
+            "namehash": "0xebda937",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "R_Info4",
+            "mirror_index": 229,
+            "parent_index": 236,
+            "namehash": "0xebda930",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "R_Info5",
+            "mirror_index": 230,
+            "parent_index": 236,
+            "namehash": "0xebda931",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "R_Info6",
+            "mirror_index": 231,
+            "parent_index": 236,
+            "namehash": "0xebda932",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "R_Info7",
+            "mirror_index": 232,
+            "parent_index": 236,
+            "namehash": "0xebda933",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "R_Info8",
+            "mirror_index": 233,
+            "parent_index": 236,
+            "namehash": "0xebda93c",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "R_Info9",
+            "mirror_index": 234,
+            "parent_index": 236,
+            "namehash": "0xebda93d",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "R_Info10",
+            "mirror_index": 235,
+            "parent_index": 236,
+            "namehash": "0x69915e5f",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "L_footInfo",
+            "mirror_index": 250,
+            "parent_index": 216,
+            "namehash": "0x7ddf1de",
+            "flags": "0x3e"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                1.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "L_footInfo1",
+            "mirror_index": 251,
+            "parent_index": 247,
+            "namehash": "0x4063c04b",
+            "flags": "0x3e"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "L_footInfo2",
+            "mirror_index": 252,
+            "parent_index": 247,
+            "namehash": "0x4063c048",
+            "flags": "0x3e"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "R_footInfo",
+            "mirror_index": 247,
+            "parent_index": 216,
+            "namehash": "0xcd0d7c0",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                1.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "R_footInfo1",
+            "mirror_index": 248,
+            "parent_index": 250,
+            "namehash": "0xecc3a371",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "R_footInfo2",
+            "mirror_index": 249,
+            "parent_index": 250,
+            "namehash": "0xecc3a372",
+            "flags": "0x22"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "Root_info",
+            "mirror_index": 253,
+            "parent_index": 216,
+            "namehash": "0x5a172d98",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                1.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "RootInfo1",
+            "mirror_index": 254,
+            "parent_index": 253,
+            "namehash": "0x9ddff306",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "RootInfo2",
+            "mirror_index": 255,
+            "parent_index": 253,
+            "namehash": "0x9ddff305",
+            "flags": "0x23"
+        },
+        {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "name": "rootOffset",
+            "mirror_index": 256,
+            "parent_index": 216,
+            "namehash": "0xacc24b0",
+            "flags": "0x23"
+        }
+    ]
+}
