@@ -1,3 +1,15 @@
+
+# Created by https://www.gitignore.io/api/code,python
+# Edit at https://www.gitignore.io/?templates=code,python
+
+### Code ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -122,5 +134,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# VS Code
-.vscode
+# End of https://www.gitignore.io/api/code,python
