@@ -3,7 +3,7 @@
 # Edit at https://www.gitignore.io/?templates=code,python
 
 ### Meshes ###
-io_simgeom/mesh/*
+mesh/*
 
 ### Code ###
 .vscode/*
