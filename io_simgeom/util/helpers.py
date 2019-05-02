@@ -1,11 +1,13 @@
 import json
+import os
+
 from io_simgeom.util.bytereader import ByteReader
 
 class NameFromHash:
 
     def __init__(self):
         self.hashmap = None
-        with open("io_simgeom/data/json/hashmap.json", "r") as data:
+        with open(os.getcwd() + "/data/json/hashmap.json", "r") as data:
             self.hashmap = json.loads(data.read())
     
     def getName(self, hash: int, key: str):

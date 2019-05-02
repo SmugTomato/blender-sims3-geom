@@ -24,14 +24,6 @@ import bpy
 f = open("S:/Projects/Python/Sims3Geom/io_simgeom/data/json/dump.json", "r")
 meshdata = json.loads(f.read())
 
-# vertices = [
-#     [0.5, 0.5, -0.5], [0.5, 0.5, 0.5], [-0.5, 0.5, -0.5], [-0.5, 0.5, 0.5]
-# ]
-
-# faces = [
-#     [0, 1, 3], [0, 3, 2]
-# ]
-
 vertexdata = meshdata['GEOM_DATA']['vertexdata']
 vertices = []
 for v in vertexdata:

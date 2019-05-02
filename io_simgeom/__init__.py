@@ -1,0 +1,54 @@
+bl_info = {
+    "name": "Sims 3 GEOM Tools",
+    "category": "Import-Export",
+	"version": (0, 0, 1),
+	"blender": (2, 80, 0),
+	"location": "File > Import/Export",
+	"description": "Importer and exporter for Sims 3 GEOM(.simgeom) files"
+}
+
+# Copyright (C) 2019 SmugTomato
+# 
+# This file is part of BlenderGeom.
+# 
+# BlenderGeom is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# BlenderGeom is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with BlenderGeom.  If not, see <http://www.gnu.org/licenses/>.
+
+# Set Current Working Directory to addon root folder
+# This needs to be done to find the included data files
+import os
+rootdir = os.path.dirname(os.path.realpath(__file__))
+os.chdir(rootdir)
+
+import bpy
+
+from .rigimport import RigImport
+from .geomimport import GeomImport
+
+# Only needed if you want to add into a dynamic menu
+def menu_func_import(self, context):
+    self.layout.operator(GeomImport.bl_idname, text="Sims 3 GEOM (.simgeom)")
+    self.layout.operator(RigImport.bl_idname, text="Sims 3 Rig (.grannyrig)")
+
+def register():
+    bpy.utils.register_class(GeomImport)
+    bpy.utils.register_class(RigImport)
+    bpy.types.TOPBAR_MT_file_import.append(menu_func_import)
+
+def unregister():
+    bpy.utils.unregister_class(GeomImport)
+    bpy.utils.unregister_class(RigImport)
+    bpy.types.TOPBAR_MT_file_import.remove(menu_func_import)
+
+if __name__ == "__main__":
+    register()
