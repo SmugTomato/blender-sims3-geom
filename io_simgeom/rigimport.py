@@ -37,6 +37,8 @@ class RigImport(Operator, ImportHelper):
     def execute(self, context):
         rigdata = RigLoader.loadRig(self.filepath)
 
+        bpy.ops.object.mode_set(mode='OBJECT')
+
         # RIG IMPORT
         bpy.ops.object.add(
             type='ARMATURE',

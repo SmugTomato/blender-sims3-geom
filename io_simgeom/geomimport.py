@@ -35,6 +35,7 @@ class GeomImport(Operator, ImportHelper):
 
     def execute(self, context):
         geomdata = GeomLoader.readGeom(self.filepath)
+        scene = bpy.context.scene
 
         vertices = []
         for v in geomdata.element_data:
@@ -42,15 +43,26 @@ class GeomImport(Operator, ImportHelper):
             vertices.append( (vert[0], -vert[2], vert[1]) )
         faces = geomdata.groups
 
-        scene = bpy.context.scene
-
-        mesh = bpy.data.meshes.new("thingy")
-        object = bpy.data.objects.new("object", mesh)
+        mesh = bpy.data.meshes.new("geom")
+        obj = bpy.data.objects.new("geom", mesh)
 
         mesh.from_pydata(vertices, [], faces)
 
-        scene.collection.objects.link(object)
-        object.select_set(True)
-        bpy.context.view_layer.objects.active = object
+        scene.collection.objects.link(obj)
+        obj.select_set(True)
+        bpy.context.view_layer.objects.active = obj
+
+        # Vertex Groups
+        for b in geomdata.bones:
+            obj.vertex_groups.new(name=b)
+        
+        # Group Weights
+        for i, v in enumerate(geomdata.element_data):
+            for j in range(4):
+                groupname = geomdata.bones[v['assignment'][j]]
+                vertgroup = obj.vertex_groups[groupname]
+                weight = v['weights'][j]
+                if weight > 0:
+                    vertgroup.add( [i], weight, 'ADD' )
 
         return {'FINISHED'}
