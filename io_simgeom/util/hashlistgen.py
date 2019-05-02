@@ -1,5 +1,6 @@
 import json
 from .fnv import fnv32, fnv64
+from ..rigloader import RigLoader
 
 
 strings = [
@@ -12,17 +13,40 @@ strings = [
     'HaloHighColor', 'SpecStyle', 'NormalMap'
 ]
 
-
-def generate_hashlist():
+def shaderhashes() -> dict:
     hashdict = {}
 
     for s in strings:
         hash = fnv32(s)
         hashdict[hex(hash)] = s
-    
-    f = open('io_sims3geom/util/json/hashmap.json', 'w+')
-    data = json.dumps(hashdict, indent=4)
-    f.write(data)
-    f.close()
 
-generate_hashlist()
+    return hashdict
+
+def bonehashes() -> dict:
+    rigs = [
+        "ac", "ad", "ah", "al", "au", "cc", "cd", "ch", "cu", "pu"
+    ]
+    hashes = {}
+
+    for r in rigs:
+        rigdata = RigLoader.loadRig("io_simgeom/data/rigs/" + r + "Rig.grannyrig")
+
+        for b in rigdata['bones']:
+            h = hex(fnv32(b['name']))
+            hashes[h] = b['name']
+    
+    return hashes
+
+def write_hashmap(filename: str):
+    hashmap = {}
+
+    hashmap['shader'] = shaderhashes()
+    hashmap['bones'] = bonehashes()
+
+    with open("io_simgeom/data/json/" + filename + ".json", "w+") as f:
+        f.write(
+            json.dumps(
+                hashmap,
+                indent=4
+            )
+        )

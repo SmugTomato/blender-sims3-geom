@@ -5,11 +5,11 @@ class NameFromHash:
 
     def __init__(self):
         self.hashmap = None
-        with open("io_simgeom/data/hashmap.json", "r") as data:
+        with open("io_simgeom/data/json/hashmap.json", "r") as data:
             self.hashmap = json.loads(data.read())
     
-    def getName(self, hash):
-        return self.hashmap[hex(hash)]
+    def getName(self, hash: int, key: str):
+        return self.hashmap[key][hex(hash)]
 
 FLOAT = 1
 INTEGER = 2
@@ -63,7 +63,7 @@ def getShaderParamaters(reader: ByteReader, count: int) -> list:
     parameters = []
     for _ in range(count):
         entry = {'name': None, 'type': None, 'size': None, 'data': None}
-        entry['name'] = HASHMAP.getName(reader.getUint32())
+        entry['name'] = HASHMAP.getName(reader.getUint32(), "shader")
         entry['type'] = reader.getUint32()
         entry['size'] = reader.getUint32()
         reader.skip(4)
@@ -140,6 +140,8 @@ def getBones(reader: ByteReader) -> list:
 
     count = reader.getUint32()
     for _ in range(count):
-        bones.append( (reader.getUint32()) )
+        bones.append(
+            HASHMAP.getName( reader.getUint32(), "bones" )
+        )
 
     return bones

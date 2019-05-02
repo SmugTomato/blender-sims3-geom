@@ -37,7 +37,7 @@ class GeomLoader:
         _embeddedID = reader.getUint32()
         meshdata.embeddedID = hex(_embeddedID)
         if _embeddedID != 0:
-            meshdata.embeddedID = HASHMAP.getName(_embeddedID)
+            meshdata.embeddedID = HASHMAP.getName(_embeddedID, "shader")
             reader.skip(4*4)
             _shader_param_count = reader.getUint32()
             meshdata.shaderdata = getShaderParamaters(reader, _shader_param_count)

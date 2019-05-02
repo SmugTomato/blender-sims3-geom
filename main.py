@@ -15,9 +15,23 @@
 # You should have received a copy of the GNU General Public License
 # along with BlenderGeom.  If not, see <http://www.gnu.org/licenses/>.
 
+import json
+
 from io_simgeom.geomloader import GeomLoader
 from io_simgeom.geomwriter import GeomWriter
 from io_simgeom.rigloader import RigLoader
 
 meshdata = GeomLoader.readGeom("mesh/afBodyDressSunbelt/afBodyDressSunbelt_lod1_0x00000000D9DBB6AB.simgeom")
-rigdata = RigLoader.loadRig("mesh/auRig.grannyrig")
+GeomWriter.writeGeom("mesh/afBodyDressSunbelt/out.simgeom", meshdata)
+
+with open("io_simgeom/data/json/dump.json", "w+") as f:
+    f.write(
+        json.dumps(meshdata.dataDump(), indent=4)
+    )
+
+# rigdata = RigLoader.loadRig("mesh/auRig.grannyrig")
+
+# import io_simgeom.util.hashlistgen as hashgen
+
+
+# hashgen.write_hashmap("hashmap")

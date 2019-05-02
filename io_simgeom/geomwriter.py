@@ -47,37 +47,40 @@ class GeomWriter:
         b.setUInt32(tgilen)                 # TGI Size
 
         # MTNF DATA
-        b.setUInt32( fnv.fnv32(geomData.embeddedID) )
-        mtnfsize_offset = b.getLength()
-        b.setUInt32(0xFFFFFFFF)             # MTNF Chunk Size will have to be calculated after it has been written
-        b.setIdentifier("MTNF")
-        b.setUInt64(0x0000007400000000)     # unknown DWORD, WORD, WORD; Seem to always be these values
-        b.setUInt32( len(geomData.shaderdata) )
-        offset = 16 + len(geomData.shaderdata) * 16
-        # Shader parameter info
-        for d in geomData.shaderdata:
-            b.setUInt32( fnv.fnv32(d['name']) )
-            b.setUInt32( d['type'] )
-            b.setUInt32( d['size'] )
-            b.setUInt32(offset)
-            # Calculate offsets based on datasizes
-            offset += d['size'] * 4
-        # Shader parameters
-        for d in geomData.shaderdata:
-            if d['type'] == 1:
-                for entry in d['data']:
-                    b.setFloat(entry)
-            elif d['type'] == 2:
-                for entry in d['data']:
-                    b.setUInt32(entry)
-            elif d['type'] == 4:
-                if d['size'] == 4:
-                    b.setUInt64(d['data'])
-                    b.setUInt64(0)
-                elif d['size'] == 5:
-                    pass
-        # Replace MTNF Chunksize data, -4 to go back to the start location of the DWORD
-        b.replaceAt( mtnfsize_offset, 'I', b.getLength() - mtnfsize_offset - 4 )
+        if geomData.embeddedID != hex(0):
+            b.setUInt32( fnv.fnv32(geomData.embeddedID) )
+            mtnfsize_offset = b.getLength()
+            b.setUInt32(0xFFFFFFFF)             # MTNF Chunk Size will have to be calculated after it has been written
+            b.setIdentifier("MTNF")
+            b.setUInt64(0x0000007400000000)     # unknown DWORD, WORD, WORD; Seem to always be these values
+            b.setUInt32( len(geomData.shaderdata) )
+            offset = 16 + len(geomData.shaderdata) * 16
+            # Shader parameter info
+            for d in geomData.shaderdata:
+                b.setUInt32( fnv.fnv32(d['name']) )
+                b.setUInt32( d['type'] )
+                b.setUInt32( d['size'] )
+                b.setUInt32(offset)
+                # Calculate offsets based on datasizes
+                offset += d['size'] * 4
+            # Shader parameters
+            for d in geomData.shaderdata:
+                if d['type'] == 1:
+                    for entry in d['data']:
+                        b.setFloat(entry)
+                elif d['type'] == 2:
+                    for entry in d['data']:
+                        b.setUInt32(entry)
+                elif d['type'] == 4:
+                    if d['size'] == 4:
+                        b.setUInt64(d['data'])
+                        b.setUInt64(0)
+                    elif d['size'] == 5:
+                        pass
+            # Replace MTNF Chunksize data, -4 to go back to the start location of the DWORD
+            b.replaceAt( mtnfsize_offset, 'I', b.getLength() - mtnfsize_offset - 4 )
+        else:
+            b.setUInt32(0)
 
         # GEOM DATA
         b.setUInt32(geomData.merge_group)
@@ -140,7 +143,7 @@ class GeomWriter:
         b.setUInt32(geomData.skin_controller_index)
         b.setUInt32(len(geomData.bones))
         for bone in geomData.bones:
-            b.setUInt32(bone)   # TODO: Replace with fnv32 hash of bone name
+            b.setUInt32(fnv.fnv32(bone))
         b.replaceAt(tgi_offset, 'I', b.getLength() - tgi_offset - 4)    # Replace TGI Offset with the proper value
         b.setUInt32(len(geomData.tgi_list))
         for tgi in geomData.tgi_list:
