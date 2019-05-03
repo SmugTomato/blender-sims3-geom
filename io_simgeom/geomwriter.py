@@ -87,7 +87,6 @@ class GeomWriter:
         b.setUInt32(geomData.merge_group)
         b.setUInt32(geomData.sort_order)
         b.setUInt32(len(geomData.element_data))         # Vertex Count
-        b.setUInt32(len( geomData.element_data[0] ))    # Element Count
 
         order = GeomWriter.set_vertex_info(geomData.element_data[0], b)
         # Set the values for vertex data
@@ -136,6 +135,9 @@ class GeomWriter:
         for key, values in datatypes.items():
             if getattr(vertex, key):
                 order.append([key, values[3]])
+        writer.setUInt32(len(order))    # Element Count
+        for key, values in datatypes.items():
+            if getattr(vertex, key):
                 writer.setUInt32(values[0])
                 writer.setUInt32(values[1])
                 writer.setByte(values[2])

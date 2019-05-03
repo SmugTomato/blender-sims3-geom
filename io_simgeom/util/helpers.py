@@ -4,6 +4,8 @@ import os
 from io_simgeom.util.bytereader import ByteReader
 from io_simgeom.util.bytewriter import ByteWriter
 
+from io_simgeom.models.vertex import Vertex
+
 class NameFromHash:
 
     def __init__(self):
@@ -109,7 +111,7 @@ def getElementData(reader: ByteReader, element_count: int, vert_count: int) -> l
                 vertex.normal = getFloatList(reader, 3)
             elif datatype == 3:
                 # TODO: Can 1 vertex even have 2 UV Channels?
-                vertex.uv.append( getFloatList(reader, 2) )
+                vertex.uv = getFloatList(reader, 2)
             elif datatype == 4:
                 vertex.assignment = getByteList(reader, 4)
             elif datatype == 5:

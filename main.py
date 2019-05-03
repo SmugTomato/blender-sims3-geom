@@ -24,10 +24,10 @@ from io_simgeom.rigloader import RigLoader
 meshdata = GeomLoader.readGeom("mesh/afBodyDressSunbelt/afBodyDressSunbelt_lod1_0x00000000D9DBB6AB.simgeom")
 GeomWriter.writeGeom("mesh/afBodyDressSunbelt/out.simgeom", meshdata)
 
-with open("io_simgeom/data/json/dump.json", "w+") as f:
-    f.write(
-        json.dumps(meshdata.dataDump(), indent=4)
-    )
+# with open("io_simgeom/data/json/dump.json", "w+") as f:
+#     f.write(
+#         json.dumps(meshdata.dataDump(), indent=4)
+#     )
 
 # rigdata = RigLoader.loadRig("mesh/auRig.grannyrig")
 
