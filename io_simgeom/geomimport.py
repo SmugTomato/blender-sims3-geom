@@ -24,6 +24,7 @@ from bpy.props import StringProperty, BoolProperty, EnumProperty
 from bpy.types import Operator
 
 from .geomloader import GeomLoader
+from .models.geom import Geom
 
 class GeomImport(Operator, ImportHelper):
     """Sims 3 GEOM Importer"""
@@ -53,6 +54,11 @@ class GeomImport(Operator, ImportHelper):
         obj.select_set(True)
         bpy.context.view_layer.objects.active = obj
 
+        # Shade smooth and set autosmooth for sharp edges
+        mesh.use_auto_smooth = True
+        mesh.auto_smooth_angle = 3.14
+        bpy.ops.object.shade_smooth()
+
         # Vertex Groups
         for bone in geomdata.bones:
             obj.vertex_groups.new(name=bone)
@@ -79,4 +85,28 @@ class GeomImport(Operator, ImportHelper):
 
         bmesh.update_edit_mesh(mesh)
 
+        # Set UV Edges to sharp and remove doubles
+        # bpy.ops.mesh.select_all(action='SELECT')
+        # bpy.ops.mesh.region_to_loop()
+        # bpy.ops.mesh.mark_sharp()
+        # bpy.ops.mesh.select_all(action='SELECT')
+        # bpy.ops.mesh.remove_doubles()
+
+        bpy.ops.object.mode_set(mode='OBJECT')
+
+        # Set Custom Properties
+        self.add_prop(obj, 'rcol_chunks', geomdata.internal_chunks)
+        self.add_prop(obj, 'rcol_external', geomdata.external_resources)
+        self.add_prop(obj, 'shaderdata', geomdata.shaderdata)
+        self.add_prop(obj, 'mergegroup', geomdata.merge_group)
+        self.add_prop(obj, 'sortorder', geomdata.sort_order)
+        self.add_prop(obj, 'skincontroller', geomdata.skin_controller_index)
+        ids = [v.vertex_id[0] for v in geomdata.element_data]
+        self.add_prop(obj, 'vert_ids', ids)
+        self.add_prop(obj, 'tgis', geomdata.tgi_list)
+
         return {'FINISHED'}
+
+    
+    def add_prop(self, obj, key, value):
+        obj[key] = value

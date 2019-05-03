@@ -21,6 +21,8 @@ INTEGER = 2
 TEXTURE = 4
 HASHMAP = NameFromHash()
 
+def padded_hex(value: int, numbytes: int):
+    return "0x{0:0{1}X}".format(value, numbytes * 2)
 
 def getFloatList(reader: ByteReader, count: int) -> list:
     data = []
@@ -39,9 +41,9 @@ def getByteList(reader: ByteReader, count: int) -> list:
 def getTGI(reader: ByteReader) -> dict:
     tgi = {'type': None, 'group': None, 'instance': None}
 
-    tgi['type'] = reader.getUint32()
-    tgi['group'] = reader.getUint32()
-    tgi['instance'] = reader.getUint64()
+    tgi['type'] = padded_hex(reader.getUint32(), 4)
+    tgi['group'] = padded_hex(reader.getUint32(), 4)
+    tgi['instance'] = padded_hex(reader.getUint64(), 8)
 
     return tgi
 
@@ -49,9 +51,9 @@ def getTGI(reader: ByteReader) -> dict:
 def getITG(reader: ByteReader) -> dict:
     tgi = {'type': None, 'group': None, 'instance': None}
 
-    tgi['instance'] = reader.getUint64()
-    tgi['type'] = reader.getUint32()
-    tgi['group'] = reader.getUint32()
+    tgi['instance'] = padded_hex(reader.getUint64(), 8)
+    tgi['type'] = padded_hex(reader.getUint32(), 4)
+    tgi['group'] = padded_hex(reader.getUint32(), 4)
 
     return tgi
 
