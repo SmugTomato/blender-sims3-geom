@@ -1,5 +1,9 @@
+from typing import List
+
+from .vertex import Vertex
 
 
+# TODO: make consistent type annotations
 class Geom:
 
 
@@ -15,7 +19,7 @@ class Geom:
         self.shaderdata: list      # MTNF(Shader Paramaters) Chunk if embeddedID != 0
         self.merge_group: int
         self.sort_order: int
-        self.element_data: list
+        self.element_data: List[Vertex]
         self.groups: list          # Should generally only be 1, but could be more
         self.skin_controller_index: int
         self.bones: list

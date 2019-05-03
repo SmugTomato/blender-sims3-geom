@@ -2,6 +2,7 @@ import json
 import os
 
 from io_simgeom.util.bytereader import ByteReader
+from io_simgeom.util.bytewriter import ByteWriter
 
 class NameFromHash:
 
@@ -17,6 +18,7 @@ FLOAT = 1
 INTEGER = 2
 TEXTURE = 4
 HASHMAP = NameFromHash()
+
 
 def getFloatList(reader: ByteReader, count: int) -> list:
     data = []
@@ -99,24 +101,25 @@ def getElementData(reader: ByteReader, element_count: int, vert_count: int) -> l
         reader.skip(5)
     
     for _ in range(vert_count):
-        vertex = {}
+        vertex = Vertex()
         for datatype in datatypes:
             if datatype == 1:
-                vertex['position'] = getFloatList(reader, 3)
+                vertex.position = getFloatList(reader, 3)
             elif datatype == 2:
-                vertex['normal'] = getFloatList(reader, 3)
+                vertex.normal = getFloatList(reader, 3)
             elif datatype == 3:
-                vertex['uv'] = getFloatList(reader, 2)
+                # TODO: Can 1 vertex even have 2 UV Channels?
+                vertex.uv.append( getFloatList(reader, 2) )
             elif datatype == 4:
-                vertex['assignment'] = getByteList(reader, 4)
+                vertex.assignment = getByteList(reader, 4)
             elif datatype == 5:
-                vertex['weights'] = getFloatList(reader, 4)
+                vertex.weights = getFloatList(reader, 4)
             elif datatype == 6:
-                vertex['tangent'] = getFloatList(reader, 3)
+                vertex.tangent = getFloatList(reader, 3)
             elif datatype == 7:
-                vertex['tagval'] = getByteList(reader, 4)
+                vertex.tagvalue = getByteList(reader, 4)
             elif datatype == 10:
-                vertex['vertex_id'] = [reader.getUint32()]
+                vertex.vertex_id = [reader.getUint32()]
         vertices.append(vertex)
 
     return vertices

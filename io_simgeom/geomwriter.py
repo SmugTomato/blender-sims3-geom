@@ -1,4 +1,5 @@
 from .models.geom import Geom
+from .models.vertex import Vertex
 from .util.bytewriter import ByteWriter
 from .util import fnv
 
@@ -87,53 +88,14 @@ class GeomWriter:
         b.setUInt32(geomData.sort_order)
         b.setUInt32(len(geomData.element_data))         # Vertex Count
         b.setUInt32(len( geomData.element_data[0] ))    # Element Count
-        order = []
-        for key in geomData.element_data[0]:
-            if key == 'position':
-                b.setUInt32(1)
-                b.setUInt32(1)
-                b.setByte(12)
-                order.append([key, 'f'])
-            elif key == 'normal':
-                b.setUInt32(2)
-                b.setUInt32(1)
-                b.setByte(12)
-                order.append([key, 'f'])
-            elif key == 'uv':
-                b.setUInt32(3)
-                b.setUInt32(1)
-                b.setByte(8)
-                order.append([key, 'f'])
-            elif key == 'assignment':
-                b.setUInt32(4)
-                b.setUInt32(2)
-                b.setByte(4)
-                order.append([key, 'B'])
-            elif key == 'weights':
-                b.setUInt32(5)
-                b.setUInt32(1)
-                b.setByte(16)
-                order.append([key, 'f'])
-            elif key == 'tangent':
-                b.setUInt32(6)
-                b.setUInt32(1)
-                b.setByte(12)
-                order.append([key, 'f'])
-            elif key == 'tagval':
-                b.setUInt32(7)
-                b.setUInt32(3)
-                b.setByte(4)
-                order.append([key, 'B'])
-            elif key == 'vertex_id':
-                b.setUInt32(10)
-                b.setUInt32(4)
-                b.setByte(4)
-                order.append([key, 'I'])
+
+        order = GeomWriter.set_vertex_info(geomData.element_data[0], b)
         # Set the values for vertex data
-        for element in geomData.element_data:
+        for vertex in geomData.element_data:
             for n in order:
-                for val in element[n[0]]:
+                for val in getattr(vertex, n[0]):
                     b.setArbitrary(n[1], val)
+
         b.setUInt32(1)
         b.setByte(2)
         b.setUInt32(len(geomData.groups) * 3)
@@ -154,3 +116,28 @@ class GeomWriter:
         # GEOM File is now successfully written
 
         return b.getData()
+    
+
+    @staticmethod
+    def set_vertex_info(vertex: Vertex, writer: ByteWriter) -> list:
+        datatypes = {
+            'position':     [1,  1, 12, 'f'],
+            'normal':       [2,  1, 12, 'f'],
+            'uv':           [3,  1, 8,  'f'],
+            'assignment':   [4,  2, 4,  'B'],
+            'weights':      [5,  1, 16, 'f'],
+            'tangent':      [6,  1, 12, 'f'],
+            'tagvalue':     [7,  3, 4,  'B'],
+            'vertex_id':    [10, 4, 4,  'I'],
+        }
+
+        order = []
+
+        for key, values in datatypes.items():
+            if getattr(vertex, key):
+                order.append([key, values[3]])
+                writer.setUInt32(values[0])
+                writer.setUInt32(values[1])
+                writer.setByte(values[2])
+        
+        return order
