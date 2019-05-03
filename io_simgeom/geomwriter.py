@@ -28,13 +28,13 @@ class GeomWriter:
         b.setUInt32( len(geomData.external_resources) )
         b.setUInt32( len(geomData.internal_chunks) )
         for i in range(len(geomData.internal_chunks)):
-            b.setUInt64(geomData.internal_chunks[i]['instance'])
-            b.setUInt32(geomData.internal_chunks[i]['type'])
-            b.setUInt32(geomData.internal_chunks[i]['group'])
+            b.setUInt64( int(geomData.internal_chunks[i]['instance'], 0) )
+            b.setUInt32( int(geomData.internal_chunks[i]['type'], 0) )
+            b.setUInt32( int(geomData.internal_chunks[i]['group'], 0) )
         for i in range(len(geomData.external_resources)):
-            b.setUInt64(geomData.external_resources[i]['instance'])
-            b.setUInt32(geomData.external_resources[i]['type'])
-            b.setUInt32(geomData.external_resources[i]['group'])
+            b.setUInt64( int(geomData.internal_chunks[i]['instance'], 0) )
+            b.setUInt32( int(geomData.internal_chunks[i]['type'], 0) )
+            b.setUInt32( int(geomData.internal_chunks[i]['group'], 0) )
         b.setUInt32( b.getLength() + 8 )    # The start of the GEOM Chunk is in 2 more DWORDs
         chunksize_offset = b.getLength()    # save Chunk size byte offset
         b.setUInt32(0xFFFFFFFF)             # GEOM Chunk size will have to be replaced when everything is written
@@ -108,9 +108,9 @@ class GeomWriter:
         b.replaceAt(tgi_offset, 'I', b.getLength() - tgi_offset - 4)    # Replace TGI Offset with the proper value
         b.setUInt32(len(geomData.tgi_list))
         for tgi in geomData.tgi_list:
-            b.setUInt32(tgi['type'])
-            b.setUInt32(tgi['group'])
-            b.setUInt64(tgi['instance'])
+            b.setUInt32( int(tgi['type'], 0) )
+            b.setUInt32( int(tgi['group'], 0) )
+            b.setUInt64( int(tgi['instance'], 0) )
         b.replaceAt(chunksize_offset, 'I', b.getLength() - chunksize_offset - 4)    # Replace GEOM Chunk Size value
         # GEOM File is now successfully written
 

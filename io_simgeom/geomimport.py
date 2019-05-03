@@ -35,6 +35,12 @@ class GeomImport(Operator, ImportHelper):
     # ImportHelper mixin class uses this
     filename_ext = ".simgeom"
 
+    filter_glob: StringProperty(
+            default="*.simgeom",
+            options={'HIDDEN'},
+            maxlen=255,  # Max internal buffer length, longer would be clamped.
+            )
+
     def execute(self, context):
         geomdata = GeomLoader.readGeom(self.filepath)
         scene = bpy.context.scene
@@ -81,7 +87,7 @@ class GeomImport(Operator, ImportHelper):
             for loop in face.loops:
                 loop_uv = loop[uv_layer]
                 uv = geomdata.element_data[loop.vert.index].uv
-                loop_uv.uv = (-uv[0] + 1.0, -uv[1] + 1.0)
+                loop_uv.uv = (uv[0], -uv[1] + 1.0)
 
         bmesh.update_edit_mesh(mesh)
 
@@ -104,6 +110,7 @@ class GeomImport(Operator, ImportHelper):
         ids = [v.vertex_id[0] for v in geomdata.element_data]
         self.add_prop(obj, 'vert_ids', ids)
         self.add_prop(obj, 'tgis', geomdata.tgi_list)
+        self.add_prop(obj, 'embedded_id', geomdata.embeddedID)
 
         return {'FINISHED'}
 

@@ -34,21 +34,29 @@ import bpy
 
 from .rigimport import RigImport
 from .geomimport import GeomImport
+from .geomexport import GeomExport
 
 # Only needed if you want to add into a dynamic menu
 def menu_func_import(self, context):
     self.layout.operator(GeomImport.bl_idname, text="Sims 3 GEOM (.simgeom)")
     self.layout.operator(RigImport.bl_idname, text="Sims 3 Rig (.grannyrig)")
 
+def menu_func_export(self, context):
+    self.layout.operator(GeomExport.bl_idname, text="Sims 3 GEOM (.simgeom)")
+
 def register():
     bpy.utils.register_class(GeomImport)
+    bpy.utils.register_class(GeomExport)
     bpy.utils.register_class(RigImport)
     bpy.types.TOPBAR_MT_file_import.append(menu_func_import)
+    bpy.types.TOPBAR_MT_file_export.append(menu_func_export)
 
 def unregister():
     bpy.utils.unregister_class(GeomImport)
+    bpy.utils.unregister_class(GeomExport)
     bpy.utils.unregister_class(RigImport)
     bpy.types.TOPBAR_MT_file_import.remove(menu_func_import)
+    bpy.types.TOPBAR_MT_file_export.remove(menu_func_export)
 
 if __name__ == "__main__":
     register()

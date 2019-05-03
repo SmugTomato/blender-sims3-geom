@@ -33,6 +33,12 @@ class RigImport(Operator, ImportHelper):
     # ImportHelper mixin class uses this
     filename_ext = ".grannyrig"
 
+    filter_glob: StringProperty(
+            default="*.grannyrig",
+            options={'HIDDEN'},
+            maxlen=255,  # Max internal buffer length, longer would be clamped.
+            )
+
 
     def execute(self, context):
         rigdata = RigLoader.loadRig(self.filepath)
