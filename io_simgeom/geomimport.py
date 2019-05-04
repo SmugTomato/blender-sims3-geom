@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with BlenderGeom.  If not, see <http://www.gnu.org/licenses/>.
 
+from typing import List
+
 import bpy
 import bmesh
 
@@ -22,9 +24,11 @@ from mathutils import Vector, Quaternion
 from bpy_extras.io_utils import ImportHelper
 from bpy.props import StringProperty, BoolProperty, EnumProperty
 from bpy.types import Operator
+from rna_prop_ui import rna_idprop_ui_prop_get
 
 from .geomloader import GeomLoader
 from .models.geom import Geom
+from .util.globals import Globals
 
 class GeomImport(Operator, ImportHelper):
     """Sims 3 GEOM Importer"""
@@ -91,16 +95,10 @@ class GeomImport(Operator, ImportHelper):
 
         bmesh.update_edit_mesh(mesh)
 
-        # Set UV Edges to sharp and remove doubles
-        # bpy.ops.mesh.select_all(action='SELECT')
-        # bpy.ops.mesh.region_to_loop()
-        # bpy.ops.mesh.mark_sharp()
-        # bpy.ops.mesh.select_all(action='SELECT')
-        # bpy.ops.mesh.remove_doubles()
-
         bpy.ops.object.mode_set(mode='OBJECT')
 
         # Set Custom Properties
+        self.add_prop(obj, '__GEOM__', 1)
         self.add_prop(obj, 'rcol_chunks', geomdata.internal_chunks)
         self.add_prop(obj, 'rcol_external', geomdata.external_resources)
         self.add_prop(obj, 'shaderdata', geomdata.shaderdata)
@@ -112,13 +110,32 @@ class GeomImport(Operator, ImportHelper):
         self.add_prop(obj, 'embedded_id', geomdata.embeddedID)
         self.add_prop(obj, 'vert_ids', ids)
         unique_ids = []
+        lowest_id = 0x7fffffff
         for i in ids:
+            if i < lowest_id:
+                lowest_id = i
             if not i in unique_ids:
                 unique_ids.append(i)
         self.add_prop(obj, 'unique_ids', len(unique_ids))
+        start_id_decript = "Starting Vertex ID"
+        for key, value in Globals.CAS_INDICES.items():
+            start_id_decript += "\n" + str(key) + " - " + str(value)
+        self.add_prop(obj, 'start_id', lowest_id, descript = start_id_decript)
+
+        print(Globals.CAS_INDICES)
 
         return {'FINISHED'}
 
     
-    def add_prop(self, obj, key, value):
+    def add_prop(self, obj, key, value, minmax: List[int] = [0, 9999999], descript: str = "prop"):
         obj[key] = value
+        prop_ui = rna_idprop_ui_prop_get(obj, key)
+        prop_ui["min"] = minmax[0]
+        prop_ui["max"] = minmax[1]
+        prop_ui["soft_min"] = minmax[0]
+        prop_ui["soft_max"] = minmax[1]
+        prop_ui["description"] = descript
+
+        for area in bpy.context.screen.areas:
+            area.tag_redraw()
+
