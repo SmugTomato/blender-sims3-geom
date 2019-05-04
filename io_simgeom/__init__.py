@@ -27,14 +27,16 @@ bl_info = {
 # Set Current Working Directory to addon root folder
 # This needs to be done to find the included data files
 import os
-rootdir = os.path.dirname(os.path.realpath(__file__))
-os.chdir(rootdir)
 
 import bpy
 
 from .rigimport import RigImport
 from .geomimport import GeomImport
 from .geomexport import GeomExport
+from .util.globals import Globals
+
+rootdir = os.path.dirname(os.path.realpath(__file__))
+Globals.init(rootdir)
 
 # Only needed if you want to add into a dynamic menu
 def menu_func_import(self, context):

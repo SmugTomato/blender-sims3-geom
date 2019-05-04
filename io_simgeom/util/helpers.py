@@ -1,25 +1,9 @@
 import json
-import os
 
 from io_simgeom.util.bytereader import ByteReader
 from io_simgeom.util.bytewriter import ByteWriter
-
+from io_simgeom.util.globals import Globals
 from io_simgeom.models.vertex import Vertex
-
-class NameFromHash:
-
-    def __init__(self):
-        self.hashmap = None
-        with open(os.getcwd() + "/data/json/hashmap.json", "r") as data:
-            self.hashmap = json.loads(data.read())
-    
-    def getName(self, hash: int, key: str):
-        return self.hashmap[key][hex(hash)]
-
-FLOAT = 1
-INTEGER = 2
-TEXTURE = 4
-HASHMAP = NameFromHash()
 
 def padded_hex(value: int, numbytes: int):
     return "0x{0:0{1}X}".format(value, numbytes * 2)
@@ -71,23 +55,23 @@ def getShaderParamaters(reader: ByteReader, count: int) -> list:
     parameters = []
     for _ in range(count):
         entry = {'name': None, 'type': None, 'size': None, 'data': None}
-        entry['name'] = HASHMAP.getName(reader.getUint32(), "shader")
+        entry['name'] = Globals.get_shader_name(reader.getUint32())
         entry['type'] = reader.getUint32()
         entry['size'] = reader.getUint32()
         reader.skip(4)
         parameters.append(entry)
     for entry in parameters:
-        if entry['type'] == FLOAT:
+        if entry['type'] == Globals.FLOAT:
             data = []
             for _ in range(entry['size']):
                 data.append( reader.getFloat() )
             entry['data'] = data
-        elif entry['type'] == INTEGER:
+        elif entry['type'] == Globals.INTEGER:
             data = []
             for _ in range(entry['size']):
                 data.append( reader.getInt32() )
             entry['data'] = data
-        elif entry['type'] == TEXTURE:
+        elif entry['type'] == Globals.TEXTURE:
             if entry['size'] == 4:
                 entry['data'] = reader.getUint32()
                 reader.skip(12)
@@ -150,7 +134,7 @@ def getBones(reader: ByteReader) -> list:
     count = reader.getUint32()
     for _ in range(count):
         bones.append(
-            HASHMAP.getName( reader.getUint32(), "bones" )
+            Globals.get_bone_name(reader.getUint32())
         )
 
     return bones

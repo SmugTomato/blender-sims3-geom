@@ -1,6 +1,7 @@
 from .models.geom import Geom
 from .util.bytereader import ByteReader
-from .util.helpers import HASHMAP, getTGI, getITG, getChunkInfo, getShaderParamaters, getElementData, getGroupData, getBones
+from .util.helpers import getTGI, getITG, getChunkInfo, getShaderParamaters, getElementData, getGroupData, getBones
+from .util.globals import Globals
 
 
 class GeomLoader:
@@ -37,7 +38,7 @@ class GeomLoader:
         _embeddedID = reader.getUint32()
         meshdata.embeddedID = hex(_embeddedID)
         if _embeddedID != 0:
-            meshdata.embeddedID = HASHMAP.getName(_embeddedID, "shader")
+            meshdata.embeddedID = Globals.get_shader_name(_embeddedID)
             reader.skip(4*4)
             _shader_param_count = reader.getUint32()
             meshdata.shaderdata = getShaderParamaters(reader, _shader_param_count)
