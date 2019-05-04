@@ -108,9 +108,14 @@ class GeomImport(Operator, ImportHelper):
         self.add_prop(obj, 'sortorder', geomdata.sort_order)
         self.add_prop(obj, 'skincontroller', geomdata.skin_controller_index)
         ids = [v.vertex_id[0] for v in geomdata.element_data]
-        self.add_prop(obj, 'vert_ids', ids)
         self.add_prop(obj, 'tgis', geomdata.tgi_list)
         self.add_prop(obj, 'embedded_id', geomdata.embeddedID)
+        self.add_prop(obj, 'vert_ids', ids)
+        unique_ids = []
+        for i in ids:
+            if not i in unique_ids:
+                unique_ids.append(i)
+        self.add_prop(obj, 'unique_ids', len(unique_ids))
 
         return {'FINISHED'}
 

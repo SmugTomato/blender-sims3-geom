@@ -1,0 +1,10 @@
+{
+    "cas_indices": {
+        "body": 5000,
+        "top": 5000,
+        "bottom": 15000,
+        "hair": 20000,
+        "shoes": 30000,
+        "accessory": 40000
+    }
+}
