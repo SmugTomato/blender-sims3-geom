@@ -34,6 +34,8 @@ from .rigimport import RigImport
 from .geomimport import GeomImport
 from .geomexport import GeomExport
 from .util.globals import Globals
+from .operators import SIMGEOM_OT_recalc_ids
+from .ui import SIMGEOM_PT_utility_panel
 
 rootdir = os.path.dirname(os.path.realpath(__file__))
 Globals.init(rootdir)
@@ -50,6 +52,8 @@ def register():
     bpy.utils.register_class(GeomImport)
     bpy.utils.register_class(GeomExport)
     bpy.utils.register_class(RigImport)
+    bpy.utils.register_class(SIMGEOM_OT_recalc_ids)
+    bpy.utils.register_class(SIMGEOM_PT_utility_panel)
     bpy.types.TOPBAR_MT_file_import.append(menu_func_import)
     bpy.types.TOPBAR_MT_file_export.append(menu_func_export)
 
@@ -57,6 +61,8 @@ def unregister():
     bpy.utils.unregister_class(GeomImport)
     bpy.utils.unregister_class(GeomExport)
     bpy.utils.unregister_class(RigImport)
+    bpy.utils.unregister_class(SIMGEOM_OT_recalc_ids)
+    bpy.utils.unregister_class(SIMGEOM_PT_utility_panel)
     bpy.types.TOPBAR_MT_file_import.remove(menu_func_import)
     bpy.types.TOPBAR_MT_file_export.remove(menu_func_export)
 

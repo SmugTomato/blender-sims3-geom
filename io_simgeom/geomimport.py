@@ -105,24 +105,22 @@ class GeomImport(Operator, ImportHelper):
         self.add_prop(obj, 'mergegroup', geomdata.merge_group)
         self.add_prop(obj, 'sortorder', geomdata.sort_order)
         self.add_prop(obj, 'skincontroller', geomdata.skin_controller_index)
-        ids = [v.vertex_id[0] for v in geomdata.element_data]
         self.add_prop(obj, 'tgis', geomdata.tgi_list)
         self.add_prop(obj, 'embedded_id', geomdata.embeddedID)
-        self.add_prop(obj, 'vert_ids', ids)
-        unique_ids = []
         lowest_id = 0x7fffffff
-        for i in ids:
-            if i < lowest_id:
-                lowest_id = i
-            if not i in unique_ids:
-                unique_ids.append(i)
-        self.add_prop(obj, 'unique_ids', len(unique_ids))
-        start_id_decript = "Starting Vertex ID"
+        ids = {}
+        for i, v in enumerate(geomdata.element_data):
+            if v.vertex_id[0] < lowest_id:
+                lowest_id = v.vertex_id[0]
+            if not hex(v.vertex_id[0]) in ids:
+                ids[hex(v.vertex_id[0])] = [i]
+            else:
+                ids[hex(v.vertex_id[0])].append(i)
+        self.add_prop(obj, 'vert_ids', ids)
+        start_id_descript = "Starting Vertex ID"
         for key, value in Globals.CAS_INDICES.items():
-            start_id_decript += "\n" + str(key) + " - " + str(value)
-        self.add_prop(obj, 'start_id', lowest_id, descript = start_id_decript)
-
-        print(Globals.CAS_INDICES)
+            start_id_descript += "\n" + str(key) + " - " + str(value)
+        self.add_prop(obj, 'start_id', lowest_id, descript = start_id_descript)
 
         return {'FINISHED'}
 

@@ -54,7 +54,7 @@ class GeomExport(Operator, ExportHelper):
     def execute(self, context):
         geomdata = Geom()
 
-        obj = bpy.context.object
+        obj = context.active_object
         mesh = obj.data
 
         # Prefill vertex array
@@ -62,7 +62,6 @@ class GeomExport(Operator, ExportHelper):
 
         for i, v in enumerate(mesh.vertices):
             vtx = Vertex()
-            vtx.vertex_id = [obj['vert_ids'][i]]
             vtx.position = (v.co.x, v.co.z, -v.co.y)
             vtx.normal = (v.normal.x, v.normal.z, -v.normal.y)
             tan = v.normal.orthogonal().normalized()
@@ -78,6 +77,10 @@ class GeomExport(Operator, ExportHelper):
             vtx.assignment = assignment
 
             g_element_data[i] = vtx
+        d = {}
+        for key, values in obj.get('vert_ids').items():
+            for v in values:
+                g_element_data[v].vertex_id = [int(key, 0)]
         
         # Faces
         geomdata.groups = []
