@@ -112,6 +112,7 @@ class GeomImport(Operator, ImportHelper):
                 loop_uv.uv = (uv[0], -uv[1] + 1.0)
 
         bmesh.update_edit_mesh(mesh)
+        bm.free()
 
         bpy.ops.object.mode_set(mode='OBJECT')
 

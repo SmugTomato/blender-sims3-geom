@@ -16,12 +16,9 @@
 # along with BlenderGeom.  If not, see <http://www.gnu.org/licenses/>.
 
 import bpy
-from .util.fnv import fnv32
+import bmesh
 
-import math
-def truncate(number, digits) -> float:
-    stepper = pow(10.0, digits)
-    return math.trunc(stepper * number) / stepper
+from .util.fnv import fnv32
 
 class SIMGEOM_OT_recalc_ids(bpy.types.Operator):
     """Recalculate Vertex IDs"""
@@ -33,35 +30,6 @@ class SIMGEOM_OT_recalc_ids(bpy.types.Operator):
 
         start_id = obj.get('start_id')
 
-        # Create an override, or the view3d operator won't work
-        win      = bpy.context.window
-        scr      = win.screen
-        areas3d  = [area for area in scr.areas if area.type == 'VIEW_3D']
-        region   = [region for region in areas3d[0].regions if region.type == 'WINDOW']
-        view3d_override = {
-            'window': win,
-            'screen': scr,
-            'area'  : areas3d[0],
-            'region': region[0],
-            'scene' : bpy.context.scene,
-            }
-        # # Make backup of original settings
-        # system_orig = bpy.context.scene.unit_settings.system
-        # unit_orig = bpy.context.scene.unit_settings.scale_length
-
-        # # Snap vertices to nearest 1/1000th of a unit (1 milimeter precision)
-        # # This is done to overcome rounding errors in original Maxis meshes
-        # bpy.context.scene.unit_settings.system = 'METRIC'
-        # bpy.context.scene.unit_settings.scale_length = 1000
-        # bpy.ops.object.mode_set(mode='EDIT')
-        # bpy.ops.view3d.snap_selected_to_grid(view3d_override)
-        # bpy.ops.object.mode_set(mode='OBJECT')
-        # bpy.context.scene.unit_settings.scale_length = 1
-
-        # # Restore original settings
-        # bpy.context.scene.unit_settings.system = system_orig
-        # bpy.context.scene.unit_settings.scale_length = unit_orig
-
         mesh = obj.data
         positions = {}
         # Map vertex ID per position
@@ -72,11 +40,40 @@ class SIMGEOM_OT_recalc_ids(bpy.types.Operator):
             else:
                 positions[t].append(v.index)
 
-        # Now vertices per vertex ID
+        # Now map vertices per vertex ID
         ids = {}
         for i, val in enumerate(positions.values()):
             ids[hex(i + start_id)] = val
         obj['vert_ids'] = ids
 
+        return {'FINISHED'}
+    
+
+class SIMGEOM_OT_split_seams(bpy.types.Operator):
+    """Split Mesh along UV Seams"""
+    bl_idname = "simgeom.split_seams"
+    bl_label = "Split UV Seams"
+
+    def execute(self, context):
+        mesh = context.active_object.data
+
+        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.uv.seams_from_islands()
+        bpy.ops.object.mode_set(mode='OBJECT')
+
+        bm = bmesh.new()
+        bm.from_mesh(mesh)
+
+        uvsplit = []
+        for e in bm.edges:
+            if e.seam or not e.smooth:
+                uvsplit.append(e)
+                e.seam = False
+
+        # Split edges given by above loop
+        bmesh.ops.split_edges(bm, edges=uvsplit)
+
+        bm.to_mesh(mesh)
+        bm.free()
 
         return {'FINISHED'}

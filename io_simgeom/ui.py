@@ -40,6 +40,7 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
         uniques = len(obj.get('vert_ids'))
         sub.label( text = str( obj.get('start_id') + uniques ) + " (" + str(uniques) + ")" )
         col.operator("simgeom.recalc_ids", text="RECALCULATE IDS", icon='COPY_ID')
+        col.operator("simgeom.split_seams", text="Split UV Seams", icon='COPY_ID')
 
         col = layout.column(align=True)
         col.label(text="LOD (Not in use yet):")

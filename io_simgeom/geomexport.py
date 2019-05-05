@@ -83,7 +83,7 @@ class GeomExport(Operator, ExportHelper):
             for v in values:
                 g_element_data[v].vertex_id = [int(key, 0)]
         
-        # Normals
+        # Smooth Normals
         for values in list(obj.get('vert_ids').values()):
             vec = Vector((0,0,0))
             for v in values:
@@ -93,6 +93,14 @@ class GeomExport(Operator, ExportHelper):
             for v in values:
                 g_element_data[v].normal = (vec.x, vec.z, -vec.y)
                 g_element_data[v].tangent = (tan.x, tan.z, -tan.y)
+        
+        # Now Set Hard Edges
+        for edge in mesh.edges:
+            if not edge.use_edge_sharp:
+                continue
+            for i in edge.vertices:
+                normal = mesh.vertices[i].normal
+                g_element_data[i].normal = (normal.x, normal.z, -normal.y)
             
         
         # Faces
