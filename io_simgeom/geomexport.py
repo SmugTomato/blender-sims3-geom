@@ -63,7 +63,7 @@ class GeomExport(Operator, ExportHelper):
         for i, v in enumerate(mesh.vertices):
             vtx = Vertex()
             vtx.position = (v.co.x, v.co.z, -v.co.y)
-            # vtx.normal = (v.normal.x, v.normal.z, -v.normal.y)
+            vtx.normal = (v.normal.x, v.normal.z, -v.normal.y)
             # tan = v.normal.orthogonal().normalized()
             # vtx.tangent = (tan[0], tan[2], -tan[1])
 
@@ -84,24 +84,70 @@ class GeomExport(Operator, ExportHelper):
                 g_element_data[v].vertex_id = [int(key, 0)]
         
         # Smooth Normals
-        for values in list(obj.get('vert_ids').values()):
-            vec = Vector((0,0,0))
-            for v in values:
-                vec += mesh.vertices[v].normal
-            vec /= len(values)
-            tan = vec.orthogonal().normalized()
-            for v in values:
-                g_element_data[v].normal = (vec.x, vec.z, -vec.y)
-                g_element_data[v].tangent = (tan.x, tan.z, -tan.y)
+        # edges = {}
+        # verts_to_smooth = {}
+        # sharp_verts = []
+        # for edge in mesh.edges:
+        #     if edge.use_edge_sharp:
+        #         sharp_verts.append( edge.vertices[0] )
+        #         sharp_verts.append( edge.vertices[1] )
+        #         continue
+        #     edge_center = ( ( mesh.vertices[edge.vertices[0]].co + mesh.vertices[edge.vertices[1]].co ) / 2 ).to_tuple(3)
+        #     if not edge_center in edges.keys():
+        #         edges[edge_center] = [edge.vertices[0], edge.vertices[1]]
+        #         continue
+        #     if not edge.vertices[0] in edges[edge_center]:
+        #         edges[edge_center].append(edge.vertices[0])
+        #     if not edge.vertices[1] in edges[edge_center]:
+        #         edges[edge_center].append(edge.vertices[1])
         
-        # Now Set Hard Edges
-        for edge in mesh.edges:
-            if not edge.use_edge_sharp:
+        # test = {}
+        # for k, v in edges.items():
+        #     if len(v) > 2:
+        #         test[k] = v
+        # print(test)
+        # print(len(edges), len(test))
+
+        edges = {}
+        sharp = []
+        for e in mesh.edges:
+            if e.use_edge_sharp:
+                sharp.append(e.vertices[0])
+                sharp.append(e.vertices[1])
                 continue
-            for i in edge.vertices:
-                normal = mesh.vertices[i].normal
-                g_element_data[i].normal = (normal.x, normal.z, -normal.y)
-            
+            center = ( ( mesh.vertices[e.vertices[0]].co + mesh.vertices[e.vertices[1]].co ) / 2 ).to_tuple(3)
+            if not center in edges.keys():
+                edges[center] = [e.index]
+            else:
+                edges[center].append(e.index)
+        
+        edges2 = []
+        for k, v in edges.items():
+            if len(v) > 1:
+                for n in v:
+                    edges2.append(n)
+        
+        verts_to_smooth = {}
+        for idx in edges2:
+            for v_idx in mesh.edges[idx].vertices:
+                key = mesh.vertices[v_idx].co.to_tuple(3)
+                if not key in verts_to_smooth.keys():
+                    verts_to_smooth[key] = [v_idx]
+                    continue
+                if not v_idx in verts_to_smooth[key]:
+                    verts_to_smooth[key].append(v_idx)
+        
+        for values in verts_to_smooth.values():
+            count = len(values)
+            total = Vector((0,0,0))
+            for n in values:
+                total += mesh.vertices[n].normal
+            average = total / count
+            for n in values:
+                g_element_data[n].normal = (average.x, average.z, -average.y)
+
+        print(verts_to_smooth)
+        print(len(verts_to_smooth))
         
         # Faces
         geomdata.groups = []

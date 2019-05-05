@@ -191,7 +191,7 @@ class GeomImport(Operator, ImportHelper):
 
         # bmesh.ops.remove_doubles(bm, verts=bm.verts)
 
-        # Check mesh edges against edge dictionary, mark hard edges sharp after removing doubles
+        # Check mesh edges against edge dictionary, mark hard edges sharp
         numedges = 0
         for e in bm.edges:
             edgemid = tuple((e.verts[0].co + e.verts[1].co) / 2)
