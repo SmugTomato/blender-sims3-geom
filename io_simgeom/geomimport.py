@@ -49,6 +49,24 @@ class GeomImport(Operator, ImportHelper):
         geomdata = GeomLoader.readGeom(self.filepath)
         scene = bpy.context.scene
 
+        # Fill a Dictionairy with hexed ID as key and List of vertex indices
+        lowest_id = 0x7fffffff
+        ids = {}
+        for i, v in enumerate(geomdata.element_data):
+            if v.vertex_id[0] < lowest_id:
+                lowest_id = v.vertex_id[0]
+            if not hex(v.vertex_id[0]) in ids:
+                ids[hex(v.vertex_id[0])] = [i]
+            else:
+                ids[hex(v.vertex_id[0])].append(i)
+
+        # Fix EA's stupid rounding errors on supposedly identically placed vertices
+        for verts in ids.values():
+            if len(verts) < 2:
+                continue
+            for i in range(len(verts)-1):
+                geomdata.element_data[verts[i+1]].position = geomdata.element_data[verts[0]].position
+
         vertices = []
         for v in geomdata.element_data:
             vert = v.position
@@ -107,20 +125,85 @@ class GeomImport(Operator, ImportHelper):
         self.add_prop(obj, 'skincontroller', geomdata.skin_controller_index)
         self.add_prop(obj, 'tgis', geomdata.tgi_list)
         self.add_prop(obj, 'embedded_id', geomdata.embeddedID)
-        lowest_id = 0x7fffffff
-        ids = {}
-        for i, v in enumerate(geomdata.element_data):
-            if v.vertex_id[0] < lowest_id:
-                lowest_id = v.vertex_id[0]
-            if not hex(v.vertex_id[0]) in ids:
-                ids[hex(v.vertex_id[0])] = [i]
-            else:
-                ids[hex(v.vertex_id[0])].append(i)
+        
         self.add_prop(obj, 'vert_ids', ids)
         start_id_descript = "Starting Vertex ID"
         for key, value in Globals.CAS_INDICES.items():
             start_id_descript += "\n" + str(key) + " - " + str(value)
         self.add_prop(obj, 'start_id', lowest_id, descript = start_id_descript)
+
+        # SET SHARP
+        # d = {}
+        # for i, v in enumerate(geomdata.element_data):
+        #     k = (v.normal[0], v.normal[1], v.normal[2])
+        #     if not k in d.keys():
+        #         d[k] = [i]
+        #     else:
+        #         d[k].append(i)
+        # print(len(d), "Unique Normals")
+
+        # multi_normals = []
+        # for v in d.values():
+        #     if len(v) < 2:
+        #         continue
+        #     for n in v:
+        #         multi_normals.append(n)
+        
+        #
+        # testverts = []
+        # for val in ids.values():
+        #     if len(val) < 2:
+        #         continue
+        #     for n in val:
+        #         testverts.append(n)
+        # print(len(testverts), "Testverts")
+
+        # bpy.ops.object.mode_set(mode='EDIT')
+        # bm = bmesh.from_edit_mesh(mesh)
+
+        # for edge in bm.edges:
+        #     if edge.verts[0].index in testverts:
+        #         if edge.verts[1].index in testverts:
+        #             edge.smooth = False
+        
+        # bmesh.update_edit_mesh(mesh)
+        # bpy.ops.object.mode_set(mode='OBJECT')
+
+        edges = {}
+        for face in geomdata.groups:
+            for i in range(len(face)):
+                idx = i + 1
+                if i == len(face)-1:
+                    idx = 0
+                edge = ( ( mesh.vertices[face[i]].co + mesh.vertices[face[idx]].co ) / 2 ).to_tuple()
+                if not edge in edges.keys():
+                    edges[edge] = [ Vector(geomdata.element_data[face[i]].normal).to_tuple(3), Vector(geomdata.element_data[face[idx]].normal).to_tuple(3) ]
+                    continue
+                if not Vector(geomdata.element_data[face[i]].normal).to_tuple(3) in edges[edge]:
+                    edges[edge].append( Vector(geomdata.element_data[face[i]].normal).to_tuple(3) )
+                if not Vector(geomdata.element_data[face[idx]].normal).to_tuple(3) in edges[edge]:
+                    edges[edge].append( Vector(geomdata.element_data[face[idx]].normal).to_tuple(3) )
+        print(len(edges))
+
+        bm = bmesh.new()
+        bm.from_mesh(mesh)
+
+        # bmesh.ops.remove_doubles(bm, verts=bm.verts)
+
+        # Check mesh edges against edge dictionary, mark hard edges sharp after removing doubles
+        numedges = 0
+        for e in bm.edges:
+            edgemid = tuple((e.verts[0].co + e.verts[1].co) / 2)
+            if len(edges[edgemid]) > 2:
+                numedges += 1
+                e.smooth = False
+
+        print(numedges, 'Hard edges found.')
+        print()
+
+        bm.to_mesh(mesh)
+        bm.free()
+
 
         return {'FINISHED'}
 

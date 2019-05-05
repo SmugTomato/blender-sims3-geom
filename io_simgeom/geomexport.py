@@ -63,9 +63,9 @@ class GeomExport(Operator, ExportHelper):
         for i, v in enumerate(mesh.vertices):
             vtx = Vertex()
             vtx.position = (v.co.x, v.co.z, -v.co.y)
-            vtx.normal = (v.normal.x, v.normal.z, -v.normal.y)
-            tan = v.normal.orthogonal().normalized()
-            vtx.tangent = (tan[0], tan[2], -tan[1])
+            # vtx.normal = (v.normal.x, v.normal.z, -v.normal.y)
+            # tan = v.normal.orthogonal().normalized()
+            # vtx.tangent = (tan[0], tan[2], -tan[1])
 
             # Bone Assignments
             weights = [0.0]*4
@@ -77,10 +77,23 @@ class GeomExport(Operator, ExportHelper):
             vtx.assignment = assignment
 
             g_element_data[i] = vtx
-        d = {}
+        
+        # Vertex IDs    
         for key, values in obj.get('vert_ids').items():
             for v in values:
                 g_element_data[v].vertex_id = [int(key, 0)]
+        
+        # Normals
+        for values in list(obj.get('vert_ids').values()):
+            vec = Vector((0,0,0))
+            for v in values:
+                vec += mesh.vertices[v].normal
+            vec /= len(values)
+            tan = vec.orthogonal().normalized()
+            for v in values:
+                g_element_data[v].normal = (vec.x, vec.z, -vec.y)
+                g_element_data[v].tangent = (tan.x, tan.z, -tan.y)
+            
         
         # Faces
         geomdata.groups = []

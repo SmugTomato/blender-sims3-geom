@@ -45,22 +45,22 @@ class SIMGEOM_OT_recalc_ids(bpy.types.Operator):
             'region': region[0],
             'scene' : bpy.context.scene,
             }
-        # Make backup of original settings
-        system_orig = bpy.context.scene.unit_settings.system
-        unit_orig = bpy.context.scene.unit_settings.scale_length
+        # # Make backup of original settings
+        # system_orig = bpy.context.scene.unit_settings.system
+        # unit_orig = bpy.context.scene.unit_settings.scale_length
 
-        # Snap vertices to nearest 1/1000th of a unit (1 milimeter precision)
-        # This is done to overcome rounding errors in original Maxis meshes
-        bpy.context.scene.unit_settings.system = 'METRIC'
-        bpy.context.scene.unit_settings.scale_length = 1000
-        bpy.ops.object.mode_set(mode='EDIT')
-        bpy.ops.view3d.snap_selected_to_grid(view3d_override)
-        bpy.ops.object.mode_set(mode='OBJECT')
-        bpy.context.scene.unit_settings.scale_length = 1
+        # # Snap vertices to nearest 1/1000th of a unit (1 milimeter precision)
+        # # This is done to overcome rounding errors in original Maxis meshes
+        # bpy.context.scene.unit_settings.system = 'METRIC'
+        # bpy.context.scene.unit_settings.scale_length = 1000
+        # bpy.ops.object.mode_set(mode='EDIT')
+        # bpy.ops.view3d.snap_selected_to_grid(view3d_override)
+        # bpy.ops.object.mode_set(mode='OBJECT')
+        # bpy.context.scene.unit_settings.scale_length = 1
 
-        # Restore original settings
-        bpy.context.scene.unit_settings.system = system_orig
-        bpy.context.scene.unit_settings.scale_length = unit_orig
+        # # Restore original settings
+        # bpy.context.scene.unit_settings.system = system_orig
+        # bpy.context.scene.unit_settings.scale_length = unit_orig
 
         mesh = obj.data
         positions = {}
