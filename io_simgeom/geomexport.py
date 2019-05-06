@@ -63,9 +63,6 @@ class GeomExport(Operator, ExportHelper):
         for i, v in enumerate(mesh.vertices):
             vtx = Vertex()
             vtx.position = (v.co.x, v.co.z, -v.co.y)
-            vtx.normal = (v.normal.x, v.normal.z, -v.normal.y)
-            # tan = v.normal.orthogonal().normalized()
-            # vtx.tangent = (tan[0], tan[2], -tan[1])
 
             # Bone Assignments
             weights = [0.0]*4
@@ -84,43 +81,50 @@ class GeomExport(Operator, ExportHelper):
                 g_element_data[v].vertex_id = [int(key, 0)]
         
         # Normals
-        edges = {}
-        for e in mesh.edges:
-            if e.use_edge_sharp:
+        # Get seperated egdes that need smoothing
+        soft_edges = {}
+        for edge in mesh.edges:
+            if edge.use_edge_sharp:
                 continue
-            center = ( ( mesh.vertices[e.vertices[0]].co + mesh.vertices[e.vertices[1]].co ) / 2 ).to_tuple(3)
-            if not center in edges.keys():
-                edges[center] = [e.index]
-            else:
-                edges[center].append(e.index)
-        
-        edges2 = []
-        for k, v in edges.items():
-            if len(v) > 1:
-                for n in v:
-                    edges2.append(n)
-        
-        verts_to_smooth = {}
-        for idx in edges2:
-            for v_idx in mesh.edges[idx].vertices:
-                key = mesh.vertices[v_idx].co.to_tuple(3)
-                if not key in verts_to_smooth.keys():
-                    verts_to_smooth[key] = [v_idx]
-                    continue
-                if not v_idx in verts_to_smooth[key]:
-                    verts_to_smooth[key].append(v_idx)
-        
-        for values in verts_to_smooth.values():
-            count = len(values)
-            total = Vector((0,0,0))
-            for n in values:
-                total += mesh.vertices[n].normal
-            average = total / count
-            for n in values:
-                g_element_data[n].normal = (average.x, average.z, -average.y)
+            v0 = mesh.vertices[edge.vertices[0]]
+            v1 = mesh.vertices[edge.vertices[1]]
+            center = ( ( v0.co + v1.co ) * 0.5 ).to_tuple(3)
+            if not center in soft_edges.keys():
+                soft_edges[center] = [ [v0.index, v1.index] ]
+                continue
+            soft_edges[center].append( [v0.index, v1.index] )
 
-        print(verts_to_smooth)
-        print(len(verts_to_smooth))           
+        # Create sets of edges sharing a location
+        merge = []
+        for vals in soft_edges.values():
+            if len(vals) < 2:
+                continue
+            verts = {}
+            for e in vals:
+                for n in e:
+                    co = mesh.vertices[n].co.to_tuple(3)
+                    if not co in verts.keys():
+                        verts[co] = [n]
+                    else:
+                        verts[co].append(n)
+            merge.append(tuple(verts.values()))
+
+        # Average normals of vertices sharing a location
+        for sets in merge:
+            for set in sets:
+                total = Vector((0,0,0))
+                count = len(set)
+                if count < 2:
+                    continue
+                for n in set:
+                    total += mesh.vertices[n].normal
+                avg = total / count
+                for n in set:
+                    mesh.vertices[n].normal = avg
+
+        # Set normals in element data
+        for v in mesh.vertices:
+            g_element_data[v.index].normal = (v.normal.x, v.normal.z, -v.normal.y)  
         
         # Faces
         geomdata.groups = []
@@ -137,6 +141,7 @@ class GeomExport(Operator, ExportHelper):
                 g_element_data[vertidx].uv = uv
         
         # Tangents
+        # http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-13-normal-mapping/
         tangents = [[] for _ in range(len(g_element_data))]
         for face in geomdata.groups:
             # Position Shortcuts
@@ -171,7 +176,19 @@ class GeomExport(Operator, ExportHelper):
             for n in v:
                 total += n
             average = total / length
-            g_element_data[i].tangent = average.to_tuple(5)
+            g_element_data[i].tangent = average.normalized().to_tuple(5)
+        # Average tangents again for vertices sharing the same location and normal
+        for sets in merge:
+            for set in sets:
+                total = Vector((0,0,0))
+                count = len(set)
+                if count < 2:
+                    continue
+                for n in set:
+                    total += Vector(g_element_data[n].tangent)
+                avg = (total / count).normalized().to_tuple(5)
+                for n in set:
+                    g_element_data[n].tangent = avg
 
         # Bonehashes
         geomdata.bones = []
