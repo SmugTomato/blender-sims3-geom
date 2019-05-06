@@ -83,37 +83,10 @@ class GeomExport(Operator, ExportHelper):
             for v in values:
                 g_element_data[v].vertex_id = [int(key, 0)]
         
-        # Smooth Normals
-        # edges = {}
-        # verts_to_smooth = {}
-        # sharp_verts = []
-        # for edge in mesh.edges:
-        #     if edge.use_edge_sharp:
-        #         sharp_verts.append( edge.vertices[0] )
-        #         sharp_verts.append( edge.vertices[1] )
-        #         continue
-        #     edge_center = ( ( mesh.vertices[edge.vertices[0]].co + mesh.vertices[edge.vertices[1]].co ) / 2 ).to_tuple(3)
-        #     if not edge_center in edges.keys():
-        #         edges[edge_center] = [edge.vertices[0], edge.vertices[1]]
-        #         continue
-        #     if not edge.vertices[0] in edges[edge_center]:
-        #         edges[edge_center].append(edge.vertices[0])
-        #     if not edge.vertices[1] in edges[edge_center]:
-        #         edges[edge_center].append(edge.vertices[1])
-        
-        # test = {}
-        # for k, v in edges.items():
-        #     if len(v) > 2:
-        #         test[k] = v
-        # print(test)
-        # print(len(edges), len(test))
-
+        # Normals
         edges = {}
-        sharp = []
         for e in mesh.edges:
             if e.use_edge_sharp:
-                sharp.append(e.vertices[0])
-                sharp.append(e.vertices[1])
                 continue
             center = ( ( mesh.vertices[e.vertices[0]].co + mesh.vertices[e.vertices[1]].co ) / 2 ).to_tuple(3)
             if not center in edges.keys():
@@ -147,7 +120,7 @@ class GeomExport(Operator, ExportHelper):
                 g_element_data[n].normal = (average.x, average.z, -average.y)
 
         print(verts_to_smooth)
-        print(len(verts_to_smooth))
+        print(len(verts_to_smooth))           
         
         # Faces
         geomdata.groups = []
@@ -163,6 +136,43 @@ class GeomExport(Operator, ExportHelper):
                 vertidx = geomdata.groups[i][j]
                 g_element_data[vertidx].uv = uv
         
+        # Tangents
+        tangents = [[] for _ in range(len(g_element_data))]
+        for face in geomdata.groups:
+            # Position Shortcuts
+            v0 = Vector(g_element_data[face[0]].position)
+            v1 = Vector(g_element_data[face[1]].position)
+            v2 = Vector(g_element_data[face[2]].position)
+
+            # UV Shortcuts
+            uv0 = Vector(g_element_data[face[0]].uv)
+            uv1 = Vector(g_element_data[face[1]].uv)
+            uv2 = Vector(g_element_data[face[2]].uv)
+
+            # Position Delta
+            delta_pos1 = v1 - v0
+            delta_pos2 = v2 - v0
+
+            # UV Delta
+            delta_uv1 = uv1 - uv0
+            delta_uv2 = uv2 - uv0
+
+            # Tangent Calculation
+            r = 1.0 / ( delta_uv1.x * delta_uv2.y - delta_uv1.y * delta_uv2.x )
+            tangent = ( delta_pos1 * delta_uv2.y - delta_pos2 * delta_uv1.y ) * r
+
+            for v in face:
+                tangents[v].append(tangent.normalized())
+
+        # Average the tangents
+        for i, v in enumerate(tangents):
+            total = Vector((0,0,0))
+            length = len(v)
+            for n in v:
+                total += n
+            average = total / length
+            g_element_data[i].tangent = average.to_tuple(5)
+
         # Bonehashes
         geomdata.bones = []
         for group in obj.vertex_groups:
