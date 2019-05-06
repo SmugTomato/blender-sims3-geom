@@ -197,7 +197,6 @@ class GeomImport(Operator, ImportHelper):
                     edges[edge].append( Vector(geomdata.element_data[face[i]].normal).to_tuple(3) )
                 if not Vector(geomdata.element_data[face[idx]].normal).to_tuple(3) in edges[edge]:
                     edges[edge].append( Vector(geomdata.element_data[face[idx]].normal).to_tuple(3) )
-        print(len(edges))
 
         bm = bmesh.new()
         bm.from_mesh(mesh)
@@ -211,9 +210,6 @@ class GeomImport(Operator, ImportHelper):
             if len(edges[edgemid]) > 2:
                 numedges += 1
                 e.smooth = False
-
-        print(numedges, 'Hard edges found.')
-        print()
 
         bm.to_mesh(mesh)
         bm.free()
