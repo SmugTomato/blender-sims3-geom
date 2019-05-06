@@ -91,9 +91,13 @@ class GeomWriter:
         order = GeomWriter.set_vertex_info(geomData.element_data[0], b)
         # Set the values for vertex data
         for vertex in geomData.element_data:
-            for n in order:
-                for val in getattr(vertex, n[0]):
-                    b.setArbitrary(n[1], val)
+            uv_layer = 0
+            for entry in order:
+                var = getattr(vertex, entry[0])
+                if entry[0] == 'uv':
+                    var = getattr(vertex, entry[0])[uv_layer]
+                for val in var:
+                    b.setArbitrary(entry[1], val)
 
         b.setUInt32(1)
         b.setByte(2)
@@ -134,12 +138,16 @@ class GeomWriter:
 
         for key, values in datatypes.items():
             if getattr(vertex, key):
-                order.append([key, values[3]])
+                if key == 'uv':
+                    for _ in range(len(vertex.uv)):
+                        order.append([key, values[3]])
+                else:
+                    order.append([key, values[3]])
         writer.setUInt32(len(order))    # Element Count
-        for key, values in datatypes.items():
-            if getattr(vertex, key):
-                writer.setUInt32(values[0])
-                writer.setUInt32(values[1])
-                writer.setByte(values[2])
+        for item in order:
+            values = datatypes[item[0]]
+            writer.setUInt32(values[0])
+            writer.setUInt32(values[1])
+            writer.setByte(values[2])
         
         return order

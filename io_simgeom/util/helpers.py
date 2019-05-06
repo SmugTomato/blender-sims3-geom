@@ -96,8 +96,10 @@ def getElementData(reader: ByteReader, element_count: int, vert_count: int) -> l
             elif datatype == 2:
                 vertex.normal = getFloatList(reader, 3)
             elif datatype == 3:
-                # TODO: Can 1 vertex even have 2 UV Channels?
-                vertex.uv = getFloatList(reader, 2)
+                if not vertex.uv:
+                    vertex.uv = [getFloatList(reader, 2)]
+                else:
+                    vertex.uv.append(getFloatList(reader, 2))
             elif datatype == 4:
                 vertex.assignment = getByteList(reader, 4)
             elif datatype == 5:

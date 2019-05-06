@@ -101,18 +101,31 @@ class GeomImport(Operator, ImportHelper):
                     vertgroup.add( [i], weight, 'ADD' )
         
         # UV Coordinates
-        bpy.ops.object.mode_set(mode='EDIT')
-        bm = bmesh.from_edit_mesh(mesh)
-        uv_layer = bm.loops.layers.uv.verify()
+        for i in range(len(geomdata.element_data[0].uv)):
+            mesh.uv_layers.new(name='UV_' + str(i))
+            mesh.uv_layers.active = mesh.uv_layers['UV_' + str(i)]
 
-        for face in bm.faces:
-            for loop in face.loops:
-                loop_uv = loop[uv_layer]
-                uv = geomdata.element_data[loop.vert.index].uv
-                loop_uv.uv = (uv[0], -uv[1] + 1.0)
+            for j, polygon in enumerate(mesh.polygons):
+                for k, loopindex in enumerate(polygon.loop_indices):
+                    meshuvloop = mesh.uv_layers.active.data[loopindex]
+                    vertex_index = geomdata.groups[j][k]
+                    uv = geomdata.element_data[vertex_index].uv[i]
+                    meshuvloop.uv = (uv[0], -uv[1] + 1)
 
-        bmesh.update_edit_mesh(mesh)
-        bm.free()
+
+
+        # bpy.ops.object.mode_set(mode='EDIT')
+        # bm = bmesh.from_edit_mesh(mesh)
+        # uv_layer = bm.loops.layers.uv.verify()
+
+        # for face in bm.faces:
+        #     for loop in face.loops:
+        #         loop_uv = loop[uv_layer]
+        #         uv = geomdata.element_data[loop.vert.index].uv
+        #         loop_uv.uv = (uv[0], -uv[1] + 1.0)
+
+        # bmesh.update_edit_mesh(mesh)
+        # bm.free()
 
         bpy.ops.object.mode_set(mode='OBJECT')
 

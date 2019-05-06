@@ -132,13 +132,24 @@ class GeomExport(Operator, ExportHelper):
             geomdata.groups.append( (face.vertices[0], face.vertices[1], face.vertices[2]) )
         
         # UV Map
-        uv_layer = mesh.uv_layers[0]
-        for i, polygon in enumerate(mesh.polygons):
-            for j, loopindex in enumerate(polygon.loop_indices):
-                meshuvloop = mesh.uv_layers.active.data[loopindex]
-                uv = ( meshuvloop.uv[0], -meshuvloop.uv[1] + 1 )
-                vertidx = geomdata.groups[i][j]
-                g_element_data[vertidx].uv = uv
+        uv_count = len(mesh.uv_layers)
+        uvs = []
+        for _ in mesh.vertices:
+            l = [None]*uv_count
+            uvs.append(l)
+
+        for n, uv_layer in enumerate(mesh.uv_layers):
+            mesh.uv_layers.active = uv_layer
+            for i, polygon in enumerate(mesh.polygons):
+                for j, loopindex in enumerate(polygon.loop_indices):
+                    meshuvloop = mesh.uv_layers.active.data[loopindex]
+                    uv = ( meshuvloop.uv[0], -meshuvloop.uv[1] + 1 )
+                    vertidx = geomdata.groups[i][j]
+                    # g_element_data[vertidx].uv.append(uv)
+                    uvs[vertidx][n] = uv
+        
+        for i, uv in enumerate(uvs):
+            g_element_data[i].uv = uv
         
         # Tangents
         # http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-13-normal-mapping/
@@ -150,9 +161,9 @@ class GeomExport(Operator, ExportHelper):
             v2 = Vector(g_element_data[face[2]].position)
 
             # UV Shortcuts
-            uv0 = Vector(g_element_data[face[0]].uv)
-            uv1 = Vector(g_element_data[face[1]].uv)
-            uv2 = Vector(g_element_data[face[2]].uv)
+            uv0 = Vector(g_element_data[face[0]].uv[0])
+            uv1 = Vector(g_element_data[face[1]].uv[0])
+            uv2 = Vector(g_element_data[face[2]].uv[0])
 
             # Position Delta
             delta_pos1 = v1 - v0
