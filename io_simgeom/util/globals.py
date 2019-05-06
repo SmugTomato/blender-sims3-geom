@@ -8,6 +8,7 @@ class Globals:
 
     HASHMAP: dict
     CAS_INDICES: dict
+    SEAM_FIX: dict
 
     @staticmethod
     def init(rootdir: str):
@@ -16,6 +17,15 @@ class Globals:
             Globals.HASHMAP = json.loads(data.read())
         with open(datadir + "variables.json", "r") as data:
             Globals.CAS_INDICES = json.loads(data.read())['cas_indices']
+        with open(datadir + "afFix.json", "r") as data:
+            listvalues = json.loads(data.read())
+            seamfix = {}
+            for item in listvalues:
+                seamfix[ tuple(item['position']) ] = {
+                    'normal': tuple( item['normal'] ),
+                    'tangent': tuple( item['tangent'] )
+                }
+            Globals.SEAM_FIX = seamfix
     
     @staticmethod
     def get_bone_name(fnv32hash: int) -> str:

@@ -27,6 +27,7 @@ from .models.geom import Geom
 from .models.vertex import Vertex
 from .geomwriter import GeomWriter
 from .util.fnv import fnv32
+from .util.globals import Globals
 
 class GeomExport(Operator, ExportHelper):
     """Sims 3 GEOM Importer"""
@@ -200,6 +201,12 @@ class GeomExport(Operator, ExportHelper):
                 avg = (total / count).normalized().to_tuple(5)
                 for n in set:
                     g_element_data[n].tangent = avg
+        
+        # Apply Seam fix
+        for v in g_element_data:
+            if not v.position in Globals.SEAM_FIX.keys():
+                continue
+            v.normal = Globals.SEAM_FIX[v.position]['normal']
 
         # Bonehashes
         geomdata.bones = []
