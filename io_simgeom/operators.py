@@ -20,6 +20,7 @@ import bmesh
 
 from .util.fnv import fnv32
 
+
 class SIMGEOM_OT_recalc_ids(bpy.types.Operator):
     """Recalculate Vertex IDs"""
     bl_idname = "simgeom.recalc_ids"
