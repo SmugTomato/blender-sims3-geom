@@ -31,9 +31,9 @@ from .util.fnv              import fnv32
 from .util.globals          import Globals
 
 
-class GeomExport(Operator, ExportHelper):
-    """Sims 3 GEOM Importer"""
-    bl_idname = "export.sims3_geom"
+class SIMGEOM_OT_export_geom(Operator, ExportHelper):
+    """Sims 3 GEOM Exporter"""
+    bl_idname = "simgeom.export_geom"
     bl_label = "Export .simgeom"
     bl_options = {'REGISTER', 'UNDO'}
 

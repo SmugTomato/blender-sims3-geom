@@ -16,6 +16,7 @@
 # along with BlenderGeom.  If not, see <http://www.gnu.org/licenses/>.
 
 import bpy
+import os
 
 from mathutils              import Vector, Quaternion
 from bpy_extras.io_utils    import ImportHelper
@@ -23,10 +24,11 @@ from bpy.props              import StringProperty, BoolProperty, EnumProperty
 from bpy.types              import Operator
 
 from .rigloader             import RigLoader
+from .util.globals          import Globals
 
-class RigImport(Operator, ImportHelper):
+class SIMGEOM_OT_import_rig(Operator, ImportHelper):
     """Sims 3 Rig Importer"""
-    bl_idname = "import.sims3_grannyrig"
+    bl_idname = "simgeom.import_rig"
     bl_label = "Import .grannyrig"
     bl_options = {'REGISTER', 'UNDO'}
 
@@ -41,6 +43,9 @@ class RigImport(Operator, ImportHelper):
 
 
     def execute(self, context):
+        if not os.path.exists(self.filepath):
+            return {'CANCELLED'}
+
         context.view_layer.active_layer_collection = context.view_layer.layer_collection.children[-1]
         rigdata = RigLoader.loadRig(self.filepath)
 

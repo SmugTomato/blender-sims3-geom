@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with BlenderGeom.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
 from typing                 import List
 
 import bpy
@@ -31,22 +32,39 @@ from .geomloader            import GeomLoader
 from .util.globals          import Globals
 
 
-class GeomImport(Operator, ImportHelper):
+class SIMGEOM_OT_import_geom(Operator, ImportHelper):
     """Sims 3 GEOM Importer"""
-    bl_idname = "import.sims3_geom"
+    bl_idname = "simgeom.import_geom"
     bl_label = "Import .simgeom"
     bl_options = {'REGISTER', 'UNDO'}
 
     # ImportHelper mixin class uses this
     filename_ext = ".simgeom"
-
-    filter_glob: StringProperty(
-            default="*.simgeom",
-            options={'HIDDEN'},
-            maxlen=255,  # Max internal buffer length, longer would be clamped.
-            )
+    filter_glob: StringProperty( default = "*.simgeom", options = {'HIDDEN'} )
+    rig_type:   EnumProperty(
+        name = "Choose Rig:",
+        description = "Rig to import alongside the mesh",
+        items = [
+            ('None','None','None'),
+            ('auRig','Adult','auRig'), 
+            ('cuRig','Child','cuRig'), 
+            ('puRig','Toddler','puRig'), 
+            ('adRig','Dog Adult','adRig'),
+            ('alRig','Dog Adult(small)','alRig'),
+            ('cdRig','Dog Child','cdRig'),
+            ('acRig','Cat Adult','acRig'),
+            ('ccRig','Cat Child','ccRig'),
+            ('ahRig','Horse Adult','ahRig'),
+            ('chRig','Horse Child','chRig')
+        ],
+        default = 'None'
+    )
 
     def execute(self, context):
+        # Import Rig, checks are done in Rig Importer
+        rigpath = Globals.ROOTDIR + '/data/rigs/' + self.rig_type + '.grannyrig'
+        bpy.ops.simgeom.import_rig(filepath = rigpath)
+
         # Load the GEOM data
         geomdata = GeomLoader.readGeom(self.filepath)
 
@@ -178,4 +196,3 @@ class GeomImport(Operator, ImportHelper):
 
         for area in bpy.context.screen.areas:
             area.tag_redraw()
-

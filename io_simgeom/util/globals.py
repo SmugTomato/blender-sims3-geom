@@ -27,8 +27,11 @@ class Globals:
     CAS_INDICES: dict
     SEAM_FIX: dict
 
+    ROOTDIR: str
+
     @staticmethod
     def init(rootdir: str):
+        Globals.ROOTDIR = rootdir
         datadir = rootdir + "/data/json/"
         with open(datadir + "hashmap.json", "r") as data:
             Globals.HASHMAP = json.loads(data.read())

@@ -33,9 +33,9 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
 
         col = layout.column(align=True)
         row = col.row(align=True)
-        row.operator("import.sims3_geom", text="Import GEOM", icon='IMPORT')
-        row.operator("export.sims3_geom", text="Export GEOM", icon='EXPORT')
-        col.operator("import.sims3_grannyrig", text="Import Rig", icon='ARMATURE_DATA')
+        row.operator("simgeom.import_geom", text="Import GEOM", icon='IMPORT')
+        row.operator("simgeom.export_geom", text="Export GEOM", icon='EXPORT')
+        col.operator("simgeom.import_rig", text="Import Rig", icon='ARMATURE_DATA')
 
         if not obj or not obj.get('__GEOM__'):
             return

@@ -21,16 +21,6 @@ import bmesh
 from .util.fnv import fnv32
 
 
-# Can be used to give users feedback
-# Should probably maybe reimplemented to work globally
-def ShowMessageBox(message = "Message", title = "Finished", icon = 'INFO'):
-
-    def draw(self, context):
-        self.layout.label(text = message)
-
-    bpy.context.window_manager.popup_menu(draw, title = title, icon = icon)
-
-
 class SIMGEOM_OT_recalc_ids(bpy.types.Operator):
     """Recalculate Vertex IDs"""
     bl_idname = "simgeom.recalc_ids"
@@ -58,7 +48,7 @@ class SIMGEOM_OT_recalc_ids(bpy.types.Operator):
         obj['vert_ids'] = ids
 
         message = "Assigned " + str(len(ids)) + " Unique IDs to " + str(len(mesh.vertices)) + " vertices."
-        ShowMessageBox(message)
+        self.report({'INFO'}, message)
 
         return {'FINISHED'}
     
@@ -91,7 +81,7 @@ class SIMGEOM_OT_split_seams(bpy.types.Operator):
         bm.free()
 
         message = "Edges Split, make sure to recalculate IDs!"
-        ShowMessageBox(message, icon='ERROR')
+        self.report({'INFO'}, message)
 
         return {'FINISHED'}
 
@@ -121,6 +111,6 @@ class SIMGEOM_OT_clean_groups(bpy.types.Operator):
                 removed += 1
                 obj.vertex_groups.remove(obj.vertex_groups[v[0]])
         message = "Removed " + str(removed) + " Unused Vertex Groups."
-        ShowMessageBox(message)
+        self.report({'INFO'}, message)
 
         return {'FINISHED'}
