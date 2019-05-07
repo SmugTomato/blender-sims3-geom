@@ -41,20 +41,16 @@ class RigImport(Operator, ImportHelper):
 
 
     def execute(self, context):
+        context.view_layer.active_layer_collection = context.view_layer.layer_collection.children[-1]
         rigdata = RigLoader.loadRig(self.filepath)
 
-        bpy.ops.object.mode_set(mode='OBJECT')
+        rigthing = bpy.data.armatures.new(name=rigdata['name'])
+        rig = bpy.data.objects.new(rigdata['name'], rigthing)
 
-        # RIG IMPORT
-        bpy.ops.object.add(
-            type='ARMATURE',
-            enter_editmode=True,
-            location=(0,0,0)
-        )
-
-        rig = bpy.context.object
+        context.scene.collection.children[-1].objects.link(rig)
         rig.select_set(True)
-        rig.name = rigdata['name']
+        bpy.context.view_layer.objects.active = rig
+        bpy.ops.object.mode_set(mode='EDIT')
         rig.show_in_front = True
 
         # Import bones to placeholder location and set parents
@@ -109,7 +105,7 @@ class RigImport(Operator, ImportHelper):
         boneshape = bpy.context.active_object
         boneshape.data.name = boneshape.name = "rig_boneshape"
         boneshape.use_fake_user = True
-        bpy.context.scene.collection.children[0].objects.unlink(boneshape) # don't want the user deleting this
+        bpy.context.scene.collection.children[-1].objects.unlink(boneshape) # don't want the user deleting this
         bpy.context.view_layer.objects.active = rig
         bpy.ops.object.mode_set(mode='POSE')
         for bone in rig.pose.bones:

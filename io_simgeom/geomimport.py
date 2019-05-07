@@ -46,6 +46,7 @@ class GeomImport(Operator, ImportHelper):
             )
 
     def execute(self, context):
+        context.view_layer.active_layer_collection = context.view_layer.layer_collection.children[-1]
         geomdata = GeomLoader.readGeom(self.filepath)
         scene = bpy.context.scene
 
@@ -79,9 +80,10 @@ class GeomImport(Operator, ImportHelper):
 
         mesh.from_pydata(vertices, [], faces)
 
-        scene.collection.objects.link(obj)
+        scene.collection.children[-1].objects.link(obj)
         obj.select_set(True)
         bpy.context.view_layer.objects.active = obj
+        
 
         # Shade smooth and set autosmooth for sharp edges
         mesh.use_auto_smooth = True
