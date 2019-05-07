@@ -201,17 +201,32 @@ class GeomExport(Operator, ExportHelper):
                 avg = (total / count).normalized().to_tuple(5)
                 for n in set:
                     g_element_data[n].tangent = avg
-        
-        # Apply Seam fix
-        for v in g_element_data:
-            if not v.position in Globals.SEAM_FIX.keys():
-                continue
-            v.normal = Globals.SEAM_FIX[v.position]['normal']
 
         # Bonehashes
         geomdata.bones = []
         for group in obj.vertex_groups:
             geomdata.bones.append(group.name)
+        
+        # Apply Seam fix
+        # Fixes normals and bone assignments on seams
+        for v in g_element_data:
+            if not v.position in Globals.SEAM_FIX.keys():
+                continue
+            v.normal = Globals.SEAM_FIX[v.position]['normal']
+            assign = Globals.SEAM_FIX[v.position]['assign']
+            weight = Globals.SEAM_FIX[v.position]['weight']
+            v.assignment = [0,0,0,0]
+            v.weights = [0,0,0,0]
+            for i in range(4):
+                # No reason to clutter the bonehash array with unused bones
+                if weight[i] == 0:
+                    continue
+                # If the bone is actually used, add it to the bonehash array
+                if not assign[i] in geomdata.bones:
+                    geomdata.bones.append(assign[i])
+                # Set assignment and weight of the bone
+                v.assignment[i] = geomdata.bones.index(assign[i])
+                v.weights[i] = weight[i]
         
         # Remaining data
         geomdata.internal_chunks = []

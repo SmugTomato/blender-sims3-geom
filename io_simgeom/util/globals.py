@@ -23,7 +23,9 @@ class Globals:
             for item in listvalues:
                 seamfix[ tuple(item[0]) ] = {
                     'normal': tuple( item[1] ),
-                    'tangent': tuple( item[2] )
+                    'tangent': tuple( item[2] ),
+                    'assign': tuple( item[3] ),
+                    'weight': tuple( item[4] )
                 }
             Globals.SEAM_FIX = seamfix
     

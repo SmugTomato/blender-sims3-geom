@@ -104,5 +104,6 @@ class SIMGEOM_OT_clean_groups(bpy.types.Operator):
                 removed += 1
                 obj.vertex_groups.remove(obj.vertex_groups[v[0]])
         print("Removed " + str(removed) + " Unused Vertex Groups.")
+        print(str(len(max_weight)) + " Vertex Groups Remaining.")
 
         return {'FINISHED'}
