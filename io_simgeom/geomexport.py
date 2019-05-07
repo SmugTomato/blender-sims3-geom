@@ -15,19 +15,21 @@
 # You should have received a copy of the GNU General Public License
 # along with BlenderGeom.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import List
+from typing                 import List
 
 import bpy
-from mathutils import Vector, Quaternion
-from bpy_extras.io_utils import ExportHelper
-from bpy.props import StringProperty, BoolProperty, EnumProperty
-from bpy.types import Operator
 
-from .models.geom import Geom
-from .models.vertex import Vertex
-from .geomwriter import GeomWriter
-from .util.fnv import fnv32
-from .util.globals import Globals
+from mathutils              import Vector, Quaternion
+from bpy_extras.io_utils    import ExportHelper
+from bpy.props              import StringProperty, BoolProperty, EnumProperty
+from bpy.types              import Operator
+
+from .models.geom           import Geom
+from .models.vertex         import Vertex
+from .geomwriter            import GeomWriter
+from .util.fnv              import fnv32
+from .util.globals          import Globals
+
 
 class GeomExport(Operator, ExportHelper):
     """Sims 3 GEOM Importer"""
@@ -43,25 +45,15 @@ class GeomExport(Operator, ExportHelper):
             options={'HIDDEN'},
             maxlen=255,  # Max internal buffer length, longer would be clamped.
             )
-    
-    # Can be used to give users feedback
-    def ShowMessageBox(self, message = "", title = "Message Box", icon = 'INFO'):
-
-        def draw(self, context):
-            self.layout.label(text = message)
-
-        bpy.context.window_manager.popup_menu(draw, title = title, icon = icon)
 
     def execute(self, context):
         geomdata = Geom()
-
         obj = context.active_object
         mesh = obj.data
 
-        # Prefill vertex array
-        g_element_data: List[Vertex] = [None]*len(mesh.vertices)
-
-        for i, v in enumerate(mesh.vertices):
+        # Create the GEOM vertex array and fill it with the readily available values
+        g_element_data: List[Vertex] = []
+        for v in mesh.vertices:
             vtx = Vertex()
             vtx.position = (v.co.x, v.co.z, -v.co.y)
 
@@ -74,14 +66,15 @@ class GeomExport(Operator, ExportHelper):
             vtx.weights = weights
             vtx.assignment = assignment
 
-            g_element_data[i] = vtx
+            g_element_data.append(vtx)
         
-        # Vertex IDs
+        # Set Vertex IDs
         for key, values in obj.get('vert_ids').items():
             for v in values:
                 g_element_data[v].vertex_id = [int(key, 0)]
         
         # Normals
+        # This isn't quite perfect yet, but close enough
         # Get seperated egdes that need smoothing
         soft_edges = {}
         for edge in mesh.edges:
@@ -123,39 +116,40 @@ class GeomExport(Operator, ExportHelper):
                 for n in set:
                     mesh.vertices[n].normal = avg
 
-        # Set normals in element data
+        # Set normals in GEOM vertex array
         for v in mesh.vertices:
             g_element_data[v.index].normal = (v.normal.x, v.normal.z, -v.normal.y)  
         
-        # Faces
-        geomdata.groups = []
+        # Set Faces
+        geomdata.faces = []
         for face in mesh.polygons:
-            geomdata.groups.append( (face.vertices[0], face.vertices[1], face.vertices[2]) )
+            geomdata.faces.append( (face.vertices[0], face.vertices[1], face.vertices[2]) )
         
-        # UV Map
+        # Prefill the UVMap list
         uv_count = len(mesh.uv_layers)
         uvs = []
         for _ in mesh.vertices:
             l = [None]*uv_count
             uvs.append(l)
 
+        # Get UV Data per layer
         for n, uv_layer in enumerate(mesh.uv_layers):
             mesh.uv_layers.active = uv_layer
             for i, polygon in enumerate(mesh.polygons):
                 for j, loopindex in enumerate(polygon.loop_indices):
                     meshuvloop = mesh.uv_layers.active.data[loopindex]
                     uv = ( meshuvloop.uv[0], -meshuvloop.uv[1] + 1 )
-                    vertidx = geomdata.groups[i][j]
-                    # g_element_data[vertidx].uv.append(uv)
+                    vertidx = geomdata.faces[i][j]
                     uvs[vertidx][n] = uv
         
+        # Set UV Data per layer in GEOM vertex array
         for i, uv in enumerate(uvs):
             g_element_data[i].uv = uv
         
-        # Tangents
+        # Calculating Tangents
         # http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-13-normal-mapping/
         tangents = [[] for _ in range(len(g_element_data))]
-        for face in geomdata.groups:
+        for face in geomdata.faces:
             # Position Shortcuts
             v0 = Vector(g_element_data[face[0]].position)
             v1 = Vector(g_element_data[face[1]].position)
@@ -202,7 +196,7 @@ class GeomExport(Operator, ExportHelper):
                 for n in set:
                     g_element_data[n].tangent = avg
 
-        # Bonehashes
+        # Fill the bone array
         geomdata.bones = []
         for group in obj.vertex_groups:
             geomdata.bones.append(group.name)
@@ -228,7 +222,7 @@ class GeomExport(Operator, ExportHelper):
                 v.assignment[i] = geomdata.bones.index(assign[i])
                 v.weights[i] = weight[i]
         
-        # Remaining data
+        # Set Header Info
         geomdata.internal_chunks = []
         for x in obj['rcol_chunks']:
             geomdata.internal_chunks.append(x.to_dict())

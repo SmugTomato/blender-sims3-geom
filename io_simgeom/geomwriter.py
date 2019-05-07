@@ -1,7 +1,24 @@
-from .models.geom import Geom
-from .models.vertex import Vertex
-from .util.bytewriter import ByteWriter
-from .util import fnv
+# Copyright (C) 2019 SmugTomato
+# 
+# This file is part of BlenderGeom.
+# 
+# BlenderGeom is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# BlenderGeom is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with BlenderGeom.  If not, see <http://www.gnu.org/licenses/>.
+
+from .models.geom       import Geom
+from .models.vertex     import Vertex
+from .util.bytewriter   import ByteWriter
+from .util              import fnv
 
 """
 Write out a new GEOM File sequentially
@@ -101,8 +118,8 @@ class GeomWriter:
 
         b.setUInt32(1)
         b.setByte(2)
-        b.setUInt32(len(geomData.groups) * 3)
-        for face in geomData.groups:
+        b.setUInt32(len(geomData.faces) * 3)
+        for face in geomData.faces:
             for vert in face:
                 b.setUInt16(vert)
         b.setUInt32(geomData.skin_controller_index)

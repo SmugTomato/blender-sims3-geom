@@ -17,12 +17,12 @@
 
 import bpy
 
-from mathutils import Vector, Quaternion
-from bpy_extras.io_utils import ImportHelper
-from bpy.props import StringProperty, BoolProperty, EnumProperty
-from bpy.types import Operator
+from mathutils              import Vector, Quaternion
+from bpy_extras.io_utils    import ImportHelper
+from bpy.props              import StringProperty, BoolProperty, EnumProperty
+from bpy.types              import Operator
 
-from .rigloader import RigLoader
+from .rigloader             import RigLoader
 
 class RigImport(Operator, ImportHelper):
     """Sims 3 Rig Importer"""

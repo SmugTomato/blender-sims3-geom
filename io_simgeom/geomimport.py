@@ -15,20 +15,21 @@
 # You should have received a copy of the GNU General Public License
 # along with BlenderGeom.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import List
+from typing                 import List
 
 import bpy
 import bmesh
 
-from mathutils import Vector, Quaternion
-from bpy_extras.io_utils import ImportHelper
-from bpy.props import StringProperty, BoolProperty, EnumProperty
-from bpy.types import Operator
-from rna_prop_ui import rna_idprop_ui_prop_get
+from mathutils              import Vector, Quaternion
+from bpy_extras.io_utils    import ImportHelper
+from bpy.props              import StringProperty, BoolProperty, EnumProperty
+from bpy.types              import Operator
+from rna_prop_ui            import rna_idprop_ui_prop_get
 
-from .geomloader import GeomLoader
-from .models.geom import Geom
-from .util.globals import Globals
+from .models.geom           import Geom
+from .geomloader            import GeomLoader
+from .util.globals          import Globals
+
 
 class GeomImport(Operator, ImportHelper):
     """Sims 3 GEOM Importer"""
@@ -46,11 +47,14 @@ class GeomImport(Operator, ImportHelper):
             )
 
     def execute(self, context):
-        context.view_layer.active_layer_collection = context.view_layer.layer_collection.children[-1]
+        # Load the GEOM data
         geomdata = GeomLoader.readGeom(self.filepath)
-        scene = bpy.context.scene
 
-        # Fill a Dictionairy with hexed ID as key and List of vertex indices
+        # Set Active Collection
+        context.view_layer.active_layer_collection = context.view_layer.layer_collection.children[-1]
+        scene = context.scene
+
+        # Fill a Dictionairy with hexed Vertex ID as key and List of vertex indices
         lowest_id = 0x7fffffff
         ids = {}
         if geomdata.element_data[0].vertex_id:
@@ -63,38 +67,35 @@ class GeomImport(Operator, ImportHelper):
                     ids[hex(v.vertex_id[0])].append(i)
 
         # Fix EA's stupid rounding errors on supposedly identically placed vertices
+        # This is achieved by setting verts with the same ID to the same position
         for verts in ids.values():
             if len(verts) < 2:
                 continue
             for i in range(len(verts)-1):
                 geomdata.element_data[verts[i+1]].position = geomdata.element_data[verts[0]].position
 
-        vertices = []
-        for v in geomdata.element_data:
-            vert = v.position
-            vertices.append( (vert[0], -vert[2], vert[1]) )
-        faces = geomdata.groups
-
-        mesh = bpy.data.meshes.new("geom")
-        obj = bpy.data.objects.new("geom", mesh)
-
+        # Build vertex array and get face array to build the mesh
+        vertices = [ (v.position[0], -v.position[2], v.position[1] ) for v in geomdata.element_data ]
+        faces    = geomdata.faces
+        mesh     = bpy.data.meshes.new("geom")
+        obj      = bpy.data.objects.new("geom", mesh)
         mesh.from_pydata(vertices, [], faces)
 
+        # Link the newly created object to the active collection
         scene.collection.children[-1].objects.link(obj)
         obj.select_set(True)
         bpy.context.view_layer.objects.active = obj
-        
 
         # Shade smooth and set autosmooth for sharp edges
         mesh.use_auto_smooth = True
         mesh.auto_smooth_angle = 3.14
         bpy.ops.object.shade_smooth()
 
-        # Vertex Groups
+        # Set Vertex Groups
         for bone in geomdata.bones:
             obj.vertex_groups.new(name=bone)
         
-        # Group Weights
+        # Set Vertex Group Weights
         for i, vert in enumerate(geomdata.element_data):
             for j in range(4):
                 groupname = geomdata.bones[vert.assignment[j]]
@@ -103,7 +104,7 @@ class GeomImport(Operator, ImportHelper):
                 if weight > 0:
                     vertgroup.add( [i], weight, 'ADD' )
         
-        # UV Coordinates
+        # Set UV Coordinates for every UV channel
         for i in range(len(geomdata.element_data[0].uv)):
             mesh.uv_layers.new(name='UV_' + str(i))
             mesh.uv_layers.active = mesh.uv_layers['UV_' + str(i)]
@@ -111,83 +112,15 @@ class GeomImport(Operator, ImportHelper):
             for j, polygon in enumerate(mesh.polygons):
                 for k, loopindex in enumerate(polygon.loop_indices):
                     meshuvloop = mesh.uv_layers.active.data[loopindex]
-                    vertex_index = geomdata.groups[j][k]
+                    vertex_index = geomdata.faces[j][k]
                     uv = geomdata.element_data[vertex_index].uv[i]
                     meshuvloop.uv = (uv[0], -uv[1] + 1)
 
-
-
-        # bpy.ops.object.mode_set(mode='EDIT')
-        # bm = bmesh.from_edit_mesh(mesh)
-        # uv_layer = bm.loops.layers.uv.verify()
-
-        # for face in bm.faces:
-        #     for loop in face.loops:
-        #         loop_uv = loop[uv_layer]
-        #         uv = geomdata.element_data[loop.vert.index].uv
-        #         loop_uv.uv = (uv[0], -uv[1] + 1.0)
-
-        # bmesh.update_edit_mesh(mesh)
-        # bm.free()
-
         bpy.ops.object.mode_set(mode='OBJECT')
-
-        # Set Custom Properties
-        self.add_prop(obj, '__GEOM__', 1)
-        self.add_prop(obj, 'rcol_chunks', geomdata.internal_chunks)
-        self.add_prop(obj, 'rcol_external', geomdata.external_resources)
-        self.add_prop(obj, 'shaderdata', geomdata.shaderdata)
-        self.add_prop(obj, 'mergegroup', geomdata.merge_group)
-        self.add_prop(obj, 'sortorder', geomdata.sort_order)
-        self.add_prop(obj, 'skincontroller', geomdata.skin_controller_index)
-        self.add_prop(obj, 'tgis', geomdata.tgi_list)
-        self.add_prop(obj, 'embedded_id', geomdata.embeddedID)
         
-        self.add_prop(obj, 'vert_ids', ids)
-        start_id_descript = "Starting Vertex ID"
-        for key, value in Globals.CAS_INDICES.items():
-            start_id_descript += "\n" + str(key) + " - " + str(value)
-        self.add_prop(obj, 'start_id', lowest_id, descript = start_id_descript)
-
-        # SET SHARP
-        # d = {}
-        # for i, v in enumerate(geomdata.element_data):
-        #     k = (v.normal[0], v.normal[1], v.normal[2])
-        #     if not k in d.keys():
-        #         d[k] = [i]
-        #     else:
-        #         d[k].append(i)
-        # print(len(d), "Unique Normals")
-
-        # multi_normals = []
-        # for v in d.values():
-        #     if len(v) < 2:
-        #         continue
-        #     for n in v:
-        #         multi_normals.append(n)
-        
-        #
-        # testverts = []
-        # for val in ids.values():
-        #     if len(val) < 2:
-        #         continue
-        #     for n in val:
-        #         testverts.append(n)
-        # print(len(testverts), "Testverts")
-
-        # bpy.ops.object.mode_set(mode='EDIT')
-        # bm = bmesh.from_edit_mesh(mesh)
-
-        # for edge in bm.edges:
-        #     if edge.verts[0].index in testverts:
-        #         if edge.verts[1].index in testverts:
-        #             edge.smooth = False
-        
-        # bmesh.update_edit_mesh(mesh)
-        # bpy.ops.object.mode_set(mode='OBJECT')
-
+        # Fill a dictionairy with edge positions(center) as keys to find double edges
         edges = {}
-        for face in geomdata.groups:
+        for face in geomdata.faces:
             for i in range(len(face)):
                 idx = i + 1
                 if i == len(face)-1:
@@ -204,8 +137,6 @@ class GeomImport(Operator, ImportHelper):
         bm = bmesh.new()
         bm.from_mesh(mesh)
 
-        # bmesh.ops.remove_doubles(bm, verts=bm.verts)
-
         # Check mesh edges against edge dictionary, mark hard edges sharp
         numedges = 0
         for e in bm.edges:
@@ -217,6 +148,21 @@ class GeomImport(Operator, ImportHelper):
         bm.to_mesh(mesh)
         bm.free()
 
+        # Set Custom Properties
+        self.add_prop(obj, '__GEOM__', 1)
+        self.add_prop(obj, 'rcol_chunks', geomdata.internal_chunks)
+        self.add_prop(obj, 'rcol_external', geomdata.external_resources)
+        self.add_prop(obj, 'shaderdata', geomdata.shaderdata)
+        self.add_prop(obj, 'mergegroup', geomdata.merge_group)
+        self.add_prop(obj, 'sortorder', geomdata.sort_order)
+        self.add_prop(obj, 'skincontroller', geomdata.skin_controller_index)
+        self.add_prop(obj, 'tgis', geomdata.tgi_list)
+        self.add_prop(obj, 'embedded_id', geomdata.embeddedID)
+        self.add_prop(obj, 'vert_ids', ids)
+        start_id_descript = "Starting Vertex ID"
+        for key, value in Globals.CAS_INDICES.items():
+            start_id_descript += "\n" + str(key) + " - " + str(value)
+        self.add_prop(obj, 'start_id', lowest_id, descript = start_id_descript)
 
         return {'FINISHED'}
 

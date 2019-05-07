@@ -1,12 +1,3 @@
-bl_info = {
-    "name": "Sims 3 GEOM Tools",
-    "category": "Import-Export",
-	"version": (0, 11),
-	"blender": (2, 80, 0),
-	"location": "File > Import/Export",
-	"description": "Importer and exporter for Sims 3 GEOM(.simgeom) files"
-}
-
 # Copyright (C) 2019 SmugTomato
 # 
 # This file is part of BlenderGeom.
@@ -26,19 +17,39 @@ bl_info = {
 
 # Set Current Working Directory to addon root folder
 # This needs to be done to find the included data files
+
 import os
 
 import bpy
 
-from .rigimport import RigImport
-from .geomimport import GeomImport
-from .geomexport import GeomExport
-from .util.globals import Globals
-from .operators import SIMGEOM_OT_recalc_ids, SIMGEOM_OT_split_seams, SIMGEOM_OT_clean_groups
-from .ui import SIMGEOM_PT_utility_panel
+from .rigimport     import RigImport
+from .geomimport    import GeomImport
+from .geomexport    import GeomExport
+from .util.globals  import Globals
+from .operators     import SIMGEOM_OT_recalc_ids, SIMGEOM_OT_split_seams, SIMGEOM_OT_clean_groups
+from .ui            import SIMGEOM_PT_utility_panel
+
+bl_info = {
+    "name": "Sims 3 GEOM Tools",
+    "category": "Import-Export",
+	"version": (0, 11),
+	"blender": (2, 80, 0),
+	"location": "File > Import/Export",
+	"description": "Importer and exporter for Sims 3 GEOM(.simgeom) files"
+}
 
 rootdir = os.path.dirname(os.path.realpath(__file__))
 Globals.init(rootdir)
+
+classes = [
+    GeomImport,
+    GeomExport,
+    RigImport,
+    SIMGEOM_PT_utility_panel,
+    SIMGEOM_OT_clean_groups,
+    SIMGEOM_OT_recalc_ids,
+    SIMGEOM_OT_split_seams
+]
 
 # Only needed if you want to add into a dynamic menu
 def menu_func_import(self, context):
@@ -49,24 +60,14 @@ def menu_func_export(self, context):
     self.layout.operator(GeomExport.bl_idname, text="Sims 3 GEOM (.simgeom)")
 
 def register():
-    bpy.utils.register_class(GeomImport)
-    bpy.utils.register_class(GeomExport)
-    bpy.utils.register_class(RigImport)
-    bpy.utils.register_class(SIMGEOM_OT_recalc_ids)
-    bpy.utils.register_class(SIMGEOM_OT_split_seams)
-    bpy.utils.register_class(SIMGEOM_OT_clean_groups)
-    bpy.utils.register_class(SIMGEOM_PT_utility_panel)
+    for item in classes:
+        bpy.utils.register_class(item)
     bpy.types.TOPBAR_MT_file_import.append(menu_func_import)
     bpy.types.TOPBAR_MT_file_export.append(menu_func_export)
 
 def unregister():
-    bpy.utils.unregister_class(GeomImport)
-    bpy.utils.unregister_class(GeomExport)
-    bpy.utils.unregister_class(RigImport)
-    bpy.utils.unregister_class(SIMGEOM_OT_recalc_ids)
-    bpy.utils.unregister_class(SIMGEOM_OT_split_seams)
-    bpy.utils.unregister_class(SIMGEOM_OT_clean_groups)
-    bpy.utils.unregister_class(SIMGEOM_PT_utility_panel)
+    for item in classes:
+        bpy.utils.unregister_class(item)
     bpy.types.TOPBAR_MT_file_import.remove(menu_func_import)
     bpy.types.TOPBAR_MT_file_export.remove(menu_func_export)
 

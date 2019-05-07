@@ -1,7 +1,22 @@
+# Copyright (C) 2019 SmugTomato
+# 
+# This file is part of BlenderGeom.
+# 
+# BlenderGeom is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# BlenderGeom is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with BlenderGeom.  If not, see <http://www.gnu.org/licenses/>.
+
 import bpy
 
-# filename = "S:\\Projects\\Python\\Sims3Geom\\io_simgeom\\ui.py"
-# exec(compile(open(filename).read(), filename, 'exec'))
 
 class SIMGEOM_PT_utility_panel(bpy.types.Panel):
     """Creates a Panel in the Object properties window"""
@@ -10,12 +25,6 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
     bl_context = "scene"
-
-    # Placeholder
-    bpy.types.Scene.simgeom_lod0 = bpy.props.PointerProperty(name="LOD 0", type=bpy.types.Object)
-    bpy.types.Scene.simgeom_lod1 = bpy.props.PointerProperty(name="LOD 1", type=bpy.types.Object)
-    bpy.types.Scene.simgeom_lod2 = bpy.props.PointerProperty(name="LOD 2", type=bpy.types.Object)
-    bpy.types.Scene.simgeom_lod3 = bpy.props.PointerProperty(name="LOD 3", type=bpy.types.Object)
 
     def draw(self, context):
         layout = self.layout
@@ -45,10 +54,3 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
         col.label(text="Misc.")
         col.operator("simgeom.split_seams", text="Split UV Seams", icon='MOD_EDGESPLIT')
         col.operator("simgeom.clean_groups", text="Clean Empty Bone Groups", icon='GROUP_VERTEX')
-
-        col = layout.column(align=True)
-        col.label(text="LOD (Not in use yet):")
-        col.prop(scene, 'simgeom_lod0')
-        col.prop(scene, 'simgeom_lod1')
-        col.prop(scene, 'simgeom_lod2')
-        col.prop(scene, 'simgeom_lod3')
