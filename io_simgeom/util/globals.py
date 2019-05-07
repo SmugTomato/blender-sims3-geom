@@ -17,13 +17,13 @@ class Globals:
             Globals.HASHMAP = json.loads(data.read())
         with open(datadir + "variables.json", "r") as data:
             Globals.CAS_INDICES = json.loads(data.read())['cas_indices']
-        with open(datadir + "afFix.json", "r") as data:
+        with open(datadir + "seamfix.json", "r") as data:
             listvalues = json.loads(data.read())
             seamfix = {}
             for item in listvalues:
-                seamfix[ tuple(item['position']) ] = {
-                    'normal': tuple( item['normal'] ),
-                    'tangent': tuple( item['tangent'] )
+                seamfix[ tuple(item[0]) ] = {
+                    'normal': tuple( item[1] ),
+                    'tangent': tuple( item[2] )
                 }
             Globals.SEAM_FIX = seamfix
     

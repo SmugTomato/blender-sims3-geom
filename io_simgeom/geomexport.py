@@ -76,7 +76,7 @@ class GeomExport(Operator, ExportHelper):
 
             g_element_data[i] = vtx
         
-        # Vertex IDs    
+        # Vertex IDs
         for key, values in obj.get('vert_ids').items():
             for v in values:
                 g_element_data[v].vertex_id = [int(key, 0)]

@@ -52,13 +52,14 @@ class GeomImport(Operator, ImportHelper):
         # Fill a Dictionairy with hexed ID as key and List of vertex indices
         lowest_id = 0x7fffffff
         ids = {}
-        for i, v in enumerate(geomdata.element_data):
-            if v.vertex_id[0] < lowest_id:
-                lowest_id = v.vertex_id[0]
-            if not hex(v.vertex_id[0]) in ids:
-                ids[hex(v.vertex_id[0])] = [i]
-            else:
-                ids[hex(v.vertex_id[0])].append(i)
+        if geomdata.element_data[0].vertex_id:
+            for i, v in enumerate(geomdata.element_data):
+                if v.vertex_id[0] < lowest_id:
+                    lowest_id = v.vertex_id[0]
+                if not hex(v.vertex_id[0]) in ids:
+                    ids[hex(v.vertex_id[0])] = [i]
+                else:
+                    ids[hex(v.vertex_id[0])].append(i)
 
         # Fix EA's stupid rounding errors on supposedly identically placed vertices
         for verts in ids.values():
