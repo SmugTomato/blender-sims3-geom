@@ -77,3 +77,32 @@ class SIMGEOM_OT_split_seams(bpy.types.Operator):
         bm.free()
 
         return {'FINISHED'}
+
+
+class SIMGEOM_OT_clean_groups(bpy.types.Operator):
+    """Delete empty vertex groups"""
+    bl_idname = "simgeom.clean_groups"
+    bl_label = "Delete Empty Vertex Groups"
+
+    def execute(self, context):
+        obj = context.active_object
+
+        max_weight = {}
+        for g in obj.vertex_groups:
+            max_weight[g.index] = [g.name, 0.0]
+        
+        for v in obj.data.vertices:
+            for g in v.groups:
+                gn = g.group
+                weight = obj.vertex_groups[g.group].weight(v.index)
+                if (max_weight.get(gn)[1] is None or weight > max_weight[gn][1]):
+                    max_weight[gn][1] = weight
+
+        removed = 0
+        for k, v in max_weight.items():
+            if v[1] == 0:
+                removed += 1
+                obj.vertex_groups.remove(obj.vertex_groups[v[0]])
+        print("Removed " + str(removed) + " Unused Vertex Groups.")
+
+        return {'FINISHED'}

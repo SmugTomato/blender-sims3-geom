@@ -39,8 +39,12 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
         sub.alignment = 'RIGHT'
         uniques = len(obj.get('vert_ids'))
         sub.label( text = str( obj.get('start_id') + uniques ) + " (" + str(uniques) + ")" )
-        col.operator("simgeom.recalc_ids", text="RECALCULATE IDS", icon='COPY_ID')
-        col.operator("simgeom.split_seams", text="Split UV Seams", icon='COPY_ID')
+        col.operator("simgeom.recalc_ids", text="Recalculate IDs", icon='COPY_ID')
+
+        col = layout.column(align=True)
+        col.label(text="Misc.")
+        col.operator("simgeom.split_seams", text="Split UV Seams", icon='MOD_EDGESPLIT')
+        col.operator("simgeom.clean_groups", text="Clean Empty Bone Groups", icon='GROUP_VERTEX')
 
         col = layout.column(align=True)
         col.label(text="LOD (Not in use yet):")
