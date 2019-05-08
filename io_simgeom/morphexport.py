@@ -88,8 +88,8 @@ class SIMGEOM_OT_export_morphs(Operator, ExportHelper):
             vtx.position = (v.co.x, v.co.z, -v.co.y)
             vtx.position = (
                 (v.co.x - reference_mesh.vertices[v.index].co.x),
-                -(v.co.z - reference_mesh.vertices[v.index].co.z),
-                (v.co.y - reference_mesh.vertices[v.index].co.y)
+                (v.co.z - reference_mesh.vertices[v.index].co.z),
+                -(v.co.y - reference_mesh.vertices[v.index].co.y)
             )
 
             vtx.normal = (0,0,0)
