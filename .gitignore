@@ -5,6 +5,11 @@
 ### Meshes ###
 mesh/*
 
+### Zip Files ###
+*.zip
+*.7z
+*.rar
+
 ### Code ###
 .vscode/*
 !.vscode/settings.json

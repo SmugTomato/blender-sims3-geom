@@ -30,7 +30,7 @@ from .operators     import *
 from .util.globals  import Globals
 
 bl_info = {
-    "name": "Sims 3 GEOM Tools",
+    "name": "Sims 3 GEOM Tools (Blender 2.80)",
     'author': "SmugTomato",
     "category": "Import-Export",
 	"version": (0, 11),
