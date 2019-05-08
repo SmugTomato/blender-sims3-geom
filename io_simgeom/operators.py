@@ -18,6 +18,10 @@
 import bpy
 import bmesh
 
+from bpy_extras.io_utils    import ExportHelper
+from bpy.props              import StringProperty, BoolProperty, EnumProperty
+from bpy.types              import Operator
+
 from .util.fnv      import fnv32
 from .util.globals  import Globals
 

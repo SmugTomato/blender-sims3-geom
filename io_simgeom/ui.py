@@ -74,7 +74,7 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
         box.prop(scene, 'simgeom_morph_1')
         box.prop(scene, 'simgeom_morph_2')
         box.prop(scene, 'simgeom_morph_3')
-        col.operator("simgeom.export_geom", text="Export Morphs", icon='EXPORT')
+        col.operator("simgeom.export_morphs_helper", text="Export Morphs", icon='EXPORT')
     
     def draw_object(self, context):
         layout = self.layout

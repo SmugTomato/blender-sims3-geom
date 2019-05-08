@@ -25,6 +25,7 @@ import bpy
 from .rigimport     import SIMGEOM_OT_import_rig
 from .geomimport    import SIMGEOM_OT_import_geom
 from .geomexport    import SIMGEOM_OT_export_geom
+from .morphexport   import SIMGEOM_OT_export_morphs
 from .ui            import SIMGEOM_PT_utility_panel
 from .operators     import *
 from .util.globals  import Globals
@@ -48,6 +49,7 @@ classes = [
     SIMGEOM_OT_import_geom,
     SIMGEOM_OT_export_geom,
     SIMGEOM_OT_import_rig_helper,
+    SIMGEOM_OT_export_morphs,
     SIMGEOM_OT_clean_groups,
     SIMGEOM_OT_recalc_ids,
     SIMGEOM_OT_split_seams
