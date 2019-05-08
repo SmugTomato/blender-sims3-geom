@@ -25,6 +25,12 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
     bl_context = "scene"
+    
+    bpy.types.Scene.simgeom_morph_base = bpy.props.PointerProperty(name="Base", type=bpy.types.Object)
+    bpy.types.Scene.simgeom_morph_0 = bpy.props.PointerProperty(name="Thin", type=bpy.types.Object)
+    bpy.types.Scene.simgeom_morph_1 = bpy.props.PointerProperty(name="Fat", type=bpy.types.Object)
+    bpy.types.Scene.simgeom_morph_2 = bpy.props.PointerProperty(name="Fit", type=bpy.types.Object)
+    bpy.types.Scene.simgeom_morph_3 = bpy.props.PointerProperty(name="Pregnant", type=bpy.types.Object)
 
     bpy.types.Scene.simgeom_rig_type = bpy.props.EnumProperty(
         name = "Choose Rig:",
@@ -57,8 +63,22 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
         row.operator("simgeom.import_rig_helper", text="Import Rig", icon='ARMATURE_DATA')
         row.prop(scene, "simgeom_rig_type", expand=False, text="")
 
-        if not obj or not obj.get('__GEOM__'):
-            return
+        if obj is not None and obj.get('__GEOM__') is not None:
+            self.draw_object(context)
+
+        col = layout.column(align=True)
+        col.label(text="Morphs:")
+        box = col.box()
+        box.prop(scene, 'simgeom_morph_base')
+        box.prop(scene, 'simgeom_morph_0')
+        box.prop(scene, 'simgeom_morph_1')
+        box.prop(scene, 'simgeom_morph_2')
+        box.prop(scene, 'simgeom_morph_3')
+        col.operator("simgeom.export_geom", text="Export Morphs", icon='EXPORT')
+    
+    def draw_object(self, context):
+        layout = self.layout
+        obj = context.active_object
 
         col = layout.column(align=True)
         col.label(text="Vertex IDs:")
@@ -71,6 +91,6 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
         col.operator("simgeom.recalc_ids", text="Recalculate IDs", icon='COPY_ID')
 
         col = layout.column(align=True)
-        col.label(text="Misc.")
+        col.label(text="Misc.:")
         col.operator("simgeom.split_seams", text="Split UV Seams", icon='MOD_EDGESPLIT')
         col.operator("simgeom.clean_groups", text="Clean Empty Bone Groups", icon='GROUP_VERTEX')
