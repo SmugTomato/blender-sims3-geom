@@ -18,7 +18,19 @@
 import bpy
 import bmesh
 
-from .util.fnv import fnv32
+from .util.fnv      import fnv32
+from .util.globals  import Globals
+
+
+class SIMGEOM_OT_import_rig_helper(bpy.types.Operator):
+    """Import Rig (From Simgeom Panel)"""
+    bl_idname = "simgeom.import_rig_helper"
+    bl_label = "Import Rig"
+
+    def execute(self, context):
+        rigpath = Globals.ROOTDIR + "/data/rigs/" + context.scene.simgeom_rig_type + ".grannyrig"
+        bpy.ops.simgeom.import_rig(filepath = rigpath)
+        return {'FINISHED'}
 
 
 class SIMGEOM_OT_recalc_ids(bpy.types.Operator):

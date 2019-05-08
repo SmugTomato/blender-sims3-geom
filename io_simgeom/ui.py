@@ -26,6 +26,24 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
     bl_region_type = 'WINDOW'
     bl_context = "scene"
 
+    bpy.types.Scene.simgeom_rig_type = bpy.props.EnumProperty(
+        name = "Choose Rig:",
+        description = "Rig to import alongside the mesh",
+        items = [
+            ('auRig','Adult','auRig'), 
+            ('cuRig','Child','cuRig'), 
+            ('puRig','Toddler','puRig'), 
+            ('adRig','Dog Adult','adRig'),
+            ('alRig','Dog Adult(small)','alRig'),
+            ('cdRig','Dog Child','cdRig'),
+            ('acRig','Cat Adult','acRig'),
+            ('ccRig','Cat Child','ccRig'),
+            ('ahRig','Horse Adult','ahRig'),
+            ('chRig','Horse Child','chRig')
+        ],
+        default = 'auRig'
+    )
+
     def draw(self, context):
         layout = self.layout
         scene = context.scene
@@ -35,7 +53,9 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
         row = col.row(align=True)
         row.operator("simgeom.import_geom", text="Import GEOM", icon='IMPORT')
         row.operator("simgeom.export_geom", text="Export GEOM", icon='EXPORT')
-        col.operator("simgeom.import_rig", text="Import Rig", icon='ARMATURE_DATA')
+        row = col.row(align=True)
+        row.operator("simgeom.import_rig_helper", text="Import Rig", icon='ARMATURE_DATA')
+        row.prop(scene, "simgeom_rig_type", expand=False, text="")
 
         if not obj or not obj.get('__GEOM__'):
             return

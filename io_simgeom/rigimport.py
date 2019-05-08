@@ -41,7 +41,6 @@ class SIMGEOM_OT_import_rig(Operator, ImportHelper):
             maxlen=255,  # Max internal buffer length, longer would be clamped.
             )
 
-
     def execute(self, context):
         if not os.path.exists(self.filepath):
             return {'CANCELLED'}

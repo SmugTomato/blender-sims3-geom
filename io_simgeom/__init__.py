@@ -47,6 +47,7 @@ classes = [
     SIMGEOM_OT_import_rig,
     SIMGEOM_OT_import_geom,
     SIMGEOM_OT_export_geom,
+    SIMGEOM_OT_import_rig_helper,
     SIMGEOM_OT_clean_groups,
     SIMGEOM_OT_recalc_ids,
     SIMGEOM_OT_split_seams
@@ -54,11 +55,11 @@ classes = [
 
 # Only needed if you want to add into a dynamic menu
 def menu_func_import(self, context):
-    self.layout.operator(GeomImport.bl_idname, text="Sims 3 GEOM (.simgeom)")
-    self.layout.operator(RigImport.bl_idname, text="Sims 3 Rig (.grannyrig)")
+    self.layout.operator(SIMGEOM_OT_import_geom.bl_idname, text="Sims 3 GEOM (.simgeom)")
+    self.layout.operator(SIMGEOM_OT_import_rig.bl_idname, text="Sims 3 Rig (.grannyrig)")
 
 def menu_func_export(self, context):
-    self.layout.operator(GeomExport.bl_idname, text="Sims 3 GEOM (.simgeom)")
+    self.layout.operator(SIMGEOM_OT_export_geom.bl_idname, text="Sims 3 GEOM (.simgeom)")
 
 def register():
     for item in classes:
