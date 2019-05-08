@@ -114,25 +114,27 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
             obj.vertex_groups.new(name=bone)
         
         # Set Vertex Group Weights
-        for i, vert in enumerate(geomdata.element_data):
-            for j in range(4):
-                groupname = geomdata.bones[vert.assignment[j]]
-                vertgroup = obj.vertex_groups[groupname]
-                weight = vert.weights[j]
-                if weight > 0:
-                    vertgroup.add( [i], weight, 'ADD' )
+        if geomdata.element_data[0].assignment:
+            for i, vert in enumerate(geomdata.element_data):
+                for j in range(4):
+                    groupname = geomdata.bones[vert.assignment[j]]
+                    vertgroup = obj.vertex_groups[groupname]
+                    weight = vert.weights[j]
+                    if weight > 0:
+                        vertgroup.add( [i], weight, 'ADD' )
         
         # Set UV Coordinates for every UV channel
-        for i in range(len(geomdata.element_data[0].uv)):
-            mesh.uv_layers.new(name='UV_' + str(i))
-            mesh.uv_layers.active = mesh.uv_layers['UV_' + str(i)]
+        if geomdata.element_data[0].uv:
+            for i in range(len(geomdata.element_data[0].uv)):
+                mesh.uv_layers.new(name='UV_' + str(i))
+                mesh.uv_layers.active = mesh.uv_layers['UV_' + str(i)]
 
-            for j, polygon in enumerate(mesh.polygons):
-                for k, loopindex in enumerate(polygon.loop_indices):
-                    meshuvloop = mesh.uv_layers.active.data[loopindex]
-                    vertex_index = geomdata.faces[j][k]
-                    uv = geomdata.element_data[vertex_index].uv[i]
-                    meshuvloop.uv = (uv[0], -uv[1] + 1)
+                for j, polygon in enumerate(mesh.polygons):
+                    for k, loopindex in enumerate(polygon.loop_indices):
+                        meshuvloop = mesh.uv_layers.active.data[loopindex]
+                        vertex_index = geomdata.faces[j][k]
+                        uv = geomdata.element_data[vertex_index].uv[i]
+                        meshuvloop.uv = (uv[0], -uv[1] + 1)
 
         bpy.ops.object.mode_set(mode='OBJECT')
         
