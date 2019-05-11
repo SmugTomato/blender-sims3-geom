@@ -18,6 +18,7 @@
 from typing                 import List
 
 import bpy
+import bmesh
 
 from mathutils              import Vector, Quaternion
 from bpy_extras.io_utils    import ExportHelper
@@ -74,51 +75,41 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
                 g_element_data[v].vertex_id = [int(key, 0)]
         
         # Normals
-        # This isn't quite perfect yet, but close enough
-        # Get seperated egdes that need smoothing
-        soft_edges = {}
-        for edge in mesh.edges:
-            if edge.use_edge_sharp:
-                continue
-            v0 = mesh.vertices[edge.vertices[0]]
-            v1 = mesh.vertices[edge.vertices[1]]
-            center = ( ( v0.co + v1.co ) * 0.5 ).to_tuple(3)
-            if not center in soft_edges.keys():
-                soft_edges[center] = [ [v0.index, v1.index] ]
-                continue
-            soft_edges[center].append( [v0.index, v1.index] )
+        # TODO: Reimplement with data transfer modifier
+        depsgraph = context.depsgraph
+        normals_mesh = obj.to_mesh(depsgraph, apply_modifiers=False)
+        normals_obj = bpy.data.objects.new('normals_obj', normals_mesh)
+        bm = bmesh.new()
+        bm.from_mesh(normals_mesh)
+        bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=0.0001)
+        bm.to_mesh(normals_mesh)
+        bm.free()
 
-        # Create sets of edges sharing a location
-        merge = []
-        for vals in soft_edges.values():
-            if len(vals) < 2:
-                continue
-            verts = {}
-            for e in vals:
-                for n in e:
-                    co = mesh.vertices[n].co.to_tuple(3)
-                    if not co in verts.keys():
-                        verts[co] = [n]
-                    else:
-                        verts[co].append(n)
-            merge.append(tuple(verts.values()))
+        mod = obj.modifiers.new("DATA_TRANSFER", type='DATA_TRANSFER')
+        mod.object = normals_obj
+        mod.use_loop_data = True
+        mod.data_types_loops = {'CUSTOM_NORMAL'}
+        mod.loop_mapping = 'TOPOLOGY'
+        bpy.ops.object.modifier_apply(apply_as='DATA', modifier=mod.name)
+        mesh.calc_normals_split()
 
-        # Average normals of vertices sharing a location
-        for sets in merge:
-            for set in sets:
-                total = Vector((0,0,0))
-                count = len(set)
-                if count < 2:
-                    continue
-                for n in set:
-                    total += mesh.vertices[n].normal
-                avg = total / count
-                for n in set:
-                    mesh.vertices[n].normal = avg
+        normals = {}
+        for loop in mesh.loops:
+            index = loop.vertex_index
+            normal = loop.normal.to_tuple(5)
+            if not index in normals.keys():
+                normals[index] = [normal]
+                continue
+            normals[index].append(normal)
 
         # Set normals in GEOM vertex array
-        for v in mesh.vertices:
-            g_element_data[v.index].normal = (v.normal.x, v.normal.z, -v.normal.y)  
+        for k, v in normals.items():
+            print(v)
+            g_element_data[k].normal = (
+                v[0][0], 
+                v[0][2], 
+                -v[0][1]
+            )  
         
         # Set Faces
         geomdata.faces = []
@@ -189,18 +180,6 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
                 total += n
             average = total / length
             g_element_data[i].tangent = average.normalized().to_tuple(5)
-        # Average tangents again for vertices sharing the same location and normal
-        for sets in merge:
-            for set in sets:
-                total = Vector((0,0,0))
-                count = len(set)
-                if count < 2:
-                    continue
-                for n in set:
-                    total += Vector(g_element_data[n].tangent)
-                avg = (total / count).normalized().to_tuple(5)
-                for n in set:
-                    g_element_data[n].tangent = avg
 
         # Fill the bone array
         geomdata.bones = []
@@ -248,4 +227,13 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
             
         geomdata.element_data = g_element_data
         GeomWriter.writeGeom(self.filepath, geomdata)
+
         return {'FINISHED'}
+    
+    def export_morph(self, context, obj):
+        depsgraph = context.depsgraph
+        print(depsgraph)
+        for ob_inst in depsgraph.object_instances:
+            ob = ob_inst.object.original
+            ob.name = "aabb"
+            print(ob, obj)
