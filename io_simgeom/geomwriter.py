@@ -113,6 +113,7 @@ class GeomWriter:
                 var = getattr(vertex, entry[0])
                 if entry[0] == 'uv':
                     var = getattr(vertex, entry[0])[uv_layer]
+                    uv_layer += 1
                 for val in var:
                     b.setArbitrary(entry[1], val)
 

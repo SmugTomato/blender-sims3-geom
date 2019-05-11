@@ -128,23 +128,24 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         # Prefill the UVMap list
         uv_count = len(mesh.uv_layers)
         uvs = []
-        for _ in mesh.vertices:
-            l = [None]*uv_count
-            uvs.append(l)
 
         # Get UV Data per layer
         for n, uv_layer in enumerate(mesh.uv_layers):
             mesh.uv_layers.active = uv_layer
+            uv_list = {}
             for i, polygon in enumerate(mesh.polygons):
                 for j, loopindex in enumerate(polygon.loop_indices):
                     meshuvloop = mesh.uv_layers.active.data[loopindex]
                     uv = ( meshuvloop.uv[0], -meshuvloop.uv[1] + 1 )
                     vertidx = geomdata.faces[i][j]
-                    uvs[vertidx][n] = uv
+                    uv_list[vertidx] = uv
+            uvs.append(uv_list)
         
-        # Set UV Data per layer in GEOM vertex array
-        for i, uv in enumerate(uvs):
-            g_element_data[i].uv = uv
+        for uv_set in uvs:
+            for k, v in uv_set.items():
+                if not g_element_data[k].uv:
+                    g_element_data[k].uv = []
+                g_element_data[k].uv.append(v)
         
         # Calculating Tangents
         # http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-13-normal-mapping/
