@@ -135,6 +135,7 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
                         vertex_index = geomdata.faces[j][k]
                         uv = geomdata.element_data[vertex_index].uv[i]
                         meshuvloop.uv = (uv[0], -uv[1] + 1)
+            mesh.uv_layers.active = mesh.uv_layers['UV_0']
 
         bpy.ops.object.mode_set(mode='OBJECT')
         

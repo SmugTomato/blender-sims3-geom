@@ -157,6 +157,7 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
             v2 = Vector(g_element_data[face[2]].position)
 
             # UV Shortcuts
+            # Always Uses primary UV layer
             uv0 = Vector(g_element_data[face[0]].uv[0])
             uv1 = Vector(g_element_data[face[1]].uv[0])
             uv2 = Vector(g_element_data[face[2]].uv[0])
