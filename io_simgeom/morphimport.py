@@ -27,7 +27,7 @@ from .geomloader            import GeomLoader
 
 
 class SIMGEOM_OT_import_morph(Operator, ImportHelper):
-    """Sims 3 GEOM Importer"""
+    """Import a morph GEOM file as shape key"""
     bl_idname = "simgeom.import_morph"
     bl_label = "Import Morph .simgeom"
     bl_options = {'REGISTER', 'UNDO'}
