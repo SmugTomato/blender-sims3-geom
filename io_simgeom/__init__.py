@@ -50,7 +50,6 @@ classes = [
     SIMGEOM_OT_import_geom,
     SIMGEOM_OT_export_geom,
     SIMGEOM_OT_import_rig_helper,
-    SIMGEOM_OT_export_morphs,
     SIMGEOM_OT_import_morph,
     SIMGEOM_OT_clean_groups,
     SIMGEOM_OT_recalc_ids,
