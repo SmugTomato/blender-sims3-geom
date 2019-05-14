@@ -87,7 +87,13 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         normals_to_merge = self.get_merge_normals(export_mesh, ob.to_mesh(depsgraph, apply_modifiers=True))
         vertex_positions = [v.co for v in export_mesh.vertices]
         faces = [f.vertices for f in export_mesh.polygons]
-        self.calc_normals(vertex_positions, faces, g_element_data, merge_sets=normals_to_merge)
+        normals = self.calc_normals(vertex_positions, faces, merge_sets=normals_to_merge)
+        for i, element in enumerate(g_element_data):
+            element.normal = (
+                normals[i][0],
+                normals[i][2],
+                -normals[i][1]
+            )
 
         # Set Faces
         geom_data.faces = faces
@@ -142,6 +148,10 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         geom_data.element_data = g_element_data
         GeomWriter.writeGeom(self.filepath, geom_data)
 
+        # Morphs
+        if me.shape_keys and len(me.shape_keys.key_blocks) > 1:
+            self.export_morphs(ob, export_mesh, normals_to_merge, normals, g_element_data)
+
         return {'FINISHED'}
     
 
@@ -190,7 +200,7 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
     Although calculating normals can be done in blender, it ended up being easier doing it manually
     due to shape keys not agreeing with bmesh.ops.remove_doubles()
     """
-    def calc_normals(self, vertex_positions, faces, element_data: List[Vertex], merge_sets: List[List[int]] = None):
+    def calc_normals(self, vertex_positions, faces, merge_sets: List[List[int]] = None):
         # Manually calculate face normals
         verts = {}
         normals = {}
@@ -223,13 +233,8 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
                 normal = total.normalized()
                 for index in set:
                     normals[index] = normal
-        
-        for i, element in enumerate(element_data):
-            element.normal = (
-                normals[i][0],
-                normals[i][2],
-                -normals[i][1]
-            )
+
+        return normals
     
 
     """
@@ -273,3 +278,80 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
                 total += n
             average = total / length
             element_data[i].tangent = average.normalized().to_tuple()
+    
+
+    """
+    Create geoms for each morph
+    """
+    def export_morphs(self, original_object, export_mesh, normals_to_merge, original_normals, element_data_orig):
+        original_mesh = original_object.data
+        bm = bmesh.new()
+        bm.from_mesh(original_mesh)
+        bm.verts.ensure_lookup_table()
+
+        for keyname in bm.verts.layers.shape.keys()[1:]:
+            val = bm.verts.layers.shape.get(keyname)
+            geom_data = Geom()
+            element_data: List[Vertex] = []
+            vertex_positions = []
+            for i in range(len(bm.verts)):
+                v = bm.verts[i]
+                vertex_positions.append( v[val] )
+            faces = [f.vertices for f in export_mesh.polygons]
+            normals = self.calc_normals(vertex_positions, faces, normals_to_merge)
+
+            # Set Position and Normal deltas
+            for i in range(len(vertex_positions)):
+                vertex = Vertex()
+                pos_delta = vertex_positions[i] - original_mesh.vertices[i].co
+                nor_delta = normals[i] - original_normals[i]
+                vertex.position = (
+                    pos_delta.x,
+                    pos_delta.z,
+                    -pos_delta.y
+                )
+                vertex.normal = (
+                    nor_delta.x,
+                    nor_delta.z,
+                    -nor_delta.y
+                )
+                element_data.append(vertex)
+            
+            geom_data.faces = faces
+
+            # Set Vertex IDs
+            print(len(element_data), len(element_data_orig))
+            for key, values in original_object.get('vert_ids').items():
+                for v in values:
+                    element_data[v].vertex_id = [int(key, 0)]
+
+            # Fill the bone array
+            geom_data.bones = []
+            for group in original_object.vertex_groups:
+                geom_data.bones.append(group.name)
+            
+            # Set Header data
+            emtpy_tgi = {
+                'type': "0x0",
+                'group': "0x0",
+                'instance': "0x0"
+            }
+
+            # Set Header Info
+            geom_data.internal_chunks = []
+            geom_data.internal_chunks.append(emtpy_tgi)
+            geom_data.external_resources = []
+            geom_data.shaderdata = []
+            geom_data.tgi_list = []
+            geom_data.tgi_list.append(emtpy_tgi)
+            geom_data.sort_order = original_object['sortorder']
+            geom_data.merge_group = original_object['mergegroup']
+            geom_data.skin_controller_index = 0
+            geom_data.embeddedID = "0x0"
+
+            geom_data.element_data = element_data
+
+            filepath = self.filepath.split(".simgeom")[0] + "_" + keyname + ".simgeom"
+            GeomWriter.writeGeom(filepath, geom_data)
+        
+        bm.free()
