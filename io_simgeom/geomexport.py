@@ -150,7 +150,7 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
 
         # Morphs
         if me.shape_keys and len(me.shape_keys.key_blocks) > 1:
-            self.export_morphs(ob, export_mesh, normals_to_merge, normals, g_element_data)
+            self.export_morphs(ob, export_mesh, normals_to_merge, normals)
 
         return {'FINISHED'}
     
@@ -283,7 +283,7 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
     """
     Create geoms for each morph
     """
-    def export_morphs(self, original_object, export_mesh, normals_to_merge, original_normals, element_data_orig):
+    def export_morphs(self, original_object, export_mesh, normals_to_merge, original_normals):
         original_mesh = original_object.data
         bm = bmesh.new()
         bm.from_mesh(original_mesh)
@@ -320,7 +320,6 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
             geom_data.faces = faces
 
             # Set Vertex IDs
-            print(len(element_data), len(element_data_orig))
             for key, values in original_object.get('vert_ids').items():
                 for v in values:
                     element_data[v].vertex_id = [int(key, 0)]

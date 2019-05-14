@@ -25,7 +25,6 @@ import bpy
 from .rigimport     import SIMGEOM_OT_import_rig
 from .geomimport    import SIMGEOM_OT_import_geom
 from .geomexport    import SIMGEOM_OT_export_geom
-from .morphexport   import SIMGEOM_OT_export_morphs
 from .morphimport   import SIMGEOM_OT_import_morph
 from .ui            import SIMGEOM_PT_utility_panel
 from .operators     import *
