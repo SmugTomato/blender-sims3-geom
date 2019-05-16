@@ -397,8 +397,6 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
                         if a > 0.0001:
                             continue
                         count += 1
-                        # o_normal = (original_normals[i].x, original_normals[i].z, -original_normals[i].y)
-                        # n_delta = self.delta(thing['normal'], o_normal)
                         element_data[i].normal = thing['normal']
                         break
             print(keyname, count)
