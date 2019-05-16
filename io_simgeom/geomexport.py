@@ -16,6 +16,7 @@
 # along with BlenderGeom.  If not, see <http://www.gnu.org/licenses/>.
 
 from typing                 import List
+import math
 
 import bpy
 import bmesh
@@ -42,10 +43,38 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
     filename_ext = ".simgeom"
 
     filter_glob: StringProperty(
-            default="*.simgeom",
-            options={'HIDDEN'},
-            maxlen=255,  # Max internal buffer length, longer would be clamped.
-            )
+        default="*.simgeom",
+        options={'HIDDEN'},
+        maxlen=255,  # Max internal buffer length, longer would be clamped.
+    )
+    
+    seamfix_type:   EnumProperty(
+        name = "Seamfix Type:",
+        description = "Age/Gender to use for seamfix",
+        items = [
+            ('None','None',         'None'),
+            ('af',  'Adult Female', 'Adult Female'),
+            ('am',  'Adult Male',   'Adult Male'),
+            ('ef',  'Elder Female', 'Elder Female'),
+            ('em',  'Elder Male',   'Elder Male'),
+            ('tf',  'Teen Female',  'Teen Female'),
+            ('tm',  'Teen Male',    'Teen Male'),
+            ('cu',  'Child',        'Child'),
+            ('pu',  'Toddler',      'Toddler')
+        ],
+        default = 'None'
+    )
+
+    seamfix_lod:   EnumProperty(
+        name = "Seamfix Type:",
+        description = "LOD Index to use for seamfix",
+        items = [
+            ('LOD1',    'LOD1',     'LOD0/LOD1'),
+            ('LOD2',    'LOD2',     'LOD2'),
+            ('LOD3',    'LOD2',     'LOD3')
+        ],
+        default = 'LOD1'
+    )
 
     def execute(self, context):
         geom_data = Geom()
@@ -127,6 +156,35 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         for group in ob.vertex_groups:
             geom_data.bones.append(group.name)
         
+        # Apply Seam fix
+        # Fixes normals and bone assignments on seams
+        count = 0
+        if self.seamfix_type != 'None':
+            for element in g_element_data:
+                for thing in Globals.SEAM_FIX[self.seamfix_type]['base']:
+                    a = self.veclength(self.delta(element.position, thing['position']))
+                    if a > 0.0001:
+                        continue
+                    count += 1
+                    element.normal = thing['normal']
+                    assign = thing['assign']
+                    weight = thing['weight']
+                    element.assignment = [0,0,0,0]
+                    element.weights = [0,0,0,0]
+                    for i in range(4):
+                        # No reason to clutter the bonehash array with unused bones
+                        if weight[i] == 0:
+                            continue
+                        # If the bone is actually used, add it to the bonehash array
+                        if not assign[i] in geom_data.bones:
+                            geom_data.bones.append(assign[i])
+                        # Set assignment and weight of the bone
+                        element.assignment[i] = geom_data.bones.index(assign[i])
+                        element.weights[i] = weight[i]
+                    break
+        print(count, "seamverts")
+
+        
         # Set Header Info
         geom_data.internal_chunks = []
         for x in ob['rcol_chunks']:
@@ -150,7 +208,7 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
 
         # Morphs
         if me.shape_keys and len(me.shape_keys.key_blocks) > 1:
-            self.export_morphs(ob, export_mesh, normals_to_merge, normals)
+            self.export_morphs(ob, export_mesh, normals_to_merge, normals, geom_data.bones)
 
         return {'FINISHED'}
     
@@ -283,7 +341,7 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
     """
     Create geoms for each morph
     """
-    def export_morphs(self, original_object, export_mesh, normals_to_merge, original_normals):
+    def export_morphs(self, original_object, export_mesh, normals_to_merge, original_normals, bones):
         original_mesh = original_object.data
         bm = bmesh.new()
         bm.from_mesh(original_mesh)
@@ -301,6 +359,7 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
             normals = self.calc_normals(vertex_positions, faces, normals_to_merge)
 
             # Set Position and Normal deltas
+            positions_absolute = []
             for i in range(len(vertex_positions)):
                 vertex = Vertex()
                 pos_delta = vertex_positions[i] - original_mesh.vertices[i].co
@@ -316,6 +375,7 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
                     -nor_delta.y
                 )
                 element_data.append(vertex)
+                positions_absolute.append( (vertex_positions[i].x, vertex_positions[i].y, -vertex_positions[i].z) )
             
             geom_data.faces = faces
 
@@ -325,9 +385,14 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
                     element_data[v].vertex_id = [int(key, 0)]
 
             # Fill the bone array
-            geom_data.bones = []
-            for group in original_object.vertex_groups:
-                geom_data.bones.append(group.name)
+            geom_data.bones = bones
+
+            # Apply Seam fix
+            for i in range(len(element_data)):
+                if not positions_absolute[i] in Globals.SEAM_FIX.keys():
+                    continue
+                delta = Globals.SEAM_FIX[positions_absolute[i]]['normal'] - original_normals[i]
+                element_data[i].normal = delta
             
             # Set Header data
             emtpy_tgi = {
@@ -354,3 +419,16 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
             GeomWriter.writeGeom(filepath, geom_data)
         
         bm.free()
+    
+
+    def delta(self, a: tuple, b: tuple):
+        c = (
+            a[0] - b[0],
+            a[1] - b[1],
+            a[2] - b[2]
+        )
+        return c
+    
+
+    def veclength(self, v: tuple):
+        return math.sqrt(v[0]**2 + v[1]**2 + v[2]**2)
