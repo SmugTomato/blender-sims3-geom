@@ -182,7 +182,7 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
                         element.assignment[i] = geom_data.bones.index(assign[i])
                         element.weights[i] = weight[i]
                     break
-        print(count, "seamverts")
+        print("base", count)
 
         
         # Set Header Info
@@ -375,7 +375,7 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
                     -nor_delta.y
                 )
                 element_data.append(vertex)
-                positions_absolute.append( (vertex_positions[i].x, vertex_positions[i].y, -vertex_positions[i].z) )
+                positions_absolute.append( (vertex_positions[i].x, vertex_positions[i].z, -vertex_positions[i].y) )
             
             geom_data.faces = faces
 
@@ -388,11 +388,20 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
             geom_data.bones = bones
 
             # Apply Seam fix
-            for i in range(len(element_data)):
-                if not positions_absolute[i] in Globals.SEAM_FIX.keys():
-                    continue
-                delta = Globals.SEAM_FIX[positions_absolute[i]]['normal'] - original_normals[i]
-                element_data[i].normal = delta
+            count = 0
+            if self.seamfix_type != 'None' and keyname in Globals.SEAM_FIX[self.seamfix_type]:
+                for i in range(len(element_data)):
+                    element = element_data[i]
+                    for thing in Globals.SEAM_FIX[self.seamfix_type][keyname]:
+                        a = self.veclength(self.delta(positions_absolute[i], thing['position']))
+                        if a > 0.0001:
+                            continue
+                        count += 1
+                        # o_normal = (original_normals[i].x, original_normals[i].z, -original_normals[i].y)
+                        # n_delta = self.delta(thing['normal'], o_normal)
+                        element_data[i].normal = thing['normal']
+                        break
+            print(keyname, count)
             
             # Set Header data
             emtpy_tgi = {
