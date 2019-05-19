@@ -221,10 +221,8 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         return {'FINISHED'}
     
 
-    """
-    Look up normals to merge from a mesh with doubles removed and edges split
-    """
     def get_merge_normals(self, export_mesh, normals_mesh) -> tuple:
+        """ Look up normals to merge from a mesh with doubles removed and edges split """
         # Triangulate, merge vertices and split hard edges
         bm = bmesh.new()
         bm.from_mesh(normals_mesh)
@@ -262,11 +260,11 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         return tuple(merge_sets.values())
 
 
-    """
-    Although calculating normals can be done in blender, it ended up being easier doing it manually
-    due to shape keys not agreeing with bmesh.ops.remove_doubles()
-    """
     def calc_normals(self, vertex_positions, faces, merge_sets: List[List[int]] = None):
+        """
+        Although calculating normals can be done in blender, it ended up being easier doing it manually
+        due to shape keys not agreeing with bmesh.ops.remove_doubles()
+        """
         # Manually calculate face normals
         verts = {}
         normals = {}
@@ -303,10 +301,8 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         return normals
     
 
-    """
-    Calculate Tangents of the mesh to make normalmaps work
-    """
     def calc_tangents(self, element_data, geom_data):
+        """Calculate Tangents of the mesh to make normalmaps work"""
         # Calculating Tangents
         # http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-13-normal-mapping/
         tangents = [[] for _ in range(len(element_data))]
@@ -346,10 +342,8 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
             element_data[i].tangent = average.normalized().to_tuple()
     
 
-    """
-    Create geoms for each morph
-    """
     def export_morphs(self, original_object, export_mesh, normals_to_merge, original_normals, bones):
+        """Create geom files for all morphs"""
         original_mesh = original_object.data
         bm = bmesh.new()
         bm.from_mesh(original_mesh)
@@ -437,6 +431,7 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
     
 
     def delta(self, a: tuple, b: tuple):
+        """ Calculate the delta between two 3D lists/tuples """
         c = (
             a[0] - b[0],
             a[1] - b[1],
@@ -446,4 +441,5 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
     
 
     def veclength(self, v: tuple):
+        """ Calculate the length of a 3D list/tuple """
         return math.sqrt(v[0]**2 + v[1]**2 + v[2]**2)
