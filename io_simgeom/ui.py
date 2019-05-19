@@ -54,10 +54,11 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
         row.operator("simgeom.import_geom", text="Import GEOM", icon='IMPORT')
         row.operator("simgeom.export_geom", text="Export GEOM", icon='EXPORT')
         row = col.row(align=True)
-        row.operator("simgeom.import_rig_helper", text="Import Rig", icon='ARMATURE_DATA')
+        row.operator("simgeom.import_rig_helper", text="Import Rig", icon='IMPORT')
         row.prop(scene, "simgeom_rig_type", expand=False, text="")
 
         if obj is not None and obj.get('__GEOM__') is not None:
+            col.operator("simgeom.import_morph", text="Import Morphs", icon='IMPORT')
             self.draw_object(context)
     
     def draw_object(self, context):
@@ -78,4 +79,3 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
         col.label(text="Misc.:")
         col.operator("simgeom.split_seams", text="Split UV Seams", icon='MOD_EDGESPLIT')
         col.operator("simgeom.clean_groups", text="Clean Empty Bone Groups", icon='GROUP_VERTEX')
-        col.operator("simgeom.import_morph", text="Import Morph", icon='SHAPEKEY_DATA')

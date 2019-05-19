@@ -27,7 +27,7 @@ from .geomloader            import GeomLoader
 
 
 class SIMGEOM_OT_import_morph(Operator, ImportHelper):
-    """Import a morph GEOM file as shape key"""
+    """Import one or multiple morph GEOM files as shape keys"""
     bl_idname = "simgeom.import_morph"
     bl_label = "Import Morph .simgeom"
     bl_options = {'REGISTER', 'UNDO'}
