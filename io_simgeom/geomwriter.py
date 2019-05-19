@@ -71,10 +71,15 @@ class GeomWriter:
             b.setUInt32(0xFFFFFFFF)             # MTNF Chunk Size will have to be calculated after it has been written
             b.setIdentifier("MTNF")
             b.setUInt64(0x0000007400000000)     # unknown DWORD, WORD, WORD; Seem to always be these values
-            b.setUInt32( len(geomData.shaderdata) )
-            offset = 16 + len(geomData.shaderdata) * 16
-            # Shader parameter info
+            shaderdata = []                     # Remove type 4, size 5 entries, these seem to break stuff somehow
             for d in geomData.shaderdata:
+                if d['type'] == 4 and d['size'] == 5:
+                    continue
+                shaderdata.append(d)
+            b.setUInt32( len(shaderdata) )
+            offset = 16 + len(shaderdata) * 16
+            # Shader parameter info
+            for d in shaderdata:
                 b.setUInt32( fnv.fnv32(d['name']) )
                 b.setUInt32( d['type'] )
                 b.setUInt32( d['size'] )
@@ -82,7 +87,7 @@ class GeomWriter:
                 # Calculate offsets based on datasizes
                 offset += d['size'] * 4
             # Shader parameters
-            for d in geomData.shaderdata:
+            for d in shaderdata:
                 if d['type'] == 1:
                     for entry in d['data']:
                         b.setFloat(entry)
@@ -93,8 +98,6 @@ class GeomWriter:
                     if d['size'] == 4:
                         b.setUInt64(d['data'])
                         b.setUInt64(0)
-                    elif d['size'] == 5:
-                        pass
             # Replace MTNF Chunksize data, -4 to go back to the start location of the DWORD
             b.replaceAt( mtnfsize_offset, 'I', b.getLength() - mtnfsize_offset - 4 )
         else:

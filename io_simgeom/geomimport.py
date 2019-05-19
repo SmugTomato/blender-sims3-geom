@@ -138,6 +138,20 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
             mesh.uv_layers.active = mesh.uv_layers['UV_0']
 
         bpy.ops.object.mode_set(mode='OBJECT')
+
+        # Set Vertex Colors
+        if geomdata.element_data[0].tagvalue:
+            float_colors = []
+            for el in geomdata.element_data:
+                float_color = []
+                for val in el.tagvalue:
+                    float_color.append(val / 255)
+                float_colors.append(float_color)
+            
+            vcol_layer = mesh.vertex_colors.new(name="SIMGEOM_TAGVAL", do_init=False)
+            for poly in mesh.polygons:
+                for vert_index, loop_index in zip(poly.vertices, poly.loop_indices):
+                    vcol_layer.data[loop_index].color = float_colors[vert_index]
         
         # Fill a dictionairy with edge positions(center) as keys to find double edges
         edges = {}

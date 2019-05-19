@@ -151,7 +151,8 @@ class GeomLoader:
                     entry['data'] = reader.getUint32()
                     reader.skip(12)
                 elif entry['size'] == 5:
-                    entry['data'] = reader.getRaw(20)
+                    # entry['data'] = reader.getRaw(20)
+                    reader.skip(20)
         return parameters
     
 

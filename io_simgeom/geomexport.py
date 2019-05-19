@@ -148,6 +148,14 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         for i, uv in enumerate(uvs):
             g_element_data[i].uv = uv
         
+        # Set Vertex Colors (Tagvalue)
+        vcol_layer = me.vertex_colors.get('SIMGEOM_TAGVAL')
+        if vcol_layer:
+            for poly in me.polygons:
+                for vert_index, loop_index in zip(poly.vertices, poly.loop_indices):
+                    color = [ int(round(255 * val, 0)) for val in vcol_layer.data[loop_index].color]
+                    g_element_data[vert_index].tagvalue = color
+        
         # Tangents
         self.calc_tangents(g_element_data, geom_data)
 
