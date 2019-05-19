@@ -19,8 +19,8 @@ import os
 
 from mathutils              import Vector
 from bpy_extras.io_utils    import ImportHelper
-from bpy.props              import StringProperty
-from bpy.types              import Operator
+from bpy.props              import StringProperty, CollectionProperty
+from bpy.types              import Operator, PropertyGroup
 
 from .models.geom           import Geom
 from .geomloader            import GeomLoader
@@ -35,6 +35,7 @@ class SIMGEOM_OT_import_morph(Operator, ImportHelper):
     # ImportHelper mixin class uses this
     filename_ext = ".simgeom"
     filter_glob: StringProperty( default = "*.simgeom", options = {'HIDDEN'} )
+    files: CollectionProperty(type=PropertyGroup)
 
     def execute(self, context):
         obj = context.active_object
@@ -47,37 +48,40 @@ class SIMGEOM_OT_import_morph(Operator, ImportHelper):
             self.report({'ERROR'}, "Selected base mesh is not a GEOM, can't import morph")
             return {'CANCELLED'}
 
-        # Load the GEOM data
-        geomdata = GeomLoader.readGeom(self.filepath)
+        for geom_file in self.files:
+            directory = os.path.dirname(self.filepath)
+            filepath = os.path.join(directory, geom_file.name)
+            # Load the GEOM data
+            geomdata = GeomLoader.readGeom(filepath)
 
-        if len(geomdata.element_data) != len(mesh.vertices):
-            self.report({'ERROR'}, "Vertex count mismatch, can't import morph")
-            return {'CANCELLED'}
+            if len(geomdata.element_data) != len(mesh.vertices):
+                self.report({'ERROR'}, "Vertex count mismatch, can't import morph")
+                continue
 
-        # Create Basis shape key if it doesn't exist
-        if not mesh.shape_keys:
-            obj.shape_key_add(name="Basis", from_mix=False)
-        
-        # Import the morph
-        filename = os.path.split(self.filepath)[1].lower()
-        morphcount = len(mesh.shape_keys.key_blocks)
-        morphname = "MORPH_" + str(morphcount - 1)
-        if "fat" in filename:
-            morphname = "fat"
-        if "fit" in filename:
-            morphname = "fit"
-        if "thin" in filename:
-            morphname = "thin"
-        if "special" in filename:
-            morphname = "special"
-        shapekey = obj.shape_key_add(name=morphname, from_mix=False)
+            # Create Basis shape key if it doesn't exist
+            if not mesh.shape_keys:
+                obj.shape_key_add(name="Basis", from_mix=False)
+            
+            # Import the morph
+            filename = os.path.split(filepath)[1].lower()
+            morphcount = len(mesh.shape_keys.key_blocks)
+            morphname = "MORPH_" + str(morphcount - 1)
+            if "fat" in filename:
+                morphname = "fat"
+            if "fit" in filename:
+                morphname = "fit"
+            if "thin" in filename:
+                morphname = "thin"
+            if "special" in filename:
+                morphname = "special"
+            shapekey = obj.shape_key_add(name=morphname, from_mix=False)
 
-        for vertex in mesh.vertices:
-            shapekey.data[vertex.index].co = Vector((
-                vertex.co.x + geomdata.element_data[vertex.index].position[0],
-                vertex.co.y - geomdata.element_data[vertex.index].position[2],
-                vertex.co.z + geomdata.element_data[vertex.index].position[1]
-            ))
+            for vertex in mesh.vertices:
+                shapekey.data[vertex.index].co = Vector((
+                    vertex.co.x + geomdata.element_data[vertex.index].position[0],
+                    vertex.co.y - geomdata.element_data[vertex.index].position[2],
+                    vertex.co.z + geomdata.element_data[vertex.index].position[1]
+                ))
 
-        self.report({'INFO'}, "Imported Morph: " + morphname + " For Object: " + obj.name)
+            self.report({'INFO'}, "Imported Morph: " + morphname + " For Object: " + obj.name)
         return {'FINISHED'}
