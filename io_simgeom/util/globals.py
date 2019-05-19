@@ -22,23 +22,33 @@ class Globals:
     FLOAT = 1
     INTEGER = 2
     TEXTURE = 4
+    CAS_INDICES = {
+        "body":      5000,
+        "top":       5000,
+        "bottom":    15000,
+        "hair":      20000,
+        "shoes":     30000,
+        "accessory": 40000
+    }
 
     HASHMAP: dict
-    CAS_INDICES: dict
-    SEAM_FIX: {}
+    SEAM_FIX: dict = {}
 
     ROOTDIR: str
 
     @staticmethod
     def init(rootdir: str):
         Globals.ROOTDIR = rootdir
-        datadir = rootdir + "/data/json/"
-        with open(datadir + "hashmap.json", "r") as data:
-            Globals.HASHMAP = json.loads(data.read())
-        with open(datadir + "variables.json", "r") as data:
-            Globals.CAS_INDICES = json.loads(data.read())['cas_indices']
-        with open(datadir + "seams_combined.json", "r") as data:
-            Globals.SEAM_FIX = json.loads(data.read())
+        with open(f'{rootdir}/config.json', 'r') as config_file:
+            config = json.load(config_file)
+            datadir = f'{rootdir}/data/json/'
+
+            fnv_hashmap = config['paths']['fnv_hashmaps']['hashmap']
+            with open(f'{datadir}{fnv_hashmap}', 'r') as data:
+                Globals.HASHMAP = json.loads(data.read())
+            for k, v in config['paths']['seamfix'].items():
+                with open(f'{datadir}{v}', "r") as data:
+                    Globals.SEAM_FIX[k] = json.loads(data.read())
     
     @staticmethod
     def get_bone_name(fnv32hash: int) -> str:

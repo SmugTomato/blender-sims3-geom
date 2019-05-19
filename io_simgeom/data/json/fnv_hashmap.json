@@ -28,6 +28,7 @@
         "0x9554d40f": "SpecStyle",
         "0x6e56548a": "NormalMap"
     },
+    
     "bones": {
         "0xfeae6981": "b__ROOT__",
         "0x27689d9e": "b__ROOT_export__",

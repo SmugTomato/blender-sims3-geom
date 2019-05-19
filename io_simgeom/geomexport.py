@@ -69,9 +69,9 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         name = "Seamfix Type:",
         description = "LOD Index to use for seamfix",
         items = [
-            ('LOD1',    'LOD1',     'LOD0/LOD1'),
+            ('LOD1',    'LOD1',     'LOD1'),
             ('LOD2',    'LOD2',     'LOD2'),
-            ('LOD3',    'LOD2',     'LOD3')
+            ('LOD3',    'LOD3',     'LOD3')
         ],
         default = 'LOD1'
     )
@@ -169,7 +169,7 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         count = 0
         if self.seamfix_type != 'None':
             for element in g_element_data:
-                for thing in Globals.SEAM_FIX[self.seamfix_type]['base']:
+                for thing in Globals.SEAM_FIX[self.seamfix_lod][self.seamfix_type]['base']:
                     a = self.veclength(self.delta(element.position, thing['position']))
                     if a > 0.0001:
                         continue
@@ -190,7 +190,7 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
                         element.assignment[i] = geom_data.bones.index(assign[i])
                         element.weights[i] = weight[i]
                     break
-        print("base", count)
+            print("base", count)
 
         
         # Set Header Info
@@ -397,17 +397,17 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
 
             # Apply Seam fix
             count = 0
-            if self.seamfix_type != 'None' and keyname in Globals.SEAM_FIX[self.seamfix_type]:
+            if self.seamfix_type != 'None' and keyname in Globals.SEAM_FIX[self.seamfix_lod][self.seamfix_type]:
                 for i in range(len(element_data)):
                     element = element_data[i]
-                    for thing in Globals.SEAM_FIX[self.seamfix_type][keyname]:
+                    for thing in Globals.SEAM_FIX[self.seamfix_lod][self.seamfix_type][keyname]:
                         a = self.veclength(self.delta(positions_absolute[i], thing['position']))
                         if a > 0.0001:
                             continue
                         count += 1
                         element_data[i].normal = thing['normal']
                         break
-            print(keyname, count)
+                print(keyname, count)
             
             # Set Header data
             emtpy_tgi = {
