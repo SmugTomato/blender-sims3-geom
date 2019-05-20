@@ -58,7 +58,7 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
         row.prop(scene, "simgeom_rig_type", expand=False, text="")
 
         if not obj is None and obj.type == 'ARMATURE' and obj.get('__S3_RIG__', 0):
-            col.operator("simgeom.rebuild_bone_database", icon='GROUP_VERTEX')
+            col.operator("simgeom.rebuild_bone_database")
 
         if obj is not None and obj.get('__GEOM__', 0):
             col.operator("simgeom.import_morph", text="Import Morphs", icon='IMPORT')
@@ -82,4 +82,4 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
         col.label(text="Misc.:")
         col.operator("simgeom.split_seams", text="Split UV Seams", icon='MOD_EDGESPLIT')
         col.operator("simgeom.clean_groups", text="Clean Empty Bone Groups", icon='GROUP_VERTEX')
-        col.operator("simgeom.rename_bone_groups", icon='GROUP_VERTEX')
+        col.operator("simgeom.rename_bone_groups")
