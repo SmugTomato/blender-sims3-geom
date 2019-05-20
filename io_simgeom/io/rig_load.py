@@ -15,8 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with BlenderGeom.  If not, see <http://www.gnu.org/licenses/>.
 
-from .util.bytereader import ByteReader
-from .util.globals import Globals as gb
+from ..util.bytereader import ByteReader
+from ..util.globals import Globals as gb
 
 
 class RigLoader:

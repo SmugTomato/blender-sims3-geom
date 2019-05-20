@@ -23,8 +23,8 @@ from bpy_extras.io_utils    import ImportHelper
 from bpy.props              import StringProperty, BoolProperty, EnumProperty
 from bpy.types              import Operator
 
-from .rigloader             import RigLoader
-from .util.globals          import Globals
+from .rig_load              import RigLoader
+from ..util.globals         import Globals
 
 class SIMGEOM_OT_import_rig(Operator, ImportHelper):
     """Sims 3 Rig Importer"""

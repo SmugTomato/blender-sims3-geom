@@ -22,13 +22,13 @@ import os
 
 import bpy
 
-from .rigimport     import SIMGEOM_OT_import_rig
-from .geomimport    import SIMGEOM_OT_import_geom
-from .geomexport    import SIMGEOM_OT_export_geom
-from .morphimport   import SIMGEOM_OT_import_morph
-from .ui            import SIMGEOM_PT_utility_panel
-from .operators     import *
-from .util.globals  import Globals
+from .io.geom_export    import SIMGEOM_OT_export_geom
+from .io.geom_import    import SIMGEOM_OT_import_geom
+from .io.morph_import   import SIMGEOM_OT_import_morph
+from .io.rig_import     import SIMGEOM_OT_import_rig
+from .ui                import SIMGEOM_PT_utility_panel
+from .operators         import *
+from .util.globals      import Globals
 
 bl_info = {
     "name": "Sims 3 GEOM Tools (Blender 2.80)",
