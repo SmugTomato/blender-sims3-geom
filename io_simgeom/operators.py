@@ -22,11 +22,12 @@ from bpy_extras.io_utils    import ExportHelper
 from bpy.props              import StringProperty, BoolProperty, EnumProperty
 from bpy.types              import Operator
 
-from .util.fnv      import fnv32
-from .util.globals  import Globals
+from .util.fnv              import fnv32
+from .util.globals          import Globals
 
 
 class SIMGEOM_OT_rebuild_bone_database(bpy.types.Operator):
+    """ Rebuild Bonehash Database from bone names in currently selected rig """
     bl_idname = "simgeom.rebuild_bone_database"
     bl_label = "Rebuild Bonehash Database"
     bl_description = "fnv32hash key to string value"
@@ -39,6 +40,11 @@ class SIMGEOM_OT_rebuild_bone_database(bpy.types.Operator):
             return {"CANCELLED"}
         if ob.type != 'ARMATURE':
             return {"CANCELLED"}
+        if not ob.get('__S3_RIG__', 0):
+            message = f'{ob.name} is not a Sims 3 rig.'
+            self.report({'ERROR'}, message)
+            return {"CANCELLED"}
+
         
         bonedict = { hex(fnv32(bone.name)): bone.name for bone in ob.data.bones }
         Globals.rebuild_fnv_database(bonedict)
@@ -50,6 +56,7 @@ class SIMGEOM_OT_rebuild_bone_database(bpy.types.Operator):
 
 
 class SIMGEOM_OT_rename_bone_groups(bpy.types.Operator):
+    """ Rename vertex groups from the fnv hash map """
     bl_idname = "simgeom.rename_bone_groups"
     bl_label = "Rename vertex groups"
     bl_description = "Look up bone names in the fnvhash dict"
@@ -62,6 +69,8 @@ class SIMGEOM_OT_rename_bone_groups(bpy.types.Operator):
         if not ob:
             return {"CANCELLED"}
         if not ob.get('__GEOM__', 0):
+            message = f'{ob.name} is not a Sims 3 GEOM mesh.'
+            self.report({'ERROR'}, message)
             return {"CANCELLED"}
         
         for group in ob.vertex_groups:
@@ -88,11 +97,18 @@ class SIMGEOM_OT_recalc_ids(bpy.types.Operator):
     bl_label = "Recalculate Vertex IDs"
 
     def execute(self, context):
-        obj = context.active_object
+        ob = context.active_object
 
-        start_id = obj.get('start_id')
+        if not ob:
+            return {"CANCELLED"}
+        if not ob.get('__GEOM__', 0):
+            message = f'{ob.name} is not a Sims 3 GEOM mesh.'
+            self.report({'ERROR'}, message)
+            return {"CANCELLED"}
 
-        mesh = obj.data
+        start_id = ob.get('start_id')
+
+        mesh = ob.data
         positions = {}
         # Map vertex ID per position
         for v in mesh.vertices:
@@ -106,7 +122,7 @@ class SIMGEOM_OT_recalc_ids(bpy.types.Operator):
         ids = {}
         for i, val in enumerate(positions.values()):
             ids[hex(i + start_id)] = val
-        obj['vert_ids'] = ids
+        ob['vert_ids'] = ids
 
         message = "Assigned " + str(len(ids)) + " Unique IDs to " + str(len(mesh.vertices)) + " vertices."
         self.report({'INFO'}, message)
@@ -120,7 +136,15 @@ class SIMGEOM_OT_split_seams(bpy.types.Operator):
     bl_label = "Split UV Seams"
 
     def execute(self, context):
-        mesh = context.active_object.data
+        ob = context.active_object
+        mesh = ob.data
+
+        if not ob:
+            return {"CANCELLED"}
+        if not ob.get('__GEOM__', 0):
+            message = f'{ob.name} is not a Sims 3 GEOM mesh.'
+            self.report({'ERROR'}, message)
+            return {"CANCELLED"}
 
         bpy.ops.object.mode_set(mode='EDIT')
         bpy.ops.uv.seams_from_islands()
@@ -153,16 +177,23 @@ class SIMGEOM_OT_clean_groups(bpy.types.Operator):
     bl_label = "Delete Empty Vertex Groups"
 
     def execute(self, context):
-        obj = context.active_object
+        ob = context.active_object
+
+        if not ob:
+            return {"CANCELLED"}
+        if not ob.get('__GEOM__', 0):
+            message = f'{ob.name} is not a Sims 3 GEOM mesh.'
+            self.report({'ERROR'}, message)
+            return {"CANCELLED"}
 
         max_weight = {}
-        for g in obj.vertex_groups:
+        for g in ob.vertex_groups:
             max_weight[g.index] = [g.name, 0.0]
         
-        for v in obj.data.vertices:
+        for v in ob.data.vertices:
             for g in v.groups:
                 gn = g.group
-                weight = obj.vertex_groups[g.group].weight(v.index)
+                weight = ob.vertex_groups[g.group].weight(v.index)
                 if (max_weight.get(gn)[1] is None or weight > max_weight[gn][1]):
                     max_weight[gn][1] = weight
 
@@ -170,7 +201,7 @@ class SIMGEOM_OT_clean_groups(bpy.types.Operator):
         for k, v in max_weight.items():
             if v[1] == 0:
                 removed += 1
-                obj.vertex_groups.remove(obj.vertex_groups[v[0]])
+                ob.vertex_groups.remove(ob.vertex_groups[v[0]])
         message = "Removed " + str(removed) + " Unused Vertex Groups."
         self.report({'INFO'}, message)
 
