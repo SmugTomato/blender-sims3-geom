@@ -65,8 +65,12 @@ class GeomWriter:
         b.setUInt32(tgilen)                 # TGI Size
 
         # MTNF DATA
-        if geomData.embeddedID != hex(0):
-            b.setUInt32( fnv.fnv32(geomData.embeddedID) )
+        embedded_id = geomData.embeddedID
+        if embedded_id != hex(0):
+            if embedded_id[0:2] == '0x':
+                b.setUInt32( int(embedded_id, 0) )
+            else:
+                b.setUInt32( fnv.fnv32(embedded_id) )
             mtnfsize_offset = b.getLength()
             b.setUInt32(0xFFFFFFFF)             # MTNF Chunk Size will have to be calculated after it has been written
             b.setIdentifier("MTNF")
@@ -80,7 +84,10 @@ class GeomWriter:
             offset = 16 + len(shaderdata) * 16
             # Shader parameter info
             for d in shaderdata:
-                b.setUInt32( fnv.fnv32(d['name']) )
+                if d['name'][0:2] == '0x':
+                    b.setUInt32( int(d['name'], 0) )
+                else:
+                    b.setUInt32( fnv.fnv32(d['name']) )
                 b.setUInt32( d['type'] )
                 b.setUInt32( d['size'] )
                 b.setUInt32(offset)
@@ -129,7 +136,10 @@ class GeomWriter:
         b.setUInt32(geomData.skin_controller_index)
         b.setUInt32(len(geomData.bones))
         for bone in geomData.bones:
-            b.setUInt32(fnv.fnv32(bone))
+            if bone[0:2] == '0x':
+                b.setUInt32(int(bone, 0))
+            else:
+                b.setUInt32(fnv.fnv32(bone))
         b.replaceAt(tgi_offset, 'I', b.getLength() - tgi_offset - 4)    # Replace TGI Offset with the proper value
         b.setUInt32(len(geomData.tgi_list))
         for tgi in geomData.tgi_list:

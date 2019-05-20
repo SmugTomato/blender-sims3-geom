@@ -26,6 +26,51 @@ from .util.fnv      import fnv32
 from .util.globals  import Globals
 
 
+class SIMGEOM_OT_rebuild_bone_database(bpy.types.Operator):
+    bl_idname = "simgeom.rebuild_bone_database"
+    bl_label = "Rebuild Bonehash Database"
+    bl_description = "fnv32hash key to string value"
+    bl_options = {"REGISTER"}
+
+    def execute(self, context):
+        ob = context.active_object
+        
+        if not ob:
+            return {"CANCELLED"}
+        if ob.type != 'ARMATURE':
+            return {"CANCELLED"}
+        
+        bonedict = { hex(fnv32(bone.name)): bone.name for bone in ob.data.bones }
+        Globals.rebuild_fnv_database(bonedict)
+
+        message = f'Rebuilt bonehash database for rig: {ob.name}'
+        self.report({'INFO'}, message)
+
+        return {"FINISHED"}
+
+
+class SIMGEOM_OT_rename_bone_groups(bpy.types.Operator):
+    bl_idname = "simgeom.rename_bone_groups"
+    bl_label = "Rename vertex groups"
+    bl_description = "Look up bone names in the fnvhash dict"
+    bl_options = {"REGISTER"}
+
+    def execute(self, context):
+        
+        ob = context.active_object
+        
+        if not ob:
+            return {"CANCELLED"}
+        if not ob.get('__GEOM__', 0):
+            return {"CANCELLED"}
+        
+        for group in ob.vertex_groups:
+            if group.name[0:2] == '0x':
+                group.name = Globals.get_bone_name(int(group.name, 0))
+
+        return {"FINISHED"}
+
+
 class SIMGEOM_OT_import_rig_helper(bpy.types.Operator):
     """Import Rig (From Simgeom Panel)"""
     bl_idname = "simgeom.import_rig_helper"

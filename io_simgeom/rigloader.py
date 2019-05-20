@@ -16,6 +16,7 @@
 # along with BlenderGeom.  If not, see <http://www.gnu.org/licenses/>.
 
 from .util.bytereader import ByteReader
+from .util.globals import Globals as gb
 
 
 class RigLoader:

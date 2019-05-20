@@ -50,6 +50,8 @@ classes = [
     SIMGEOM_OT_export_geom,
     SIMGEOM_OT_import_rig_helper,
     SIMGEOM_OT_import_morph,
+    SIMGEOM_OT_rebuild_bone_database,
+    SIMGEOM_OT_rename_bone_groups,
     SIMGEOM_OT_clean_groups,
     SIMGEOM_OT_recalc_ids,
     SIMGEOM_OT_split_seams
@@ -63,7 +65,6 @@ def menu_func_import(self, context):
 
 def menu_func_export(self, context):
     self.layout.operator(SIMGEOM_OT_export_geom.bl_idname, text="Sims 3 GEOM (.simgeom)")
-    self.layout.operator(SIMGEOM_OT_import_morph.bl_idname, text="Sims 3 Morph (.simgeom)")
 
 def register():
     for item in classes:

@@ -116,4 +116,6 @@ class SIMGEOM_OT_import_rig(Operator, ImportHelper):
             bone.custom_shape = boneshape # apply bone shape
         bpy.ops.object.mode_set(mode='OBJECT')
 
+        rig['__S3_RIG__'] = 1
+
         return {'FINISHED'}

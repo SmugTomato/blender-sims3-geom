@@ -16,6 +16,7 @@
 # along with BlenderGeom.  If not, see <http://www.gnu.org/licenses/>.
 
 import json
+import os
 
 class Globals:
     # Shader Paramater Datatypes
@@ -35,12 +36,14 @@ class Globals:
     SEAM_FIX: dict = {}
 
     ROOTDIR: str
+    _config: dict
 
     @staticmethod
     def init(rootdir: str):
         Globals.ROOTDIR = rootdir
         with open(f'{rootdir}/config.json', 'r') as config_file:
             config = json.load(config_file)
+            Globals._config = config
             datadir = f'{rootdir}/data/json/'
 
             fnv_hashmap = config['paths']['fnv_hashmaps']['hashmap']
@@ -52,12 +55,33 @@ class Globals:
     
     @staticmethod
     def get_bone_name(fnv32hash: int) -> str:
-        return Globals.HASHMAP['bones'][hex(fnv32hash)]
+        hex_fnv = hex(fnv32hash)
+        return Globals.HASHMAP['bones'].get(hex_fnv, hex_fnv)
     
     @staticmethod
     def get_shader_name(fnv32hash: int) -> str:
-        return Globals.HASHMAP['shader'][hex(fnv32hash)]
+        hex_fnv = hex(fnv32hash)
+        return Globals.HASHMAP['shader'].get(hex_fnv, hex_fnv)
     
     @staticmethod
     def padded_hex(value: int, numbytes: int) -> str:
         return "0x{0:0{1}X}".format(value, numbytes * 2)
+    
+    @staticmethod
+    def rebuild_fnv_database(bones: dict):
+        root = Globals.ROOTDIR
+        config = Globals._config
+        fnv_map_path = config['paths']['fnv_hashmaps']['hashmap']
+        path = f'{root}/data/json/{fnv_map_path}'
+        data_dict: dict
+        if os.path.exists(f'{path}.backup'):
+            os.remove(f'{path}.backup')
+        os.rename(path, f'{path}.backup')
+        with open(f'{path}.backup', 'r') as data:
+            data_dict = json.load(data)
+            for k, v in bones.items():
+                data_dict['bones'][k] = v
+        with open(f'{root}/data/json/{fnv_map_path}', 'w') as data:
+            data.write( json.dumps(data_dict, indent=4) )
+            Globals.HASHMAP = data_dict
+            os.remove(f'{path}.backup')
