@@ -1,6 +1,6 @@
 from typing import List
 
-from .vertex import Vertex
+from io_simgeom.models.vertex import Vertex
 
 
 class Geom:

@@ -22,8 +22,8 @@ from bpy_extras.io_utils    import ImportHelper
 from bpy.props              import StringProperty, CollectionProperty
 from bpy.types              import Operator, PropertyGroup
 
-from .geom_load             import GeomLoader
-from ..models.geom          import Geom
+from io_simgeom.io.geom_load    import GeomLoader
+from io_simgeom.models.geom     import Geom
 
 
 class SIMGEOM_OT_import_morph(Operator, ImportHelper):

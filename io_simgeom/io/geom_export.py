@@ -26,11 +26,11 @@ from bpy_extras.io_utils    import ExportHelper
 from bpy.props              import StringProperty, BoolProperty, EnumProperty
 from bpy.types              import Operator
 
-from .geom_write            import GeomWriter
-from ..models.geom          import Geom
-from ..models.vertex        import Vertex
-from ..util.fnv             import fnv32
-from ..util.globals         import Globals
+from io_simgeom.io.geom_write   import GeomWriter
+from io_simgeom.models.geom     import Geom
+from io_simgeom.models.vertex   import Vertex
+from io_simgeom.util.fnv        import fnv32
+from io_simgeom.util.globals    import Globals
 
 
 class SIMGEOM_OT_export_geom(Operator, ExportHelper):

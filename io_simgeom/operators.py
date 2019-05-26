@@ -22,8 +22,8 @@ from bpy_extras.io_utils    import ExportHelper
 from bpy.props              import StringProperty, BoolProperty, EnumProperty
 from bpy.types              import Operator
 
-from .util.fnv              import fnv32
-from .util.globals          import Globals
+from io_simgeom.util.fnv        import fnv32
+from io_simgeom.util.globals    import Globals
 
 
 class SIMGEOM_OT_rebuild_bone_database(bpy.types.Operator):

@@ -15,10 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with BlenderGeom.  If not, see <http://www.gnu.org/licenses/>.
 
-from ..models.geom       import Geom
-from ..models.vertex     import Vertex
-from ..util.bytereader   import ByteReader
-from ..util.globals      import Globals
+from io_simgeom.models.geom       import Geom
+from io_simgeom.models.vertex     import Vertex
+from io_simgeom.util.bytereader   import ByteReader
+from io_simgeom.util.globals      import Globals
 
 
 class GeomLoader:

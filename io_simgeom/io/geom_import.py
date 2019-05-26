@@ -27,9 +27,9 @@ from bpy.props              import StringProperty, BoolProperty, EnumProperty
 from bpy.types              import Operator
 from rna_prop_ui            import rna_idprop_ui_prop_get
 
-from .geom_load             import GeomLoader
-from ..models.geom          import Geom
-from ..util.globals         import Globals
+from io_simgeom.io.geom_load    import GeomLoader
+from io_simgeom.models.geom     import Geom
+from io_simgeom.util.globals    import Globals
 
 
 class SIMGEOM_OT_import_geom(Operator, ImportHelper):
