@@ -36,22 +36,16 @@ class Globals:
     SEAM_FIX: dict = {}
 
     ROOTDIR: str
-    _config: dict
 
     @staticmethod
     def init(rootdir: str):
         Globals.ROOTDIR = rootdir
-        with open(f'{rootdir}/config.json', 'r') as config_file:
-            config = json.load(config_file)
-            Globals._config = config
-            datadir = f'{rootdir}/data/json/'
-
-            fnv_hashmap = config['paths']['fnv_hashmaps']['hashmap']
-            with open(f'{datadir}{fnv_hashmap}', 'r') as data:
-                Globals.HASHMAP = json.loads(data.read())
-            for k, v in config['paths']['seamfix'].items():
-                with open(f'{datadir}{v}', "r") as data:
-                    Globals.SEAM_FIX[k] = json.loads(data.read())
+        datadir = f'{rootdir}/data/json'
+        with open(f'{datadir}/fnv_hashmap.json', 'r') as data:
+            Globals.HASHMAP = json.loads(data.read())
+        for i in range(3):
+            with open(f'{datadir}/seams_LOD{i+1}.json', "r") as data:
+                Globals.SEAM_FIX[f'LOD{i+1}'] = json.loads(data.read())
     
     @staticmethod
     def get_bone_name(fnv32hash: int) -> str:
@@ -69,10 +63,7 @@ class Globals:
     
     @staticmethod
     def rebuild_fnv_database(bones: dict):
-        root = Globals.ROOTDIR
-        config = Globals._config
-        fnv_map_path = config['paths']['fnv_hashmaps']['hashmap']
-        path = f'{root}/data/json/{fnv_map_path}'
+        path = f'{Globals.ROOTDIR}/data/json/fnv_hashmap.json'
         data_dict: dict
         if os.path.exists(f'{path}.backup'):
             os.remove(f'{path}.backup')
@@ -81,7 +72,7 @@ class Globals:
             data_dict = json.load(data)
             for k, v in bones.items():
                 data_dict['bones'][k] = v
-        with open(f'{root}/data/json/{fnv_map_path}', 'w') as data:
+        with open(f'{path}', 'w') as data:
             data.write( json.dumps(data_dict, indent=4) )
             Globals.HASHMAP = data_dict
             os.remove(f'{path}.backup')

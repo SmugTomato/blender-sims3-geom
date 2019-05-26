@@ -76,6 +76,9 @@ class SIMGEOM_OT_rename_bone_groups(bpy.types.Operator):
         for group in ob.vertex_groups:
             if group.name[0:2] == '0x':
                 group.name = Globals.get_bone_name(int(group.name, 0))
+        
+        message = f'Renamed vertex groups for object: {ob.name}'
+        self.report({'INFO'}, message)
 
         return {"FINISHED"}
 
