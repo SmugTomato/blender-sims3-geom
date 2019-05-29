@@ -78,7 +78,6 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
 
     def execute(self, context):
         geom_data = Geom()
-        depsgraph = context.depsgraph
         ob = context.active_object
         me = ob.data
 
@@ -104,18 +103,22 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
             for v in values:
                 g_element_data[v].vertex_id = [int(key, 0)]
         
-        # Create a temporary triangulated instance of the mesh
-        export_mesh = ob.to_mesh(depsgraph, apply_modifiers=True)
+        # Create a temporary mesh to reference normals from
+        mesh_instance = ob.to_mesh()
+        tricorner_normals = self.get_tricorner_normals(mesh_instance)
+
+        # Reassign temporary mesh to export mesh
+        mesh_instance = ob.to_mesh()
         bm = bmesh.new()
-        bm.from_mesh(export_mesh)
+        bm.from_mesh(mesh_instance)
         bmesh.ops.triangulate(bm, faces=bm.faces)
-        bm.to_mesh(export_mesh)
+        bm.to_mesh(mesh_instance)
         bm.free()
  
         # Normals
-        normals_to_merge = self.get_merge_normals(export_mesh, ob.to_mesh(depsgraph, apply_modifiers=True))
-        vertex_positions = [v.co for v in export_mesh.vertices]
-        faces = [f.vertices for f in export_mesh.polygons]
+        normals_to_merge = self.get_merge_normals(mesh_instance, tricorner_normals)
+        vertex_positions = [v.co for v in mesh_instance.vertices]
+        faces = [f.vertices for f in mesh_instance.polygons]
         normals = self.calc_normals(vertex_positions, faces, merge_sets=normals_to_merge)
         for i, element in enumerate(g_element_data):
             element.normal = (
@@ -128,18 +131,18 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         geom_data.faces = faces
 
         # Prefill the UVMap list
-        uv_count = len(export_mesh.uv_layers)
+        uv_count = len(mesh_instance.uv_layers)
         uvs = []
-        for _ in export_mesh.vertices:
+        for _ in mesh_instance.vertices:
             l = [None]*uv_count
             uvs.append(l)
 
         # Get UV Data per layer
-        for n, uv_layer in enumerate(export_mesh.uv_layers):
-            export_mesh.uv_layers.active = uv_layer
-            for i, polygon in enumerate(export_mesh.polygons):
+        for n, uv_layer in enumerate(mesh_instance.uv_layers):
+            mesh_instance.uv_layers.active = uv_layer
+            for i, polygon in enumerate(mesh_instance.polygons):
                 for j, loopindex in enumerate(polygon.loop_indices):
-                    meshuvloop = export_mesh.uv_layers.active.data[loopindex]
+                    meshuvloop = mesh_instance.uv_layers.active.data[loopindex]
                     uv = ( meshuvloop.uv[0], -meshuvloop.uv[1] + 1 )
                     vertidx = geom_data.faces[i][j]
                     uvs[vertidx][n] = uv
@@ -216,16 +219,17 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
 
         # Morphs
         if me.shape_keys and len(me.shape_keys.key_blocks) > 1:
-            self.export_morphs(ob, export_mesh, normals_to_merge, normals, geom_data.bones)
+            self.export_morphs(ob, mesh_instance, normals_to_merge, normals, geom_data.bones)
+
+        ob.to_mesh_clear()
 
         return {'FINISHED'}
     
 
-    def get_merge_normals(self, export_mesh, normals_mesh) -> tuple:
-        """ Look up normals to merge from a mesh with doubles removed and edges split """
-        # Triangulate, merge vertices and split hard edges
+    def get_tricorner_normals(self, mesh_instance) -> tuple:
+        """ Collect normals info from face corners of a mesh with doubles removed """
         bm = bmesh.new()
-        bm.from_mesh(normals_mesh)
+        bm.from_mesh(mesh_instance)
         bmesh.ops.triangulate(bm, faces=bm.faces)
         bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=0.0001)
         edges = []
@@ -233,23 +237,33 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
             if not edge.smooth:
                 edges.append(edge)
         bmesh.ops.split_edges(bm, edges=edges)
-        bm.to_mesh(normals_mesh)
+        bm.to_mesh(mesh_instance)
         bm.free()
 
+        tricorner_normals = []
+        for tri in mesh_instance.polygons:
+            trian = []
+            for ind in tri.vertices:
+                trian.append( mesh_instance.vertices[ind].normal )
+            tricorner_normals.append(trian)
+
+        return tuple(tricorner_normals)
+
+
+    def get_merge_normals(self, mesh_instance, tricorner_normals) -> tuple:
+        """ Look up normals to merge from a mesh with doubles removed and edges split """
         # Vertex Data from copied mesh mapped to original mesh
         vertices = {}
-        for face_a, face_b in zip(export_mesh.polygons, normals_mesh.polygons):
-            for ind_a, ind_b in zip(face_a.vertices, face_b.vertices):
-                normal = normals_mesh.vertices[ind_b].normal
-                co = export_mesh.vertices[ind_a].co.to_tuple()
+        for face_a, face_b in zip(mesh_instance.polygons, tricorner_normals):
+            for ind_a, normal in zip(face_a.vertices, face_b):
+                co = mesh_instance.vertices[ind_a].co.to_tuple()
                 if not co in vertices.keys():
                     vertices[co] = {ind_a: normal.to_tuple()}
                 else:
                     vertices[co][ind_a] = normal.to_tuple()
-
-        # Normal merge map
+        
         merge_sets = {}
-        for k, v in vertices.items():
+        for v in vertices.values():
             if len(v) < 2:
                 continue
             for index, normal in v.items():
@@ -257,6 +271,7 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
                     merge_sets[normal] = [index]
                 else:
                     merge_sets[normal].append(index)
+
         return tuple(merge_sets.values())
 
 
@@ -342,7 +357,8 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
             element_data[i].tangent = average.normalized().to_tuple()
     
 
-    def export_morphs(self, original_object, export_mesh, normals_to_merge, original_normals, bones):
+    # TODO: Fix mangled morphs
+    def export_morphs(self, original_object, mesh_instance, normals_to_merge, original_normals, bones):
         """Create geom files for all morphs"""
         original_mesh = original_object.data
         bm = bmesh.new()
@@ -357,7 +373,7 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
             for i in range(len(bm.verts)):
                 v = bm.verts[i]
                 vertex_positions.append( v[val] )
-            faces = [f.vertices for f in export_mesh.polygons]
+            faces = [f.vertices for f in mesh_instance.polygons]
             normals = self.calc_normals(vertex_positions, faces, normals_to_merge)
 
             # Set Position and Normal deltas
