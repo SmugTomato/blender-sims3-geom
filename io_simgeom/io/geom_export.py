@@ -103,12 +103,15 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
             for v in values:
                 g_element_data[v].vertex_id = [int(key, 0)]
         
-        # Create a temporary mesh to reference normals from
-        mesh_instance = ob.to_mesh()
+        # Temporary mesh for export
+        depsgraph = context.evaluated_depsgraph_get()
+        obj_eval = ob.evaluated_get(depsgraph)
+        mesh_instance = obj_eval.to_mesh()
+
+        # Get smooth normals
         tricorner_normals = self.get_tricorner_normals(mesh_instance)
 
-        # Reassign temporary mesh to export mesh
-        mesh_instance = ob.to_mesh()
+        # Triangulate the mesh
         bm = bmesh.new()
         bm.from_mesh(mesh_instance)
         bmesh.ops.triangulate(bm, faces=bm.faces)
@@ -193,7 +196,6 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
                         element.assignment[i] = geom_data.bones.index(assign[i])
                         element.weights[i] = weight[i]
                     break
-            print("base", count)
 
         
         # Set Header Info
@@ -236,16 +238,16 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         for edge in bm.edges:
             if not edge.smooth:
                 edges.append(edge)
-        bmesh.ops.split_edges(bm, edges=edges)
-        bm.to_mesh(mesh_instance)
-        bm.free()
+        bmesh.ops.split_edges(bm, edges=edges)        
 
         tricorner_normals = []
-        for tri in mesh_instance.polygons:
+        for tri in bm.faces:
             trian = []
-            for ind in tri.vertices:
-                trian.append( mesh_instance.vertices[ind].normal )
+            for vert in tri.verts:
+                trian.append( vert.normal )
             tricorner_normals.append(trian)
+        
+        bm.free()
 
         return tuple(tricorner_normals)
 
@@ -357,7 +359,7 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
             element_data[i].tangent = average.normalized().to_tuple()
     
 
-    # TODO: Fix mangled morphs
+    # TODO: Fix mangled morphs, probably rewrite from scratch
     def export_morphs(self, original_object, mesh_instance, normals_to_merge, original_normals, bones):
         """Create geom files for all morphs"""
         original_mesh = original_object.data

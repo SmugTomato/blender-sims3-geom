@@ -22,14 +22,13 @@ import os
 
 import bpy
 
-from io_simgeom.io.test_export import SIMGEOM_OT_export_test
-from .io.geom_export    import SIMGEOM_OT_export_geom
-from .io.geom_import    import SIMGEOM_OT_import_geom
-from .io.morph_import   import SIMGEOM_OT_import_morph
-from .io.rig_import     import SIMGEOM_OT_import_rig
-from .ui                import SIMGEOM_PT_utility_panel
-from .operators         import *
-from .util.globals      import Globals
+from io_simgeom.io.geom_export    import SIMGEOM_OT_export_geom
+from io_simgeom.io.geom_import    import SIMGEOM_OT_import_geom
+from io_simgeom.io.morph_import   import SIMGEOM_OT_import_morph
+from io_simgeom.io.rig_import     import SIMGEOM_OT_import_rig
+from io_simgeom.ui                import SIMGEOM_PT_utility_panel
+from io_simgeom.operators         import *
+from io_simgeom.util.globals      import Globals
 
 bl_info = {
     "name": "Sims 3 GEOM Tools (Blender 2.80)",
@@ -45,7 +44,6 @@ rootdir = os.path.dirname(os.path.realpath(__file__))
 Globals.init(rootdir)
 
 classes = [
-    SIMGEOM_OT_export_test,
     SIMGEOM_PT_utility_panel,
     SIMGEOM_OT_import_rig,
     SIMGEOM_OT_import_geom,
