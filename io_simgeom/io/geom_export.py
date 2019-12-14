@@ -343,7 +343,11 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
             delta_uv2 = uv2 - uv0
 
             # Tangent Calculation
-            r = 1.0 / ( delta_uv1.x * delta_uv2.y - delta_uv1.y * delta_uv2.x )
+            result = ( delta_uv1.x * delta_uv2.y - delta_uv1.y * delta_uv2.x )
+            if result != 0:
+                r = 1.0 / result
+            else:
+                r= 1.0 / 0.001
             tangent = ( delta_pos1 * delta_uv2.y - delta_pos2 * delta_uv1.y ) * r
 
             for v in face:
