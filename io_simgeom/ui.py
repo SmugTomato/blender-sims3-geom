@@ -63,7 +63,11 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
         if obj is not None and obj.get('__GEOM__', 0):
             col.operator("simgeom.import_morph", text="Import Morphs", icon='IMPORT')
             self.draw_object(context)
+        
+        row = layout.row(align=True)
+        row.operator("simgeom.copy_data", text="Transfer GEOM data")
     
+
     def draw_object(self, context):
         layout = self.layout
         obj = context.active_object        

@@ -94,6 +94,63 @@ class SIMGEOM_OT_import_rig_helper(bpy.types.Operator):
         return {'FINISHED'}
 
 
+class SIMGEOM_OT_copy_data(bpy.types.Operator):
+    """Copy GEOM data from selected to active"""
+    bl_idname = "simgeom.copy_data"
+    bl_label = "Copy GEOM data from selected to active"
+
+    def execute(self, context):
+        # Selected mesh objects
+        selected = [ o for o in bpy.context.scene.objects if o.select_get() and o.type == 'MESH' ]
+        active = context.active_object
+
+        # Must have exactly 2 meshes selected
+        if len(selected) != 2 or active not in selected:
+            self.report({'ERROR'}, "You must select exactly 2 meshes, of which one must be active.")
+            return {'CANCELLED'}
+
+        # get the inactive selected object, check if it's a valid GEOM
+        selected = [ o for o in selected if o != active ][0]
+        if not selected.get('__GEOM__', None):
+            self.report({'ERROR'}, "Selected object must have valid GEOM data to transfer to active object")
+            return {'CANCELLED'}
+        
+        active['__GEOM__'] = 1
+        if selected.get('embedded_id') != None:
+            active['embedded_id'] = selected['embedded_id']
+
+        if selected.get('mergegroup') != None:
+            active['mergegroup'] = selected['mergegroup']
+
+        if selected.get('rcol_chunks') != None:
+            active['rcol_chunks'] = selected['rcol_chunks']
+
+        if selected.get('rcol_external') != None:
+            active['rcol_external'] = selected['rcol_external']
+
+        if selected.get('shaderdata') != None:
+            active['shaderdata'] = selected['shaderdata']
+        
+        if selected.get('skincontroller') != None:
+            active['skincontroller'] = selected['skincontroller']
+        
+        if selected.get('sortorder') != None:
+            active['sortorder'] = selected['sortorder']
+        
+        if selected.get('start_id') != None:
+            active['start_id'] = selected['start_id']
+        
+        if selected.get('tgis') != None:
+            active['tgis'] = selected['tgis']
+
+        if selected.get('vert_ids') != None:
+            active['vert_ids'] = selected['vert_ids']
+
+        self.report({'INFO'}, "Transfered GEOM data successfully.")
+
+        return {'FINISHED'}
+
+
 class SIMGEOM_OT_remove_ids(bpy.types.Operator):
     """Delete Vertex IDs"""
     bl_idname = "simgeom.remove_ids"

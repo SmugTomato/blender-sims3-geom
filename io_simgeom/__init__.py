@@ -55,6 +55,7 @@ classes = [
     SIMGEOM_OT_clean_groups,
     SIMGEOM_OT_recalc_ids,
     SIMGEOM_OT_remove_ids,
+    SIMGEOM_OT_copy_data,
     SIMGEOM_OT_split_seams
 ]
 
