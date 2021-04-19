@@ -77,6 +77,7 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
         uniques = len(obj.get('vert_ids'))
         sub.label( text = str( obj.get('start_id') + uniques ) + " (" + str(uniques) + ")" )
         col.operator("simgeom.recalc_ids", text="Recalculate IDs")
+        col.operator("simgeom.remove_ids", text="Remove IDs")
 
         col = layout.column(align=True)
         col.label(text="Misc.:")

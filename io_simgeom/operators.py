@@ -94,10 +94,33 @@ class SIMGEOM_OT_import_rig_helper(bpy.types.Operator):
         return {'FINISHED'}
 
 
+class SIMGEOM_OT_remove_ids(bpy.types.Operator):
+    """Delete Vertex IDs"""
+    bl_idname = "simgeom.remove_ids"
+    bl_label = "Remove All Vertex IDs from active object"
+
+    def execute(self, context):
+        ob = context.active_object
+
+        if not ob:
+            return {"CANCELLED"}
+        if not ob.get('__GEOM__', 0):
+            message = f'{ob.name} is not a Sims 3 GEOM mesh.'
+            self.report({'ERROR'}, message)
+            return {"CANCELLED"}
+        
+        ob['vert_ids'] = {}
+        
+        message = "Removed all vertex IDs."
+        self.report({'INFO'}, message)
+
+        return {'FINISHED'}
+
+
 class SIMGEOM_OT_recalc_ids(bpy.types.Operator):
     """Recalculate Vertex IDs"""
     bl_idname = "simgeom.recalc_ids"
-    bl_label = "Recalculate Vertex IDs"
+    bl_label = "Recalculate Vertex IDs for active object"
 
     def execute(self, context):
         ob = context.active_object
