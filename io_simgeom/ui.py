@@ -79,7 +79,7 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
         sub = row.row()
         sub.alignment = 'RIGHT'
         uniques = len(obj.get('vert_ids'))
-        sub.label( text = str( obj.get('start_id') + uniques ) + " (" + str(uniques) + ")" )
+        sub.label( text = "end_id: " + str( obj.get('start_id') + uniques ) + " (" + str(uniques) + " total)" )
         col.operator("simgeom.recalc_ids", text="Recalculate IDs")
         col.operator("simgeom.remove_ids", text="Remove IDs")
 
