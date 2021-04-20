@@ -86,11 +86,11 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
 
         # Fix EA's stupid rounding errors on supposedly identically placed vertices
         # This is achieved by setting verts with the same ID to the same position
-        for verts in ids.values():
-            if len(verts) < 2:
-                continue
-            for i in range(len(verts)-1):
-                geomdata.element_data[verts[i+1]].position = geomdata.element_data[verts[0]].position
+        # for verts in ids.values():
+        #     if len(verts) < 2:
+        #         continue
+        #     for i in range(len(verts)-1):
+        #         geomdata.element_data[verts[i+1]].position = geomdata.element_data[verts[0]].position
 
         # Build vertex array and get face array to build the mesh
         vertices = [ (v.position[0], -v.position[2], v.position[1] ) for v in geomdata.element_data ]
@@ -117,7 +117,11 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
         if geomdata.element_data[0].assignment:
             for i, vert in enumerate(geomdata.element_data):
                 for j in range(4):
-                    groupname = geomdata.bones[vert.assignment[j]]
+                    group_index = vert.assignment[j]
+                    if group_index >= len(geomdata.bones):
+                        print(f"{group_index} out of range, skipping...")
+                        continue
+                    groupname = geomdata.bones[group_index]
                     vertgroup = obj.vertex_groups[groupname]
                     weight = vert.weights[j]
                     if weight > 0:
