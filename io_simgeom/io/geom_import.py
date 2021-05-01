@@ -27,6 +27,8 @@ from bpy.props              import StringProperty, BoolProperty, EnumProperty
 from bpy.types              import Operator
 from rna_prop_ui            import rna_idprop_ui_prop_get
 
+from collections            import defaultdict
+
 from io_simgeom.io.geom_load    import GeomLoader
 from io_simgeom.models.geom     import Geom
 from io_simgeom.util.globals    import Globals
@@ -59,6 +61,11 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
         ],
         default = 'None'
     )
+    do_import_normals: BoolProperty(
+        name = "Keep Normals",
+        description = "Import the original normals as custom split normals (recommended)",
+        default = True
+    )
 
     def execute(self, context):
         # Import Rig, checks are done in Rig Importer
@@ -69,6 +76,7 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
         geomdata = GeomLoader.readGeom(self.filepath)
 
         # Set Active Collection
+        # Should probably GET the active collection instead
         context.view_layer.active_layer_collection = context.view_layer.layer_collection.children[-1]
         scene = context.scene
 
@@ -84,14 +92,6 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
                 else:
                     ids[hex(v.vertex_id[0])].append(i)
 
-        # Fix EA's stupid rounding errors on supposedly identically placed vertices
-        # This is achieved by setting verts with the same ID to the same position
-        # for verts in ids.values():
-        #     if len(verts) < 2:
-        #         continue
-        #     for i in range(len(verts)-1):
-        #         geomdata.element_data[verts[i+1]].position = geomdata.element_data[verts[0]].position
-
         # Build vertex array and get face array to build the mesh
         vertices = [ (v.position[0], -v.position[2], v.position[1] ) for v in geomdata.element_data ]
         faces    = geomdata.faces
@@ -99,15 +99,19 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
         obj      = bpy.data.objects.new("geom", mesh)
         mesh.from_pydata(vertices, [], faces)
 
+        # Add custom split normals layer if enabled, shade smooth if not
+        if self.do_import_normals:
+            normals = [ (v.normal[0], -v.normal[2], v.normal[1]) for v in geomdata.element_data ]
+            mesh.normals_split_custom_set_from_vertices(normals)
+            mesh.use_auto_smooth = True
+        else:
+            for poly in mesh.polygons:
+                poly.use_smooth = True
+
         # Link the newly created object to the active collection
         scene.collection.children[-1].objects.link(obj)
         obj.select_set(True)
         bpy.context.view_layer.objects.active = obj
-
-        # Shade smooth and set autosmooth for sharp edges
-        mesh.use_auto_smooth = True
-        mesh.auto_smooth_angle = 3.14
-        bpy.ops.object.shade_smooth()
 
         # Set Vertex Groups
         for bone in geomdata.bones:
@@ -156,38 +160,9 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
             for poly in mesh.polygons:
                 for vert_index, loop_index in zip(poly.vertices, poly.loop_indices):
                     vcol_layer.data[loop_index].color = float_colors[vert_index]
-        
-        # Fill a dictionairy with edge positions(center) as keys to find double edges
-        edges = {}
-        for face in geomdata.faces:
-            for i in range(len(face)):
-                idx = i + 1
-                if i == len(face)-1:
-                    idx = 0
-                edge = ( ( mesh.vertices[face[i]].co + mesh.vertices[face[idx]].co ) / 2 ).to_tuple()
-                if not edge in edges.keys():
-                    edges[edge] = [ Vector(geomdata.element_data[face[i]].normal).to_tuple(3), Vector(geomdata.element_data[face[idx]].normal).to_tuple(3) ]
-                    continue
-                if not Vector(geomdata.element_data[face[i]].normal).to_tuple(3) in edges[edge]:
-                    edges[edge].append( Vector(geomdata.element_data[face[i]].normal).to_tuple(3) )
-                if not Vector(geomdata.element_data[face[idx]].normal).to_tuple(3) in edges[edge]:
-                    edges[edge].append( Vector(geomdata.element_data[face[idx]].normal).to_tuple(3) )
-
-        bm = bmesh.new()
-        bm.from_mesh(mesh)
-
-        # Check mesh edges against edge dictionary, mark hard edges sharp
-        numedges = 0
-        for e in bm.edges:
-            edgemid = tuple((e.verts[0].co + e.verts[1].co) / 2)
-            if len(edges[edgemid]) > 2:
-                numedges += 1
-                e.smooth = False
-
-        bm.to_mesh(mesh)
-        bm.free()
 
         # Set Custom Properties
+        # TODO: See which of these might be better suited to be editable in integrated text editor
         self.add_prop(obj, '__GEOM__', 1)
         self.add_prop(obj, 'rcol_chunks', geomdata.internal_chunks)
         self.add_prop(obj, 'rcol_external', geomdata.external_resources)
@@ -206,7 +181,7 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
         return {'FINISHED'}
 
     
-    def add_prop(self, obj, key, value, minmax: List[int] = [0, 9999999], descript: str = "prop"):
+    def add_prop(self, obj, key, value, minmax: List[int] = [0, 2147483647], descript: str = "prop"):
         obj[key] = value
         prop_ui = rna_idprop_ui_prop_get(obj, key)
         prop_ui["min"] = minmax[0]
