@@ -28,6 +28,7 @@ from bpy.types              import Operator
 from rna_prop_ui            import rna_idprop_ui_prop_get
 
 from collections            import defaultdict
+import json
 
 from io_simgeom.io.geom_load    import GeomLoader
 from io_simgeom.models.geom     import Geom
@@ -99,14 +100,15 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
         obj      = bpy.data.objects.new("geom", mesh)
         mesh.from_pydata(vertices, [], faces)
 
-        # Add custom split normals layer if enabled, shade smooth if not
+        # Shade smooth before applying custom normals
+        for poly in mesh.polygons:
+            poly.use_smooth = True
+
+        # Add custom split normals layer if enabled
         if self.do_import_normals:
             normals = [ (v.normal[0], -v.normal[2], v.normal[1]) for v in geomdata.element_data ]
             mesh.normals_split_custom_set_from_vertices(normals)
             mesh.use_auto_smooth = True
-        else:
-            for poly in mesh.polygons:
-                poly.use_smooth = True
 
         # Link the newly created object to the active collection
         scene.collection.children[-1].objects.link(obj)
@@ -160,6 +162,33 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
             for poly in mesh.polygons:
                 for vert_index, loop_index in zip(poly.vertices, poly.loop_indices):
                     vcol_layer.data[loop_index].color = float_colors[vert_index]
+
+        # Add text data to blend file
+        # TODO: build dictionary of desired editable data, write to file as json
+        # Not sure yet how useful this is
+        num_texts = len(bpy.context.blend_data.texts)
+        textname = f"GEOMDATA_{num_texts}"
+        bpy.context.blend_data.texts.new(textname)
+        active_text = bpy.context.blend_data.texts.get(textname, None)
+        if active_text != None:
+            geomdict = dict()
+            geomdict['rcol_chunks'] = geomdata.internal_chunks
+            geomdict['rcol_external'] = geomdata.external_resources
+            geomdict['embedded_id'] = geomdata.embeddedID
+            geomdict['mergegroup'] = geomdata.merge_group
+            geomdict['sortorder'] = geomdata.sort_order
+            geomdict['skincontroller'] = geomdata.skin_controller_index
+            geomdict['tgis'] = geomdata.tgi_list
+            geomdict['shaderdata'] = geomdata.shaderdata
+
+            fnvdict_path = f'{Globals.ROOTDIR}/data/json/fnv_hashmap.json'
+            data_dict: dict
+            with open(f'{fnvdict_path}', 'r') as data:
+                data_dict = json.load(data)
+                for data in geomdict['shaderdata']:
+                    data['name'] = data_dict['shader_parameters'].get(data['name'], data['name'])
+
+            active_text.write( json.dumps(geomdict, indent=4))
 
         # Set Custom Properties
         # TODO: See which of these might be better suited to be editable in integrated text editor

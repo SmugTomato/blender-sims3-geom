@@ -121,8 +121,13 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         # Normals
         normals_to_merge = self.get_merge_normals(mesh_instance, tricorner_normals)
         vertex_positions = [v.co for v in mesh_instance.vertices]
-        faces = [f.vertices for f in mesh_instance.polygons]
-        normals = self.calc_normals(vertex_positions, faces, merge_sets=normals_to_merge)
+        
+        # Get per vertex normals from mesh loops, assumes 1 normal per real vertex
+        mesh_instance.calc_normals_split()
+        normals = [list()] * len(mesh_instance.vertices)
+        for loop in mesh_instance.loops:
+            normals[loop.vertex_index] = loop.normal
+        
         for i, element in enumerate(g_element_data):
             element.normal = (
                 normals[i][0],
@@ -131,6 +136,7 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
             )
 
         # Set Faces
+        faces = [f.vertices for f in mesh_instance.polygons]
         geom_data.faces = faces
 
         # Prefill the UVMap list
