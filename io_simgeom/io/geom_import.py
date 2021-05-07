@@ -18,6 +18,7 @@
 import os
 from typing                 import List
 
+from bpy_extras import object_utils
 import bpy
 import bmesh
 
@@ -63,7 +64,7 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
         default = 'None'
     )
     do_import_normals: BoolProperty(
-        name = "Keep Normals",
+        name = "Preserve Normals",
         description = "Import the original normals as custom split normals (recommended)",
         default = True
     )
@@ -75,11 +76,6 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
 
         # Load the GEOM data
         geomdata = GeomLoader.readGeom(self.filepath)
-
-        # Set Active Collection
-        # Should probably GET the active collection instead
-        context.view_layer.active_layer_collection = context.view_layer.layer_collection.children[-1]
-        scene = context.scene
 
         # Fill a Dictionairy with hexed Vertex ID as key and List of vertex indices
         lowest_id = 0x7fffffff
@@ -99,6 +95,7 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
         mesh     = bpy.data.meshes.new("geom")
         obj      = bpy.data.objects.new("geom", mesh)
         mesh.from_pydata(vertices, [], faces)
+        print(obj)
 
         # Shade smooth before applying custom normals
         for poly in mesh.polygons:
@@ -111,7 +108,11 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
             mesh.use_auto_smooth = True
 
         # Link the newly created object to the active collection
-        scene.collection.children[-1].objects.link(obj)
+        context.view_layer.active_layer_collection.collection.objects.link(obj)
+        
+        # Deselect everything but newly imported mesh, then make it the active object
+        for o in context.selected_objects:
+            o.select_set(False)
         obj.select_set(True)
         bpy.context.view_layer.objects.active = obj
 
@@ -165,7 +166,7 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
 
         # Add text data to blend file
         # TODO: build dictionary of desired editable data, write to file as json
-        # Not sure yet how useful this is
+        # Not sure yet how useful this is, not sure if shaderdata in geom is even used
         num_texts = len(bpy.context.blend_data.texts)
         textname = f"GEOMDATA_{num_texts}"
         bpy.context.blend_data.texts.new(textname)
@@ -189,6 +190,8 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
                     data['name'] = data_dict['shader_parameters'].get(data['name'], data['name'])
 
             active_text.write( json.dumps(geomdict, indent=4))
+        
+        obj.geom_data = active_text
 
         # Set Custom Properties
         # TODO: See which of these might be better suited to be editable in integrated text editor
@@ -209,7 +212,7 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
 
         return {'FINISHED'}
 
-    
+
     def add_prop(self, obj, key, value, minmax: List[int] = [0, 2147483647], descript: str = "prop"):
         obj[key] = value
         prop_ui = rna_idprop_ui_prop_get(obj, key)

@@ -62,13 +62,13 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
 
         if obj is not None and obj.get('__GEOM__', 0):
             col.operator("simgeom.import_morph", text="Import Morphs", icon='IMPORT')
-            self.draw_object(context)
+            self.draw_geom(context)
         
         row = layout.row(align=True)
         row.operator("simgeom.copy_data", text="Transfer GEOM data")
     
 
-    def draw_object(self, context):
+    def draw_geom(self, context):
         layout = self.layout
         obj = context.active_object        
 
@@ -88,3 +88,7 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
         col.operator("simgeom.split_seams", text="Split UV Seams")
         col.operator("simgeom.clean_groups", text="Clean Empty Bone Groups")
         col.operator("simgeom.rename_bone_groups")
+
+        col = layout.column(align=True)
+        col.label(text="TESTING")
+        col.prop(obj, "morph_list")

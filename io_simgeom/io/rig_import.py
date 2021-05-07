@@ -105,11 +105,14 @@ class SIMGEOM_OT_import_rig(Operator, ImportHelper):
         rig.rotation_euler = 1.5707963705062866,0,0
 
         # Custom bone shape
-        bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=1,radius=1)
-        boneshape = bpy.context.active_object
-        boneshape.data.name = boneshape.name = "rig_boneshape"
-        boneshape.use_fake_user = True
-        bpy.context.scene.collection.children[-1].objects.unlink(boneshape) # don't want the user deleting this
+        # Only create it if it does not exist, use existing one otherwise
+        boneshape = bpy.data.objects.get('rig_boneshape', None)
+        if boneshape == None:
+            bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=1,radius=1)
+            boneshape = bpy.context.active_object
+            boneshape.data.name = boneshape.name = "rig_boneshape"
+            bpy.context.scene.collection.children[-1].objects.unlink(boneshape) # don't want the user deleting this
+
         bpy.context.view_layer.objects.active = rig
         bpy.ops.object.mode_set(mode='POSE')
         for bone in rig.pose.bones:

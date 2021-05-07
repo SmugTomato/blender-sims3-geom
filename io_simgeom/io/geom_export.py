@@ -326,7 +326,7 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
 
     def calc_tangents(self, element_data, geom_data):
         """Calculate Tangents of the mesh to make normalmaps work"""
-        # Calculating Tangents
+        # Calculating Tangents, can be done in blender but would require trial and error to flip axis
         # http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-13-normal-mapping/
         tangents = [[] for _ in range(len(element_data))]
         for face in geom_data.faces:

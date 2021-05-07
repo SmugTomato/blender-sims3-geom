@@ -16,11 +16,15 @@
 # along with BlenderGeom.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
+from typing                 import List
+
+import bpy
 
 from mathutils              import Vector
 from bpy_extras.io_utils    import ImportHelper
-from bpy.props              import StringProperty, CollectionProperty
+from bpy.props              import StringProperty, CollectionProperty, BoolProperty
 from bpy.types              import Operator, PropertyGroup
+from rna_prop_ui            import rna_idprop_ui_prop_get
 
 from io_simgeom.io.geom_load    import GeomLoader
 from io_simgeom.models.geom     import Geom
@@ -37,51 +41,123 @@ class SIMGEOM_OT_import_morph(Operator, ImportHelper):
     filter_glob: StringProperty( default = "*.simgeom", options = {'HIDDEN'} )
     files: CollectionProperty(type=PropertyGroup)
 
-    def execute(self, context):
-        obj = context.active_object
-        mesh = obj.data
+    do_import_normals: BoolProperty(
+        name = "Preserve Normals",
+        description = "Import the original normals as custom split normals (recommended)",
+        default = True
+    )
 
-        if obj == None:
-            self.report({'ERROR'}, "No base mesh selected, can't import morph")
+    def execute(self, context):
+        geom_obj = context.active_object
+        geom_mesh = geom_obj.data
+
+        if geom_obj == None:
+            self.report({'ERROR'}, "No base mesh selected, can't import morphs")
             return {'CANCELLED'}
-        if not obj.get('__GEOM__'):
-            self.report({'ERROR'}, "Selected base mesh is not a GEOM, can't import morph")
+        if not geom_obj.get('__GEOM__'):
+            self.report({'ERROR'}, "Selected base mesh is not a GEOM, can't import morphs")
             return {'CANCELLED'}
+        
+        # Get list of original normals for later
+        geom_normals = [[0,0,0]] * len(geom_mesh.vertices)
+        geom_mesh.calc_normals_split()
+        for loop in geom_mesh.loops:
+            geom_normals[loop.vertex_index] = loop.normal
 
         for geom_file in self.files:
             directory = os.path.dirname(self.filepath)
             filepath = os.path.join(directory, geom_file.name)
             # Load the GEOM data
-            geomdata = GeomLoader.readGeom(filepath)
+            morph_geomdata = GeomLoader.readGeom(filepath)
 
-            if len(geomdata.element_data) != len(mesh.vertices):
-                self.report({'ERROR'}, "Vertex count mismatch, can't import morph")
+            if len(morph_geomdata.element_data) != len(geom_mesh.vertices):
+                self.report({'ERROR'}, "Vertex count mismatch, can't import morphs")
                 continue
-
-            # Create Basis shape key if it doesn't exist
-            if not mesh.shape_keys:
-                obj.shape_key_add(name="Basis", from_mix=False)
             
-            # Import the morph
+            # Name the morph
             filename = os.path.split(filepath)[1].lower()
-            morphcount = len(mesh.shape_keys.key_blocks)
-            morphname = "MORPH_" + str(morphcount - 1)
+            morphcount = self.get_morph_count(geom_obj)
+            morphname = f"{geom_obj.name}_MORPH"
             if "fat" in filename:
-                morphname = "fat"
+                morphname = f"{morphname}_FAT"
             if "fit" in filename:
-                morphname = "fit"
+                morphname = f"{morphname}_FIT"
             if "thin" in filename:
-                morphname = "thin"
+                morphname = f"{morphname}_THIN"
             if "special" in filename:
-                morphname = "special"
-            shapekey = obj.shape_key_add(name=morphname, from_mix=False)
+                morphname = f"{morphname}_SPECIAL"
+            else:
+                morphname = f"{morphname}_{morphcount}"            
 
-            for vertex in mesh.vertices:
-                shapekey.data[vertex.index].co = Vector((
-                    vertex.co.x + geomdata.element_data[vertex.index].position[0],
-                    vertex.co.y - geomdata.element_data[vertex.index].position[2],
-                    vertex.co.z + geomdata.element_data[vertex.index].position[1]
-                ))
+            # Get final positions and normals from adding the offsets
+            morph_vertices = [[0,0,0]] * len(geom_mesh.vertices)
+            morph_normals  = [[0,0,0]] * len(geom_mesh.vertices)
 
-            self.report({'INFO'}, "Imported Morph: " + morphname + " For Object: " + obj.name)
+            for i in range(len(geom_mesh.vertices)):
+                morph_vertices[i] = [
+                    geom_mesh.vertices[i].co[0] + morph_geomdata.element_data[i].position[0],
+                    geom_mesh.vertices[i].co[1] - morph_geomdata.element_data[i].position[2],
+                    geom_mesh.vertices[i].co[2] + morph_geomdata.element_data[i].position[1]
+                ]
+                morph_normals[i] = [
+                    geom_normals[i][0] + morph_geomdata.element_data[i].normal[0],
+                    geom_normals[i][1] - morph_geomdata.element_data[i].normal[2],
+                    geom_normals[i][2] + morph_geomdata.element_data[i].normal[1]
+                ]
+            
+            faces = morph_geomdata.faces
+            mesh  = bpy.data.meshes.new(morphname)
+            obj   = bpy.data.objects.new(morphname, mesh)
+            mesh.from_pydata(morph_vertices, [], faces)
+
+            # Shade smooth before applying custom normals
+            for poly in mesh.polygons:
+                poly.use_smooth = True
+
+            # Add custom split normals layer if enabled
+            if self.do_import_normals:
+                mesh.normals_split_custom_set_from_vertices(morph_normals)
+                mesh.use_auto_smooth = True
+
+            # Link the newly created object to the active collection
+            context.view_layer.active_layer_collection.collection.objects.link(obj)
+
+            # Deselect everything but newly imported mesh, then make it the active object
+            for o in context.selected_objects:
+                o.select_set(False)
+            obj.select_set(True)
+            bpy.context.view_layer.objects.active = obj
+
+            # Custom Properties
+            self.add_prop(obj, '__GEOM_MORPH__', 1)
+            obj.morph_link = geom_obj
+
+            self.report({'INFO'}, "Imported Morph: " + morphname + " For Object: " + geom_obj.name)
         return {'FINISHED'}
+
+    
+    def get_morph_count(self, base_obj):
+        morphs = list()
+        
+        for o in bpy.data.objects.values():
+            if o.type != 'MESH':
+                continue
+            if o.get('__GEOM_MORPH__', None) == None:
+                continue
+            if o.get('morph_link', None) == base_obj:
+                morphs.append(o)
+        
+        return len(morphs)
+
+
+    def add_prop(self, obj, key, value, minmax: List[int] = [0, 2147483647], descript: str = "prop"):
+        obj[key] = value
+        prop_ui = rna_idprop_ui_prop_get(obj, key)
+        prop_ui["min"] = minmax[0]
+        prop_ui["max"] = minmax[1]
+        prop_ui["soft_min"] = minmax[0]
+        prop_ui["soft_max"] = minmax[1]
+        prop_ui["description"] = descript
+
+        for area in bpy.context.screen.areas:
+            area.tag_redraw()
