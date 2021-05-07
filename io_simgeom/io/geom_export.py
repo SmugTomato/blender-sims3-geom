@@ -76,6 +76,12 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         default = 'LOD1'
     )
 
+    do_export_morphs: BoolProperty(
+        name = "Export Morphs",
+        description = "Export all morphs belonging to the selected GEOM.",
+        default = True
+    )
+
     def execute(self, context):
         geom_data = Geom()
         ob = context.active_object

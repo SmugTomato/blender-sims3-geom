@@ -64,8 +64,8 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
             col.operator("simgeom.import_morph", text="Import Morphs", icon='IMPORT')
             self.draw_geom(context)
         
-        row = layout.row(align=True)
-        row.operator("simgeom.copy_data", text="Transfer GEOM data")
+        if obj is not None and obj.get('__GEOM_MORPH__', 0):
+            self.draw_morph(context)
     
 
     def draw_geom(self, context):
@@ -73,7 +73,7 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
         obj = context.active_object        
 
         col = layout.column(align=True)
-        col.label(text="Vertex IDs:")
+        col.label(text="Vertex IDs")
         row = col.row(align=True)
         row.prop(obj, '["start_id"]')
         sub = row.row()
@@ -84,11 +84,17 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
         col.operator("simgeom.remove_ids", text="Remove IDs")
 
         col = layout.column(align=True)
-        col.label(text="Misc.:")
+        col.label(text="Misc.")
         col.operator("simgeom.split_seams", text="Split UV Seams")
         col.operator("simgeom.clean_groups", text="Clean Empty Bone Groups")
         col.operator("simgeom.rename_bone_groups")
+        col.operator("simgeom.copy_data", text="Transfer GEOM data")
+    
+
+    def draw_morph(self, context):
+        layout = self.layout
+        obj = context.active_object 
 
         col = layout.column(align=True)
-        col.label(text="TESTING")
-        col.prop(obj, "morph_list")
+        col.label(text="Morph Data")
+        col.prop(obj, "morph_link", text="Linked to")

@@ -80,11 +80,11 @@ class SIMGEOM_OT_import_morph(Operator, ImportHelper):
             morphname = f"{geom_obj.name}_MORPH"
             if "fat" in filename:
                 morphname = f"{morphname}_FAT"
-            if "fit" in filename:
+            elif "fit" in filename:
                 morphname = f"{morphname}_FIT"
-            if "thin" in filename:
+            elif "thin" in filename:
                 morphname = f"{morphname}_THIN"
-            if "special" in filename:
+            elif "special" in filename:
                 morphname = f"{morphname}_SPECIAL"
             else:
                 morphname = f"{morphname}_{morphcount}"            

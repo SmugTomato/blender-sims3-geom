@@ -95,7 +95,6 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
         mesh     = bpy.data.meshes.new("geom")
         obj      = bpy.data.objects.new("geom", mesh)
         mesh.from_pydata(vertices, [], faces)
-        print(obj)
 
         # Shade smooth before applying custom normals
         for poly in mesh.polygons:
