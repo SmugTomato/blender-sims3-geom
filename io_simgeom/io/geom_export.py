@@ -114,19 +114,12 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         obj_eval = ob.evaluated_get(depsgraph)
         mesh_instance = obj_eval.to_mesh()
 
-        # Get smooth normals
-        tricorner_normals = self.get_tricorner_normals(mesh_instance)
-
         # Triangulate the mesh
         bm = bmesh.new()
         bm.from_mesh(mesh_instance)
         bmesh.ops.triangulate(bm, faces=bm.faces)
         bm.to_mesh(mesh_instance)
         bm.free()
- 
-        # Normals
-        normals_to_merge = self.get_merge_normals(mesh_instance, tricorner_normals)
-        vertex_positions = [v.co for v in mesh_instance.vertices]
         
         # Get per vertex normals from mesh loops, assumes 1 normal per real vertex
         mesh_instance.calc_normals_split()
@@ -182,34 +175,6 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         for group in ob.vertex_groups:
             geom_data.bones.append(group.name)
         
-        # Apply Seam fix
-        # Fixes normals and bone assignments on seams
-        count = 0
-        if self.seamfix_type != 'None':
-            for element in g_element_data:
-                for thing in Globals.SEAM_FIX[self.seamfix_lod][self.seamfix_type]['base']:
-                    a = self.veclength(self.delta(element.position, thing['position']))
-                    if a > 0.0001:
-                        continue
-                    count += 1
-                    element.normal = thing['normal']
-                    assign = thing['assign']
-                    weight = thing['weight']
-                    element.assignment = [0,0,0,0]
-                    element.weights = [0,0,0,0]
-                    for i in range(4):
-                        # No reason to clutter the bonehash array with unused bones
-                        if weight[i] == 0:
-                            continue
-                        # If the bone is actually used, add it to the bonehash array
-                        if not assign[i] in geom_data.bones:
-                            geom_data.bones.append(assign[i])
-                        # Set assignment and weight of the bone
-                        element.assignment[i] = geom_data.bones.index(assign[i])
-                        element.weights[i] = weight[i]
-                    break
-
-        
         # Set Header Info
         geom_data.internal_chunks = []
         for x in ob['rcol_chunks']:
@@ -232,102 +197,12 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         GeomWriter.writeGeom(self.filepath, geom_data)
 
         # Morphs
-        if me.shape_keys and len(me.shape_keys.key_blocks) > 1:
-            self.export_morphs(ob, mesh_instance, normals_to_merge, normals, geom_data.bones)
+        if self.do_export_morphs:
+            self.export_morphs(ob, mesh_instance, normals, geom_data.faces, geom_data.bones)
 
         ob.to_mesh_clear()
 
         return {'FINISHED'}
-    
-
-    def get_tricorner_normals(self, mesh_instance) -> tuple:
-        """ Collect normals info from face corners of a mesh with doubles removed """
-        bm = bmesh.new()
-        bm.from_mesh(mesh_instance)
-        bmesh.ops.triangulate(bm, faces=bm.faces)
-        bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=0.0001)
-        edges = []
-        for edge in bm.edges:
-            if not edge.smooth:
-                edges.append(edge)
-        bmesh.ops.split_edges(bm, edges=edges)        
-
-        tricorner_normals = []
-        for tri in bm.faces:
-            trian = []
-            for vert in tri.verts:
-                trian.append( vert.normal )
-            tricorner_normals.append(trian)
-        
-        bm.free()
-
-        return tuple(tricorner_normals)
-
-
-    def get_merge_normals(self, mesh_instance, tricorner_normals) -> tuple:
-        """ Look up normals to merge from a mesh with doubles removed and edges split """
-        # Vertex Data from copied mesh mapped to original mesh
-        vertices = {}
-        for face_a, face_b in zip(mesh_instance.polygons, tricorner_normals):
-            for ind_a, normal in zip(face_a.vertices, face_b):
-                co = mesh_instance.vertices[ind_a].co.to_tuple()
-                if not co in vertices.keys():
-                    vertices[co] = {ind_a: normal.to_tuple()}
-                else:
-                    vertices[co][ind_a] = normal.to_tuple()
-        
-        merge_sets = {}
-        for v in vertices.values():
-            if len(v) < 2:
-                continue
-            for index, normal in v.items():
-                if not normal in merge_sets.keys():
-                    merge_sets[normal] = [index]
-                else:
-                    merge_sets[normal].append(index)
-
-        return tuple(merge_sets.values())
-
-
-    def calc_normals(self, vertex_positions, faces, merge_sets: List[List[int]] = None):
-        """
-        Although calculating normals can be done in blender, it ended up being easier doing it manually
-        due to shape keys not agreeing with bmesh.ops.remove_doubles()
-        """
-        # Manually calculate face normals
-        verts = {}
-        normals = {}
-        for face in faces:
-            u = vertex_positions[face[1]] - vertex_positions[face[0]]
-            v = vertex_positions[face[2]] - vertex_positions[face[0]]
-            f_normal = u.cross(v)   
-            for index in face:
-                if not index in verts.keys():
-                    verts[index] = [f_normal]
-                else:
-                    verts[index].append(f_normal)
-
-        # Average face normals to vertex normals
-        for k, v in verts.items():
-            if len(v) == 1:
-                normals[k] = v[0]
-                continue
-            total = Vector((0,0,0))
-            for n in v:
-                total += n
-            normals[k] = total.normalized()
-
-        # Merge Normals
-        if merge_sets:
-            for set in merge_sets:
-                total = Vector((0,0,0))
-                for index in set:
-                    total += normals[index]
-                normal = total.normalized()
-                for index in set:
-                    normals[index] = normal
-
-        return normals
     
 
     def calc_tangents(self, element_data, geom_data):
@@ -375,43 +250,64 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
             element_data[i].tangent = average.normalized().to_tuple()
     
 
-    # TODO: Fix mangled morphs, probably rewrite from scratch
-    def export_morphs(self, original_object, mesh_instance, normals_to_merge, original_normals, bones):
+    def get_morphs(self, base_obj):
+        morphs = list()
+        
+        for o in bpy.data.objects.values():
+            if o.type != 'MESH':
+                continue
+            if o.get('__GEOM_MORPH__', None) == None:
+                continue
+            if o.get('morph_link', None) == base_obj:
+                morphs.append(o)
+        
+        return morphs
+
+
+    def export_morphs(self, original_object, mesh_instance, original_normals, faces, bones):
         """Create geom files for all morphs"""
-        original_mesh = original_object.data
-        bm = bmesh.new()
-        bm.from_mesh(original_mesh)
-        bm.verts.ensure_lookup_table()
 
-        for keyname in bm.verts.layers.shape.keys()[1:]:
-            val = bm.verts.layers.shape.get(keyname)
+        vert_count = len(mesh_instance.vertices)
+
+        morphs = self.get_morphs(original_object)
+        for morph_obj in morphs:
+            morph_mesh = morph_obj.data
+
+            if vert_count != len(morph_mesh.vertices):
+                continue
+            
             geom_data = Geom()
-            element_data: List[Vertex] = []
-            vertex_positions = []
-            for i in range(len(bm.verts)):
-                v = bm.verts[i]
-                vertex_positions.append( v[val] )
-            faces = [f.vertices for f in mesh_instance.polygons]
-            normals = self.calc_normals(vertex_positions, faces, normals_to_merge)
+            element_data = []
+            
+            # Get per vertex normals from mesh loops, assumes 1 normal per real vertex
+            morph_mesh.calc_normals_split()
+            morph_normals = [list()] * len(mesh_instance.vertices)
+            for loop in mesh_instance.loops:
+                morph_normals[loop.vertex_index] = loop.normal
 
-            # Set Position and Normal deltas
-            positions_absolute = []
-            for i in range(len(vertex_positions)):
+            # Positions
+            original_positions = [v.co for v in mesh_instance.vertices]
+            morph_positions    = [v.co for v in morph_mesh.vertices]
+
+            final_positions = [[0,0,0]] * vert_count
+            final_normals   = [[0,0,0]] * vert_count
+
+            # Get deltas, swap axis and put into element_data
+            for i in range(vert_count):
                 vertex = Vertex()
-                pos_delta = vertex_positions[i] - original_mesh.vertices[i].co
-                nor_delta = normals[i] - original_normals[i]
+                pos_delta = self.delta(morph_positions[i], original_positions[i])
+                nor_delta = self.delta(morph_normals[i], original_normals[i])
                 vertex.position = (
-                    pos_delta.x,
-                    pos_delta.z,
-                    -pos_delta.y
+                    pos_delta[0],
+                    pos_delta[2],
+                    -pos_delta[1]
                 )
                 vertex.normal = (
-                    nor_delta.x,
-                    nor_delta.z,
-                    -nor_delta.y
+                    nor_delta[0],
+                    nor_delta[2],
+                    -nor_delta[1]
                 )
                 element_data.append(vertex)
-                positions_absolute.append( (vertex_positions[i].x, vertex_positions[i].z, -vertex_positions[i].y) )
             
             geom_data.faces = faces
 
@@ -420,22 +316,10 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
                 for v in values:
                     element_data[v].vertex_id = [int(key, 0)]
 
+            geom_data.element_data = element_data
+
             # Fill the bone array
             geom_data.bones = bones
-
-            # Apply Seam fix
-            count = 0
-            if self.seamfix_type != 'None' and keyname in Globals.SEAM_FIX[self.seamfix_lod][self.seamfix_type]:
-                for i in range(len(element_data)):
-                    element = element_data[i]
-                    for thing in Globals.SEAM_FIX[self.seamfix_lod][self.seamfix_type][keyname]:
-                        a = self.veclength(self.delta(positions_absolute[i], thing['position']))
-                        if a > 0.0001:
-                            continue
-                        count += 1
-                        element_data[i].normal = thing['normal']
-                        break
-                print(keyname, count)
             
             # Set Header data
             emtpy_tgi = {
@@ -456,12 +340,8 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
             geom_data.skin_controller_index = 0
             geom_data.embeddedID = "0x0"
 
-            geom_data.element_data = element_data
-
-            filepath = self.filepath.split(".simgeom")[0] + "_" + keyname + ".simgeom"
+            filepath = self.filepath.split(".simgeom")[0] + "_" + morph_obj.name + ".simgeom"
             GeomWriter.writeGeom(filepath, geom_data)
-        
-        bm.free()
     
 
     def delta(self, a: tuple, b: tuple):
