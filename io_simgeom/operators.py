@@ -98,7 +98,6 @@ class SIMGEOM_OT_copy_data(bpy.types.Operator):
     """Copy GEOM data from active to selected objects"""
     bl_idname = "simgeom.copy_data"
     bl_label = "Transfer GEOM data"
-
     def execute(self, context):
         # Selected mesh objects
         selected = [ o for o in bpy.context.scene.objects if o.select_get() and o.type == 'MESH' ]

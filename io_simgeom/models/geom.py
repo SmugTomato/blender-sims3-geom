@@ -21,5 +21,3 @@ class Geom:
         self.element_data:          List[Vertex]    = None
         self.bones:                 List[str]       = None
         self.faces:                 List[List[int]] = None
-        
-        
