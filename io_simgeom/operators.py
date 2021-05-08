@@ -118,7 +118,15 @@ class SIMGEOM_OT_copy_data(bpy.types.Operator):
         for o in selected:
             if o == active:
                 continue
+
+            # Clear potential morph data
+            if o.get('__GEOM_MORPH__') != None:
+                del o['__GEOM_MORPH__']
             
+            if o.get('morph_link') != None:
+                del o['morph_link']
+            
+            # Copy GEOM data
             o['__GEOM__'] = 1
             if active.get('embedded_id') != None:
                 o['embedded_id'] = active['embedded_id']
