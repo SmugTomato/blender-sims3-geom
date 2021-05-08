@@ -118,47 +118,13 @@ class SIMGEOM_OT_copy_data(bpy.types.Operator):
             if o == active:
                 continue
 
-            # Clear potential morph data
-            if o.get('__GEOM_MORPH__') != None:
-                del o['__GEOM_MORPH__']
+            # Clear old properties
+            for prop in o.id_data.keys():
+                del o[prop]
             
-            if o.get('morph_link') != None:
-                del o['morph_link']
-            
-            if o.get('morph_name') != None:
-                del o['morph_name']
-            
-            # Copy GEOM data
-            o['__GEOM__'] = 1
-            if active.get('embedded_id') != None:
-                o['embedded_id'] = active['embedded_id']
-
-            if active.get('mergegroup') != None:
-                o['mergegroup'] = active['mergegroup']
-
-            if active.get('rcol_chunks') != None:
-                o['rcol_chunks'] = active['rcol_chunks']
-
-            if active.get('rcol_external') != None:
-                o['rcol_external'] = active['rcol_external']
-
-            if active.get('shaderdata') != None:
-                o['shaderdata'] = active['shaderdata']
-            
-            if active.get('skincontroller') != None:
-                o['skincontroller'] = active['skincontroller']
-            
-            if active.get('sortorder') != None:
-                o['sortorder'] = active['sortorder']
-            
-            if active.get('start_id') != None:
-                o['start_id'] = active['start_id']
-            
-            if active.get('tgis') != None:
-                o['tgis'] = active['tgis']
-
-            if active.get('vert_ids') != None:
-                o['vert_ids'] = active['vert_ids']
+            # Copy new properties
+            for prop in active.id_data.keys():
+                o[prop] = active[prop]
             
             n_copied += 1
 
