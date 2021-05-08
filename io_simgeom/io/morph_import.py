@@ -129,7 +129,7 @@ class SIMGEOM_OT_import_morph(Operator, ImportHelper):
             bpy.context.view_layer.objects.active = obj
 
             # Custom Properties
-            self.add_prop(obj, '__GEOM_MORPH__', 1)
+            obj['__GEOM_MORPH__'] = 1
             obj.morph_link = geom_obj
 
             self.report({'INFO'}, "Imported Morph: " + morphname + " For Object: " + geom_obj.name)
@@ -148,16 +148,3 @@ class SIMGEOM_OT_import_morph(Operator, ImportHelper):
                 morphs.append(o)
         
         return len(morphs)
-
-
-    def add_prop(self, obj, key, value, minmax: List[int] = [0, 2147483647], descript: str = "prop"):
-        obj[key] = value
-        prop_ui = rna_idprop_ui_prop_get(obj, key)
-        prop_ui["min"] = minmax[0]
-        prop_ui["max"] = minmax[1]
-        prop_ui["soft_min"] = minmax[0]
-        prop_ui["soft_max"] = minmax[1]
-        prop_ui["description"] = descript
-
-        for area in bpy.context.screen.areas:
-            area.tag_redraw()
