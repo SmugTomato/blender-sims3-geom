@@ -163,37 +163,7 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
                 for vert_index, loop_index in zip(poly.vertices, poly.loop_indices):
                     vcol_layer.data[loop_index].color = float_colors[vert_index]
 
-        # Add text data to blend file
-        # TODO: build dictionary of desired editable data, write to file as json
-        # Not sure yet how useful this is, not sure if shaderdata in geom is even used
-        num_texts = len(bpy.context.blend_data.texts)
-        textname = f"GEOMDATA_{num_texts}"
-        bpy.context.blend_data.texts.new(textname)
-        active_text = bpy.context.blend_data.texts.get(textname, None)
-        if active_text != None:
-            geomdict = dict()
-            geomdict['rcol_chunks'] = geomdata.internal_chunks
-            geomdict['rcol_external'] = geomdata.external_resources
-            geomdict['embedded_id'] = geomdata.embeddedID
-            geomdict['mergegroup'] = geomdata.merge_group
-            geomdict['sortorder'] = geomdata.sort_order
-            geomdict['skincontroller'] = geomdata.skin_controller_index
-            geomdict['tgis'] = geomdata.tgi_list
-            geomdict['shaderdata'] = geomdata.shaderdata
-
-            fnvdict_path = f'{Globals.ROOTDIR}/data/json/fnv_hashmap.json'
-            data_dict: dict
-            with open(f'{fnvdict_path}', 'r') as data:
-                data_dict = json.load(data)
-                for data in geomdict['shaderdata']:
-                    data['name'] = data_dict['shader_parameters'].get(data['name'], data['name'])
-
-            active_text.write( json.dumps(geomdict, indent=4))
-        
-        obj.geom_data = active_text
-
         # Set Custom Properties
-        # TODO: See which of these might be better suited to be editable in integrated text editor
         self.add_prop(obj, '__GEOM__', 1)
         self.add_prop(obj, 'rcol_chunks', geomdata.internal_chunks)
         self.add_prop(obj, 'rcol_external', geomdata.external_resources)

@@ -43,8 +43,7 @@ bl_info = {
 rootdir = os.path.dirname(os.path.realpath(__file__))
 Globals.init(rootdir)
 
-# Required to link morphs to base mesh and to link dumped geom data text to geom
-bpy.types.Object.geom_data = bpy.props.PointerProperty(type=bpy.types.Text)
+# Required to link morphs to base geom mesh
 bpy.types.Object.morph_link = bpy.props.PointerProperty(type=bpy.types.Object, poll=lambda self, ob : ob.type == 'MESH')
 
 classes = [
