@@ -340,7 +340,8 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
             geom_data.skin_controller_index = 0
             geom_data.embeddedID = "0x0"
 
-            filepath = self.filepath.split(".simgeom")[0] + "_" + morph_obj.name + ".simgeom"
+            morph_name = morph_obj.get('morph_name', morph_obj.name)
+            filepath = self.filepath.split(".simgeom")[0] + "_" + morph_name + ".simgeom"
             GeomWriter.writeGeom(filepath, geom_data)
     
 

@@ -43,9 +43,6 @@ bl_info = {
 rootdir = os.path.dirname(os.path.realpath(__file__))
 Globals.init(rootdir)
 
-# Required to link morphs to base geom mesh
-bpy.types.Object.morph_link = bpy.props.PointerProperty(type=bpy.types.Object, poll=lambda self, ob : ob.type == 'MESH')
-
 classes = [
     SIMGEOM_PT_utility_panel,
     SIMGEOM_OT_import_rig,
@@ -77,11 +74,29 @@ def register():
     bpy.types.TOPBAR_MT_file_import.append(menu_func_import)
     bpy.types.TOPBAR_MT_file_export.append(menu_func_export)
 
+    # Links morph to it's main geom mesh
+    bpy.types.Object.morph_link = bpy.props.PointerProperty(
+        type=bpy.types.Object,
+        poll=lambda self, ob : ob.type == 'MESH',
+        name="Linked to",
+        description="The base GEOM this morph should be applied to"
+    )
+
+    # Name for morph meshes, added as suffix on export
+    bpy.types.Object.morph_name = bpy.props.StringProperty(
+        default="",
+        name="Morph Name",
+        description="Will be added as a suffix to the linked GEOM's exported filename"
+    )
+
 def unregister():
     for item in classes:
         bpy.utils.unregister_class(item)
     bpy.types.TOPBAR_MT_file_import.remove(menu_func_import)
     bpy.types.TOPBAR_MT_file_export.remove(menu_func_export)
+
+    del bpy.types.Object.morph_link
+    del bpy.types.Object.morph_name
 
 if __name__ == "__main__":
     register()

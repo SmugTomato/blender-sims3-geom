@@ -77,7 +77,7 @@ class SIMGEOM_OT_import_morph(Operator, ImportHelper):
             # Name the morph
             filename = os.path.split(filepath)[1].lower()
             morphcount = self.get_morph_count(geom_obj)
-            morphname = f"{geom_obj.name}_MORPH"
+            morphname = f"MORPH"
             if "fat" in filename:
                 morphname = f"{morphname}_FAT"
             elif "fit" in filename:
@@ -87,7 +87,8 @@ class SIMGEOM_OT_import_morph(Operator, ImportHelper):
             elif "special" in filename:
                 morphname = f"{morphname}_SPECIAL"
             else:
-                morphname = f"{morphname}_{morphcount}"            
+                morphname = f"{morphname}_{morphcount}"
+            morph_obj_name = f"{geom_obj.name}_{morphname}"
 
             # Get final positions and normals from adding the offsets
             morph_vertices = [[0,0,0]] * len(geom_mesh.vertices)
@@ -106,8 +107,8 @@ class SIMGEOM_OT_import_morph(Operator, ImportHelper):
                 ]
             
             faces = morph_geomdata.faces
-            mesh  = bpy.data.meshes.new(morphname)
-            obj   = bpy.data.objects.new(morphname, mesh)
+            mesh  = bpy.data.meshes.new(morph_obj_name)
+            obj   = bpy.data.objects.new(morph_obj_name, mesh)
             mesh.from_pydata(morph_vertices, [], faces)
 
             # Shade smooth before applying custom normals
@@ -130,6 +131,7 @@ class SIMGEOM_OT_import_morph(Operator, ImportHelper):
 
             # Custom Properties
             obj['__GEOM_MORPH__'] = 1
+            obj.morph_name = morphname
             obj.morph_link = geom_obj
 
             self.report({'INFO'}, "Imported Morph: " + morphname + " For Object: " + geom_obj.name)

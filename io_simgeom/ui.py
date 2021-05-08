@@ -97,4 +97,5 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
 
         col = layout.column(align=True)
         col.label(text="Morph Data")
-        col.prop(obj, "morph_link", text="Linked to")
+        col.prop(obj, "morph_name")
+        col.prop(obj, "morph_link")
