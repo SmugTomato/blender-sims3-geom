@@ -177,21 +177,21 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         
         # Set Header Info
         geom_data.internal_chunks = []
-        for x in ob['rcol_chunks']:
+        for x in ob.get('rcol_chunks', []):
             geom_data.internal_chunks.append(x.to_dict())
         geom_data.external_resources = []
-        for x in ob['rcol_external']:
+        for x in ob.get('rcol_external', []):
             geom_data.internal_chunks.append(x.to_dict())
         geom_data.shaderdata = []
-        for x in ob['shaderdata']:
+        for x in ob.get('shaderdata', []):
             geom_data.shaderdata.append(x.to_dict())
         geom_data.tgi_list = []
-        for x in ob['tgis']:
+        for x in ob.get('tgis', []):
             geom_data.tgi_list.append(x.to_dict())
-        geom_data.sort_order = ob['sortorder']
-        geom_data.merge_group = ob['mergegroup']
-        geom_data.skin_controller_index = ob['skincontroller']
-        geom_data.embeddedID = ob['embedded_id']
+        geom_data.sort_order = ob.get('sortorder', 0)
+        geom_data.merge_group = ob.get('mergegroup', 0)
+        geom_data.skin_controller_index = ob.get('skincontroller', 3)
+        geom_data.embeddedID = ob.get('embedded_id', "SimSkin")
             
         geom_data.element_data = g_element_data
         GeomWriter.writeGeom(self.filepath, geom_data)
@@ -335,8 +335,8 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
             geom_data.shaderdata = []
             geom_data.tgi_list = []
             geom_data.tgi_list.append(emtpy_tgi)
-            geom_data.sort_order = original_object['sortorder']
-            geom_data.merge_group = original_object['mergegroup']
+            geom_data.sort_order = original_object.get('sortorder', 0)
+            geom_data.merge_group = original_object.get('mergegroup', 0)
             geom_data.skin_controller_index = 0
             geom_data.embeddedID = "0x0"
 
