@@ -95,9 +95,9 @@ class SIMGEOM_OT_import_rig_helper(bpy.types.Operator):
 
 
 class SIMGEOM_OT_copy_data(bpy.types.Operator):
-    """Copy GEOM data from selected to active"""
+    """Copy GEOM data from active to selected objects"""
     bl_idname = "simgeom.copy_data"
-    bl_label = "Copy GEOM data from active to selected objects"
+    bl_label = "Transfer GEOM data"
 
     def execute(self, context):
         # Selected mesh objects
