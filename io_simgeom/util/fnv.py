@@ -33,7 +33,7 @@ def fnv32(string: str) -> int:
     bstring = bytes(string.lower(), 'utf-8')
     fnv_hash = OFFSET32
     for b in bstring:
-        fnv_hash *= PRIME32
+        fnv_hash = (fnv_hash * PRIME32) & 0xffffffff
         fnv_hash ^= b
     return to_uint32(fnv_hash)
 
@@ -42,6 +42,6 @@ def fnv64(string: str) -> int:
     bstring = bytes(string.lower(), 'utf-8')
     fnv_hash = OFFSET64
     for b in bstring:
-        fnv_hash *= PRIME64
+        fnv_hash = (fnv_hash * PRIME64) & 0xffffffffffffffff
         fnv_hash ^= b
     return to_uint64(fnv_hash)
