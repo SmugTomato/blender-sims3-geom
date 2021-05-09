@@ -52,7 +52,6 @@ classes = [
     SIMGEOM_OT_import_morph,
     SIMGEOM_OT_rebuild_bone_database,
     SIMGEOM_OT_rename_bone_groups,
-    SIMGEOM_OT_clean_groups,
     SIMGEOM_OT_recalc_ids,
     SIMGEOM_OT_remove_ids,
     SIMGEOM_OT_copy_data,
