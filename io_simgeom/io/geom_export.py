@@ -32,6 +32,7 @@ from io_simgeom.models.vertex   import Vertex
 from io_simgeom.util.fnv        import fnv32
 from io_simgeom.util.globals    import Globals
 
+MAX_BONES = 59
 
 class SIMGEOM_OT_export_geom(Operator, ExportHelper):
     """Sims 3 GEOM Exporter"""
@@ -87,6 +88,27 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         ob = context.active_object
         me = ob.data
 
+        # Get a list of bones that are assigned to vertices
+        bones_used = []
+        for v in me.vertices:
+            for g in v.groups:
+                if not g.group in bones_used:
+                    bones_used.append(g.group)
+        
+        # Cancel import if amount of bones is over the limit
+        if len(bones_used) > MAX_BONES:
+            message = (
+                f"GEOM has {len(bones_used)} bones assigned, but only {MAX_BONES} are allowed, export cancelled!\n"
+                "Please split up the mesh into multiple groups an/or make sure to limit bone assignments to 4."
+            )
+            self.report({'ERROR'}, message)
+            return {"CANCELLED"}
+        
+        # Build a mapping of Blender's vertex group indices to the indices bones will have in the GEOM file
+        bones_map = dict()
+        for i, b_ind in enumerate(bones_used):
+            bones_map[b_ind] = i
+
         # Create the GEOM vertex array and fill it with the readily available values
         g_element_data: List[Vertex] = []
         for v in me.vertices:
@@ -98,11 +120,16 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
             assignment = [0]*4
             for j, g in enumerate(v.groups):
                 weights[j] = g.weight
-                assignment[j] = g.group
+                assignment[j] = bones_map[g.group]
             vtx.weights = weights
             vtx.assignment = assignment
 
             g_element_data.append(vtx)
+
+        # Fill the bone array
+        geom_data.bones = [""] * len(bones_used) 
+        for key, val in bones_map.items():
+            geom_data.bones[val] = ob.vertex_groups[key].name
         
         # Set Vertex IDs
         for key, values in ob.get('vert_ids').items():
@@ -169,11 +196,6 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         
         # Tangents
         self.calc_tangents(g_element_data, geom_data)
-
-        # Fill the bone array
-        geom_data.bones = []
-        for group in ob.vertex_groups:
-            geom_data.bones.append(group.name)
         
         # Set Header Info
         geom_data.internal_chunks = []
