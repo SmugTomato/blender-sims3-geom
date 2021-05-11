@@ -119,9 +119,11 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
             weights = [0.0]*4
             assignment = [0xff]*4
             for j, g in enumerate(v.groups):
-                index = j & 3 # mask out anything out of range the array
-                weights[index] = g.weight
-                assignment[index] = bones_map[g.group]
+                if j > 3:
+                    self.report({'ERROR'}, "One or more vertices are assigned to more than 4 vertex groups, export cancelled!")
+                    return {"CANCELLED"}
+                weights[j] = g.weight
+                assignment[j] = bones_map[g.group]
             vtx.weights = weights
             vtx.assignment = assignment
 
