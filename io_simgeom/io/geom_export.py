@@ -297,12 +297,14 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         """Create geom files for all morphs"""
 
         vert_count = len(mesh_instance.vertices)
+        mismatch_count = 0
 
         morphs = self.get_morphs(original_object)
         for morph_obj in morphs:
             morph_mesh = morph_obj.data
 
             if vert_count != len(morph_mesh.vertices):
+                mismatch_count += 1
                 continue
             
             geom_data = Geom()
@@ -372,6 +374,9 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
             morph_name = morph_obj.get('morph_name', morph_obj.name)
             filepath = self.filepath.split(".simgeom")[0] + "_" + morph_name + ".simgeom"
             GeomWriter.writeGeom(filepath, geom_data)
+        
+        if mismatch_count > 0:
+             self.report({'ERROR'}, f"{mismatch_count}/{len(morphs)} morphs failed to export due to vertex count mismatch.")
     
 
     def delta(self, a: tuple, b: tuple):
