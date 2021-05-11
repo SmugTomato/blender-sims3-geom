@@ -117,10 +117,11 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
 
             # Bone Assignments
             weights = [0.0]*4
-            assignment = [0]*4
+            assignment = [0xff]*4
             for j, g in enumerate(v.groups):
-                weights[j] = g.weight
-                assignment[j] = bones_map[g.group]
+                index = j & 3 # mask out anything out of range the array
+                weights[index] = g.weight
+                assignment[index] = bones_map[g.group]
             vtx.weights = weights
             vtx.assignment = assignment
 
