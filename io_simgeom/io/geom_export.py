@@ -88,6 +88,10 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         ob = context.active_object
         me = ob.data
 
+        if ob.get('__GEOM__') == None:
+            self.report({'ERROR'}, "Selected object is not a valid Sims 3 GEOM, export cancelled.")
+            return {"CANCELLED"}
+
         # Get a list of bones that are assigned to vertices
         bones_used = []
         for v in me.vertices:
