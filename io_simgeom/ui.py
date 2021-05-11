@@ -66,6 +66,8 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
         
         if obj is not None and obj.get('__GEOM_MORPH__', 0):
             self.draw_morph(context)
+        
+        layout.operator("simgeom.make_morph")
     
 
     def draw_geom(self, context):

@@ -94,6 +94,37 @@ class SIMGEOM_OT_import_rig_helper(bpy.types.Operator):
         return {'FINISHED'}
 
 
+class SIMGEOM_OT_make_morph(bpy.types.Operator):
+    """Give the selected objects data for a Morph GEOM"""
+    bl_idname = "simgeom.make_morph"
+    bl_label = "Make Morph"
+    def execute(self, context):
+        # Selected mesh objects
+        selected = [ o for o in bpy.context.scene.objects if o.select_get() and o.type == 'MESH' ]
+
+        # Must have 2 or more meshes selected of which one must be the active object
+        if len(selected) == 0:
+            self.report({'ERROR'}, "You must select 1 or more meshes to turn into morphs.")
+            return {'CANCELLED'}
+
+        n_copied = 0
+        for o in selected:
+            if o.get('__GEOM_MORPH__') != None:
+                continue
+
+            # Clear old properties
+            for prop in o.id_data.keys():
+                del o[prop]
+            
+            o['__GEOM_MORPH__'] = 1
+            
+            n_copied += 1
+
+        self.report({'INFO'}, f"Turned {n_copied} objects into morphs.")
+
+        return {'FINISHED'}
+
+
 class SIMGEOM_OT_copy_data(bpy.types.Operator):
     """Copy GEOM data from active to selected objects"""
     bl_idname = "simgeom.copy_data"
