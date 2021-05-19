@@ -121,7 +121,7 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
 
             # Bone Assignments
             weights = [0.0]*4
-            assignment = [0xff]*4
+            assignment = [0]*4
             for j, g in enumerate(v.groups):
                 if j > 3:
                     self.report({'ERROR'}, "One or more vertices are assigned to more than 4 vertex groups, export cancelled!")
