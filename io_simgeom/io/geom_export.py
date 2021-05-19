@@ -32,7 +32,7 @@ from io_simgeom.models.vertex   import Vertex
 from io_simgeom.util.fnv        import fnv32
 from io_simgeom.util.globals    import Globals
 
-MAX_BONES = 59
+MAX_BONES = 63
 
 class SIMGEOM_OT_export_geom(Operator, ExportHelper):
     """Sims 3 GEOM Exporter"""
