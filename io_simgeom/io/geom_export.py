@@ -48,34 +48,6 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         options={'HIDDEN'},
         maxlen=255,  # Max internal buffer length, longer would be clamped.
     )
-    
-    seamfix_type:   EnumProperty(
-        name = "Seamfix Type:",
-        description = "Age/Gender to use for seamfix",
-        items = [
-            ('None','None',         'None'),
-            ('af',  'Adult Female', 'Adult Female'),
-            ('am',  'Adult Male',   'Adult Male'),
-            ('ef',  'Elder Female', 'Elder Female'),
-            ('em',  'Elder Male',   'Elder Male'),
-            ('tf',  'Teen Female',  'Teen Female'),
-            ('tm',  'Teen Male',    'Teen Male'),
-            ('cu',  'Child',        'Child'),
-            ('pu',  'Toddler',      'Toddler')
-        ],
-        default = 'None'
-    )
-
-    seamfix_lod:   EnumProperty(
-        name = "Seamfix Type:",
-        description = "LOD Index to use for seamfix",
-        items = [
-            ('LOD1',    'LOD1',     'LOD1'),
-            ('LOD2',    'LOD2',     'LOD2'),
-            ('LOD3',    'LOD3',     'LOD3')
-        ],
-        default = 'LOD1'
-    )
 
     do_export_morphs: BoolProperty(
         name = "Export Morphs",
