@@ -87,7 +87,6 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
 
         col = layout.column(align=True)
         col.label(text="Misc.")
-        col.operator("simgeom.split_seams", text="Split UV Seams")
         col.operator("simgeom.rename_bone_groups")
         col.operator("simgeom.copy_data", text="Transfer GEOM data")
     

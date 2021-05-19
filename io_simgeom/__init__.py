@@ -55,8 +55,7 @@ classes = [
     SIMGEOM_OT_recalc_ids,
     SIMGEOM_OT_remove_ids,
     SIMGEOM_OT_copy_data,
-    SIMGEOM_OT_make_morph,
-    SIMGEOM_OT_split_seams
+    SIMGEOM_OT_make_morph
 ]
 
 # Only needed if you want to add into a dynamic menu
