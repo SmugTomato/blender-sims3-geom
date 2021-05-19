@@ -120,18 +120,20 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
             obj.vertex_groups.new(name=bone)
         
         # Set Vertex Group Weights
+        skip_counter = 0
         if geomdata.element_data[0].assignment:
             for i, vert in enumerate(geomdata.element_data):
                 for j in range(4):
                     group_index = vert.assignment[j]
                     if group_index >= len(geomdata.bones):
-                        print(f"{group_index} out of range, skipping...")
+                        skip_counter += 1
                         continue
                     groupname = geomdata.bones[group_index]
                     vertgroup = obj.vertex_groups[groupname]
                     weight = vert.weights[j]
                     if weight > 0:
                         vertgroup.add( [i], weight, 'ADD' )
+        print(f"Skipped {skip_counter} bone assignments that were out of range.")
         
         # Set UV Coordinates for every UV channel
         if geomdata.element_data[0].uv:
