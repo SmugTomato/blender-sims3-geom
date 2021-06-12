@@ -1,0 +1,7 @@
+# v2.1.0
+
+## Changes
++ Added an update checker, checks for updates every time Blender first loads the add-on
+
+## Bugfixes
++ Having loose vertices on export will now provide a desciptive error message
