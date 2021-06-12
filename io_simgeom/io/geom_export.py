@@ -132,8 +132,12 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         normals = [list()] * len(mesh_instance.vertices)
         for loop in mesh_instance.loops:
             normals[loop.vertex_index] = loop.normal
-        
+
         for i, element in enumerate(g_element_data):
+            if len(normals[i]) < 3:
+                self.report({'ERROR'}, "One or more vertices have no normals, please check your mesh for loose vertices!")
+                return {"CANCELLED"}
+
             element.normal = (
                 normals[i][0],
                 normals[i][2],
