@@ -35,10 +35,12 @@ class Globals:
     HASHMAP: dict
     SEAM_FIX: dict = {}
 
+    OUTDATED: int
     ROOTDIR: str
 
     @staticmethod
-    def init(rootdir: str):
+    def init(rootdir: str, outdated: int):
+        Globals.OUTDATED = outdated
         Globals.ROOTDIR = rootdir
         datadir = f'{rootdir}/data/json'
         with open(f'{datadir}/fnv_hashmap.json', 'r') as data:

@@ -16,6 +16,7 @@
 # along with BlenderGeom.  If not, see <http://www.gnu.org/licenses/>.
 
 import bpy
+from io_simgeom.util.globals      import Globals
 
 
 class SIMGEOM_PT_utility_panel(bpy.types.Panel):
@@ -48,6 +49,11 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
         layout = self.layout
         scene = context.scene
         obj = context.active_object
+
+        # Link to download for updates
+        if Globals.OUTDATED:
+            col = layout.column(align=True)
+            col.operator("wm.url_open", text="NEW VERSION AVAILABLE").url = "https://modthesims.info/d/656413/"
 
         col = layout.column(align=True)
         row = col.row(align=True)

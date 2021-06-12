@@ -30,18 +30,18 @@ from io_simgeom.ui                import SIMGEOM_PT_utility_panel
 from io_simgeom.operators         import *
 from io_simgeom.util.globals      import Globals
 
+from urllib.request import urlopen, Request
+import json
+
 bl_info = {
     "name": "Sims 3 GEOM Tools 2.0 (Blender 2.80)",
     'author': "SmugTomato",
     "category": "Import-Export",
-	"version": (2, '00 PREVIEW 3'),
+	"version": (2, 1, 0, 'dev'),
 	"blender": (2, 80, 0),
 	"location": "File > Import/Export",
 	"description": "Importer and exporter for Sims 3 GEOM(.simgeom) files"
 }
-
-rootdir = os.path.dirname(os.path.realpath(__file__))
-Globals.init(rootdir)
 
 classes = [
     SIMGEOM_PT_utility_panel,
@@ -58,14 +58,51 @@ classes = [
     SIMGEOM_OT_make_morph
 ]
 
+CHECK_FAILED = -1
+CHECK_UPDATED = 0
+CHECK_OUTDATED = 1
+
+
+def check_version():
+    url = "https://api.github.com/repos/SmugTomato/blender-sims3-geom/releases/latest"
+
+    http_request = Request(url, headers={"Accept": "application/json"})
+    tag = None
+
+    with urlopen(http_request) as response:
+        if response.status != 200:
+            return CHECK_FAILED
+        
+        s = response.read().decode()
+        data = json.loads(s)
+        
+        tag = data.get('tag_name')
+    
+    if tag == None:
+        return CHECK_FAILED
+
+    tag = tag.replace('v', '').split('.')
+    tag = [int(i) for i in tag]
+
+    local = bl_info['version']
+
+    for i in range(3):
+        if tag[i] > local[i]:
+            return CHECK_OUTDATED
+    
+    return CHECK_UPDATED
+
+
 # Only needed if you want to add into a dynamic menu
 def menu_func_import(self, context):
     self.layout.operator(SIMGEOM_OT_import_geom.bl_idname, text="Sims 3 GEOM (.simgeom)")
     self.layout.operator(SIMGEOM_OT_import_morph.bl_idname, text="Sims 3 Morph (.simgeom)")
     self.layout.operator(SIMGEOM_OT_import_rig.bl_idname, text="Sims 3 Rig (.grannyrig)")
 
+
 def menu_func_export(self, context):
     self.layout.operator(SIMGEOM_OT_export_geom.bl_idname, text="Sims 3 GEOM (.simgeom)")
+
 
 def register():
     for item in classes:
@@ -88,6 +125,7 @@ def register():
         description="Will be added as a suffix to the linked GEOM's exported filename"
     )
 
+
 def unregister():
     for item in classes:
         bpy.utils.unregister_class(item)
@@ -97,5 +135,9 @@ def unregister():
     del bpy.types.Object.morph_link
     del bpy.types.Object.morph_name
 
+
 if __name__ == "__main__":
     register()
+
+rootdir = os.path.dirname(os.path.realpath(__file__))
+Globals.init(rootdir, check_version())
