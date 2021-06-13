@@ -288,8 +288,8 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
             
             # Get per vertex normals from mesh loops, assumes 1 normal per real vertex
             morph_mesh.calc_normals_split()
-            morph_normals = [list()] * len(mesh_instance.vertices)
-            for loop in mesh_instance.loops:
+            morph_normals = [list()] * len(morph_mesh.vertices)
+            for loop in morph_mesh.loops:
                 morph_normals[loop.vertex_index] = loop.normal
 
             # Positions
@@ -304,6 +304,7 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
                 vertex = Vertex()
                 pos_delta = self.delta(morph_positions[i], original_positions[i])
                 nor_delta = self.delta(morph_normals[i], original_normals[i])
+
                 vertex.position = (
                     pos_delta[0],
                     pos_delta[2],

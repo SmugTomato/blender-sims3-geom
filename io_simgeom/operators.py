@@ -187,6 +187,7 @@ class SIMGEOM_OT_remove_ids(bpy.types.Operator):
         return {'FINISHED'}
 
 
+# TODO: Needs to be redone, can't assume verts in same positions won't have differing normals
 class SIMGEOM_OT_recalc_ids(bpy.types.Operator):
     """Recalculate Vertex IDs"""
     bl_idname = "simgeom.recalc_ids"
