@@ -31,13 +31,14 @@ from io_simgeom.operators         import *
 from io_simgeom.util.globals      import Globals
 
 from urllib.request import urlopen, Request
+from urllib.error import URLError
 import json
 
 bl_info = {
     "name": "Sims 3 GEOM Tools 2.0 (Blender 2.80)",
     'author': "SmugTomato",
     "category": "Import-Export",
-	"version": (2, 1, 0, 'dev'),
+	"version": (2, 1, 1),
 	"blender": (2, 80, 0),
 	"location": "File > Import/Export",
 	"description": "Importer and exporter for Sims 3 GEOM(.simgeom) files"
@@ -69,26 +70,30 @@ def check_version():
     http_request = Request(url, headers={"Accept": "application/json"})
     tag = None
 
-    with urlopen(http_request) as response:
-        if response.status != 200:
+    try:
+        with urlopen(http_request, timeout=2) as response:
+            if response.status != 200:
+                return CHECK_FAILED
+            
+            s = response.read().decode()
+            data = json.loads(s)
+            
+            tag = data.get('tag_name')
+        
+        if tag == None:
             return CHECK_FAILED
-        
-        s = response.read().decode()
-        data = json.loads(s)
-        
-        tag = data.get('tag_name')
-    
-    if tag == None:
+
+        tag = tag.replace('v', '').split('.')
+        tag = [int(i) for i in tag]
+
+        local = bl_info['version']
+
+        for i in range(3):
+            if tag[i] > local[i]:
+                return CHECK_OUTDATED
+    except URLError as err:
+        print(err)
         return CHECK_FAILED
-
-    tag = tag.replace('v', '').split('.')
-    tag = [int(i) for i in tag]
-
-    local = bl_info['version']
-
-    for i in range(3):
-        if tag[i] > local[i]:
-            return CHECK_OUTDATED
     
     return CHECK_UPDATED
 

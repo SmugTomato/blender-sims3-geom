@@ -51,9 +51,12 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
         obj = context.active_object
 
         # Link to download for updates
-        if Globals.OUTDATED:
+        if Globals.OUTDATED == 1:
             col = layout.column(align=True)
             col.operator("wm.url_open", text="NEW VERSION AVAILABLE").url = "https://modthesims.info/d/656413/"
+        elif Globals.OUTDATED == -1:
+            col = layout.column(align=True)
+            col.label(text="Failed to check for updates, check your internet connection.")
 
         col = layout.column(align=True)
         row = col.row(align=True)
