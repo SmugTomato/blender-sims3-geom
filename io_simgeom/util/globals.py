@@ -45,9 +45,9 @@ class Globals:
         datadir = f'{rootdir}/data/json'
         with open(f'{datadir}/fnv_hashmap.json', 'r') as data:
             Globals.HASHMAP = json.loads(data.read())
-        for i in range(3):
-            with open(f'{datadir}/seams_LOD{i+1}.json', "r") as data:
-                Globals.SEAM_FIX[f'LOD{i+1}'] = json.loads(data.read())
+        # for i in range(3):
+        #     with open(f'{datadir}/seams_LOD{i+1}.json', "r") as data:
+        #         Globals.SEAM_FIX[f'LOD{i+1}'] = json.loads(data.read())
     
     @staticmethod
     def get_bone_name(fnv32hash: int) -> str:

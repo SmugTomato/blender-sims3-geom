@@ -1,12 +1,16 @@
 # v2.1.2
 
 ## Changes
-+ Recalculating vertex IDs now works with a small distance allowed between vertices, allowing to properly recalculate to EA ID counts
++ Recalculating vertex IDs now works with a small distance allowed between vertices, allowing to properly recalculate for sloppy EA meshes.
++ Users can adjust said margin between 0.1 and 0.0 (default 0.00001)
++ Users can reset said margin back to it's default value(0.00001) with the 'Reset' button under 'Vertex IDs'
+
 
 # v2.1.1
 
 ## Bugfixes
 + Add-on would fail to load when not connected to the internet, this has now been fixed
+
 
 # v2.1.0
 

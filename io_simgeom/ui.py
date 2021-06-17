@@ -94,6 +94,9 @@ class SIMGEOM_PT_utility_panel(bpy.types.Panel):
         sub.label( text = "end_id: " + str( obj.get('start_id') + uniques ) + " (" + str(uniques) + " total)" )
         col.operator("simgeom.recalc_ids", text="Recalculate IDs")
         col.operator("simgeom.remove_ids", text="Remove IDs")
+        row = col.row(align=True)
+        row.prop(context.scene, 'v_id_margin')
+        row.operator("simgeom.reset_id_margin", text="Reset")
 
         col = layout.column(align=True)
         col.label(text="Misc.")

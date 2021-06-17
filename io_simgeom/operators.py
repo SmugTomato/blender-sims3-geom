@@ -187,12 +187,19 @@ class SIMGEOM_OT_remove_ids(bpy.types.Operator):
         return {'FINISHED'}
 
 
+class SIMGEOM_OT_reset_id_margin(bpy.types.Operator):
+    """Reset Vertex ID Margin"""
+    bl_idname = "simgeom.reset_id_margin"
+    bl_label = "Reset vertex ID margin to it's default value"
+
+    def execute(self, context):
+        context.scene.v_id_margin = 0.00001
+        return {'FINISHED'}
+
 class SIMGEOM_OT_recalc_ids(bpy.types.Operator):
     """Recalculate Vertex IDs"""
     bl_idname = "simgeom.recalc_ids"
     bl_label = "Recalculate Vertex IDs for active object"
-
-    MAX_DISTANCE = 0.00001
 
     def execute(self, context):
         ob = context.active_object
@@ -213,6 +220,7 @@ class SIMGEOM_OT_recalc_ids(bpy.types.Operator):
             kd.insert(v.co, i)
         kd.balance()
 
+        distance = context.scene.get('v_id_margin', 0.00001)
         vertex_sets = []
         for v in mesh.vertices:
             # Skip vertices already handled previously(in same position as another one)
@@ -221,7 +229,7 @@ class SIMGEOM_OT_recalc_ids(bpy.types.Operator):
 
             # Group vertices(idices) together when position matches with given distance
             # TODO: make distance user changeable
-            vset = kd.find_range(v.co, self.MAX_DISTANCE)
+            vset = kd.find_range(v.co, distance)
             vset = [vert[1] for vert in vset]
             vertex_sets.append(vset)
         

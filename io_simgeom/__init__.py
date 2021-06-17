@@ -53,6 +53,7 @@ classes = [
     SIMGEOM_OT_import_morph,
     SIMGEOM_OT_rebuild_bone_database,
     SIMGEOM_OT_rename_bone_groups,
+    SIMGEOM_OT_reset_id_margin,
     SIMGEOM_OT_recalc_ids,
     SIMGEOM_OT_remove_ids,
     SIMGEOM_OT_copy_data,
@@ -128,6 +129,18 @@ def register():
         default="",
         name="Morph Name",
         description="Will be added as a suffix to the linked GEOM's exported filename"
+    )
+
+    # Vertex ID Margin
+    bpy.types.Scene.v_id_margin = bpy.props.FloatProperty(
+        name="Margin",
+        description="How far away vertices are allowed to be for them to still be considered in identical locations, EA meshes tend to be sloppy and have distance between vertices with the same IDs",
+        min=0.0,
+        soft_min=0.0,
+        max=0.1,
+        soft_max=0.1,
+        default=0.00001,
+        precision=6
     )
 
 
