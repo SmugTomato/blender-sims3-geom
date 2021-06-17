@@ -23,7 +23,7 @@ import bmesh
 
 from mathutils              import Vector, Quaternion
 from bpy_extras.io_utils    import ExportHelper
-from bpy.props              import StringProperty, BoolProperty, EnumProperty
+from bpy.props              import StringProperty, BoolProperty, EnumProperty, IntProperty
 from bpy.types              import Operator
 
 from io_simgeom.io.geom_write   import GeomWriter
@@ -32,7 +32,6 @@ from io_simgeom.models.vertex   import Vertex
 from io_simgeom.util.fnv        import fnv32
 from io_simgeom.util.globals    import Globals
 
-MAX_BONES = 63
 
 class SIMGEOM_OT_export_geom(Operator, ExportHelper):
     """Sims 3 GEOM Exporter"""
@@ -55,6 +54,15 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
         default = True
     )
 
+    n_max_bones: IntProperty(
+        name = "Max Bones",
+        description = "The maximum amount of bones allowed to be exported in a GEOM file, I'm fairly certain meshes don't start freaking out until you go over 63"
+                       " but you can adjust it here in case I'm wrong. (default: 63)",
+        default = 63,
+        max = 127,
+        min = 1
+    )
+
     def execute(self, context):
         geom_data = Geom()
         ob = context.active_object
@@ -72,9 +80,9 @@ class SIMGEOM_OT_export_geom(Operator, ExportHelper):
                     bones_used.append(g.group)
         
         # Cancel import if amount of bones is over the limit
-        if len(bones_used) > MAX_BONES:
+        if len(bones_used) > self.n_max_bones:
             message = (
-                f"GEOM has {len(bones_used)} bones assigned, but only {MAX_BONES} are allowed, export cancelled!\n"
+                f"GEOM has {len(bones_used)} bones assigned, but only {self.n_max_bones} are allowed, export cancelled!\n"
                 "Please split up the mesh into multiple groups an/or make sure to limit bone assignments to 4."
             )
             self.report({'ERROR'}, message)
