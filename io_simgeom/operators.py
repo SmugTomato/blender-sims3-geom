@@ -195,6 +195,8 @@ class SIMGEOM_OT_recalc_ids(bpy.types.Operator):
     bl_idname = "simgeom.recalc_ids"
     bl_label = "Recalculate Vertex IDs for active object"
 
+    MAX_DISTANCE = 0.00001
+
     def execute(self, context):
         ob = context.active_object
 
@@ -207,15 +209,6 @@ class SIMGEOM_OT_recalc_ids(bpy.types.Operator):
 
         start_id = ob.get('start_id')
         mesh = ob.data
-
-        # Get per vertex normals from mesh loops, assumes 1 normal per real vertex
-        mesh.calc_normals_split()
-        normals = [list()] * len(mesh.vertices)
-        for loop in mesh.loops:
-            if len(loop.normal) != 3:
-                self.report({'ERROR'}, "One or more vertices have no normals, please check your mesh for loose vertices!")
-                return {"CANCELLED"}
-            normals[loop.vertex_index] = loop.normal
         
         # Set up the KDTree
         kd = mathutils.kdtree.KDTree(len(mesh.vertices))
@@ -231,14 +224,18 @@ class SIMGEOM_OT_recalc_ids(bpy.types.Operator):
 
             # Group vertices(idices) together when position matches with given distance
             # TODO: make distance user changeable
-            vset = kd.find_range(v.co, 0.00001)
+            vset = kd.find_range(v.co, self.MAX_DISTANCE)
             vset = [vert[1] for vert in vset]
             vertex_sets.append(vset)
         
         # TODO: Arrange by sets of matching normals from sets of matching positions?
         # Check more EA meshes first, if they all match in ID counts don't bother
 
-        # TODO: Actually keep the results in the GEOM data
+        # Save the resulting vertex ID map to the GEOM data of the object
+        ids = dict()
+        for i, indices in enumerate(vertex_sets):
+            ids[hex(i + start_id)] = indices
+        ob['vert_ids'] = ids
 
         message = f"Assigned {len(vertex_sets)} unique vertex IDs to {len(mesh.vertices)} vertices."
         self.report({'INFO'}, message)
