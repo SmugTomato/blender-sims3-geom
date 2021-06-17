@@ -15,8 +15,10 @@
 # You should have received a copy of the GNU General Public License
 # along with BlenderGeom.  If not, see <http://www.gnu.org/licenses/>.
 
+import math
+
 import bpy
-import bmesh
+import mathutils
 
 from bpy_extras.io_utils    import ExportHelper
 from bpy.props              import StringProperty, BoolProperty, EnumProperty
@@ -204,24 +206,41 @@ class SIMGEOM_OT_recalc_ids(bpy.types.Operator):
             return {"CANCELLED"}
 
         start_id = ob.get('start_id')
-
         mesh = ob.data
-        positions = {}
-        # Map vertex ID per position
+
+        # Get per vertex normals from mesh loops, assumes 1 normal per real vertex
+        mesh.calc_normals_split()
+        normals = [list()] * len(mesh.vertices)
+        for loop in mesh.loops:
+            if len(loop.normal) != 3:
+                self.report({'ERROR'}, "One or more vertices have no normals, please check your mesh for loose vertices!")
+                return {"CANCELLED"}
+            normals[loop.vertex_index] = loop.normal
+        
+        # Set up the KDTree
+        kd = mathutils.kdtree.KDTree(len(mesh.vertices))
+        for i, v in enumerate(mesh.vertices):
+            kd.insert(v.co, i)
+        kd.balance()
+
+        vertex_sets = []
         for v in mesh.vertices:
-            t = v.co.to_tuple()
-            if not t in positions.keys():
-                positions[t] = [v.index]
-            else:
-                positions[t].append(v.index)
+            # Skip vertices already handled previously(in same position as another one)
+            if any(v.index in sublist for sublist in vertex_sets):
+                continue
 
-        # Now map vertices per vertex ID
-        ids = {}
-        for i, val in enumerate(positions.values()):
-            ids[hex(i + start_id)] = val
-        ob['vert_ids'] = ids
+            # Group vertices(idices) together when position matches with given distance
+            # TODO: make distance user changeable
+            vset = kd.find_range(v.co, 0.00001)
+            vset = [vert[1] for vert in vset]
+            vertex_sets.append(vset)
+        
+        # TODO: Arrange by sets of matching normals from sets of matching positions?
+        # Check more EA meshes first, if they all match in ID counts don't bother
 
-        message = "Assigned " + str(len(ids)) + " Unique IDs to " + str(len(mesh.vertices)) + " vertices."
+        # TODO: Actually keep the results in the GEOM data
+
+        message = f"Assigned {len(vertex_sets)} unique vertex IDs to {len(mesh.vertices)} vertices."
         self.report({'INFO'}, message)
 
         return {'FINISHED'}
