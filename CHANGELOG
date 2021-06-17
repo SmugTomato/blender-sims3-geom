@@ -6,6 +6,9 @@
 + Users can reset said margin back to it's default value(0.00001) with the 'Reset' button under 'Vertex IDs'
 + Users can adjust the maximum allowed bones on export in case I'm wrong about it being 63. (default: 63)
 
+## Bugfixes
++ Morphs accidentally exported with normals from the base mesh istead of their own, this has now been fixed
+
 
 # v2.1.1
 
