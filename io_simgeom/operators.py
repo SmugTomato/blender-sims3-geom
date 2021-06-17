@@ -15,8 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with BlenderGeom.  If not, see <http://www.gnu.org/licenses/>.
 
-import math
-
 import bpy
 import mathutils
 
@@ -189,7 +187,6 @@ class SIMGEOM_OT_remove_ids(bpy.types.Operator):
         return {'FINISHED'}
 
 
-# TODO: Needs to be redone, can't assume verts in same positions won't have differing normals
 class SIMGEOM_OT_recalc_ids(bpy.types.Operator):
     """Recalculate Vertex IDs"""
     bl_idname = "simgeom.recalc_ids"
