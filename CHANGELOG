@@ -1,7 +1,12 @@
+# v2.1.2
+
+## Changes
++ Recalculating vertex IDs now works with a small distance allowed between vertices, allowing to properly recalculate to EA ID counts
+
 # v2.1.1
 
 ## Bugfixes
-+ add-on would fail to load when not connected to the internet, this has now been fixed
++ Add-on would fail to load when not connected to the internet, this has now been fixed
 
 # v2.1.0
 
