@@ -47,6 +47,12 @@ class SIMGEOM_OT_import_morph(Operator, ImportHelper):
         default = True
     )
 
+    do_vertexid_order: BoolProperty(
+        name = "VertexID Lookup",
+        description = "Rely on vertexIDs instead of vertex order when importing morphs (recommended)",
+        default = True
+    )
+
     def execute(self, context):
         geom_obj = context.active_object
         geom_mesh = geom_obj.data
@@ -94,16 +100,27 @@ class SIMGEOM_OT_import_morph(Operator, ImportHelper):
             morph_vertices = [[0,0,0]] * len(geom_mesh.vertices)
             morph_normals  = [[0,0,0]] * len(geom_mesh.vertices)
 
+            # EA morphs and/or sliders seem to be inconsistent with their vertex order
+            # so I map the morphs to vertexIDs instead if left enabled by user
+            vertIDMap = geom_obj.get('vert_ids', dict())
+
             for i in range(len(geom_mesh.vertices)):
+                vertexID = hex(morph_geomdata.element_data[i].vertex_id[0])
+
+                if self.do_vertexid_order:
+                    baseIndex = vertIDMap.get(vertexID, [0])[0]
+                else:
+                    baseIndex = i
+
                 morph_vertices[i] = [
-                    geom_mesh.vertices[i].co[0] + morph_geomdata.element_data[i].position[0],
-                    geom_mesh.vertices[i].co[1] - morph_geomdata.element_data[i].position[2],
-                    geom_mesh.vertices[i].co[2] + morph_geomdata.element_data[i].position[1]
+                    geom_mesh.vertices[baseIndex].co[0] + morph_geomdata.element_data[i].position[0],
+                    geom_mesh.vertices[baseIndex].co[1] - morph_geomdata.element_data[i].position[2],
+                    geom_mesh.vertices[baseIndex].co[2] + morph_geomdata.element_data[i].position[1]
                 ]
                 morph_normals[i] = [
-                    geom_normals[i][0] + morph_geomdata.element_data[i].normal[0],
-                    geom_normals[i][1] - morph_geomdata.element_data[i].normal[2],
-                    geom_normals[i][2] + morph_geomdata.element_data[i].normal[1]
+                    geom_normals[baseIndex][0] + morph_geomdata.element_data[i].normal[0],
+                    geom_normals[baseIndex][1] - morph_geomdata.element_data[i].normal[2],
+                    geom_normals[baseIndex][2] + morph_geomdata.element_data[i].normal[1]
                 ]
             
             faces = morph_geomdata.faces

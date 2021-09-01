@@ -38,7 +38,7 @@ bl_info = {
     "name": "Sims 3 GEOM Tools 2.0 (Blender 2.80)",
     'author': "SmugTomato",
     "category": "Import-Export",
-	"version": (2, 1, 2),
+	"version": (2, 1, 3),
 	"blender": (2, 80, 0),
 	"location": "File > Import/Export",
 	"description": "Importer and exporter for Sims 3 GEOM(.simgeom) files"
