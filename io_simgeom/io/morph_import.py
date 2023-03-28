@@ -24,7 +24,6 @@ from mathutils              import Vector
 from bpy_extras.io_utils    import ImportHelper
 from bpy.props              import StringProperty, CollectionProperty, BoolProperty
 from bpy.types              import Operator, PropertyGroup
-from rna_prop_ui            import rna_idprop_ui_prop_get
 
 from io_simgeom.io.geom_load    import GeomLoader
 from io_simgeom.models.geom     import Geom

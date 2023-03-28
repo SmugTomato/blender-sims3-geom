@@ -17,6 +17,7 @@
 
 import os
 from typing                 import List
+import traceback
 
 from bpy_extras import object_utils
 import bpy
@@ -26,7 +27,7 @@ from mathutils              import Vector, Quaternion
 from bpy_extras.io_utils    import ImportHelper
 from bpy.props              import StringProperty, BoolProperty, EnumProperty
 from bpy.types              import Operator
-from rna_prop_ui            import rna_idprop_ui_prop_get
+from rna_prop_ui            import rna_idprop_ui_create
 
 from collections            import defaultdict
 import json
@@ -185,13 +186,12 @@ class SIMGEOM_OT_import_geom(Operator, ImportHelper):
 
 
     def add_prop(self, obj, key, value, minmax: List[int] = [0, 2147483647], descript: str = "prop"):
-        obj[key] = value
-        prop_ui = rna_idprop_ui_prop_get(obj, key)
-        prop_ui["min"] = minmax[0]
-        prop_ui["max"] = minmax[1]
-        prop_ui["soft_min"] = minmax[0]
-        prop_ui["soft_max"] = minmax[1]
-        prop_ui["description"] = descript
+        try:
+            rna_idprop_ui_create(obj, key, default=value, min=minmax[0], max=minmax[1], soft_min=minmax[0], soft_max=minmax[1], description=descript)
 
-        for area in bpy.context.screen.areas:
-            area.tag_redraw()
+            for area in bpy.context.screen.areas:
+                area.tag_redraw()
+        except Exception as e:
+            print("--- An exception occurred:", e, "\n")
+            traceback.print_exc()
+            print()
